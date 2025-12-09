@@ -4,17 +4,17 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/git/hooks/pre-commit', '/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
+          ->copy('/__w/toolkit/toolkit/resources/git/hooks/pre-commit', '/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit', 493, 0, )
+          ->chmod('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit', 493, 0, )
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/git/hooks/commit-msg', '/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg')
+          ->copy('/__w/toolkit/toolkit/resources/git/hooks/commit-msg', '/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg', 493, 0, )
+          ->chmod('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg', 493, 0, )
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/git/hooks/pre-push', '/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push')
+          ->copy('/__w/toolkit/toolkit/resources/git/hooks/pre-push', '/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push', 493, 0, )
+          ->chmod('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push', 493, 0, )
 
 - command: 'toolkit:hooks-enable --hooks=pre-commit'
   configuration: [ ]
@@ -22,9 +22,9 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/git/hooks/pre-commit', '/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
+          ->copy('/__w/toolkit/toolkit/resources/git/hooks/pre-commit', '/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->chmod('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit', 493, 0, )
+          ->chmod('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit', 493, 0, )
     - not_string_contains: commit-msg
     - not_string_contains: pre-push
 
@@ -34,11 +34,11 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
+          ->remove('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg')
+          ->remove('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/commit-msg')
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push')
+          ->remove('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-push')
 
 - command: 'toolkit:hooks-disable --hooks=pre-commit'
   configuration: [ ]
@@ -46,7 +46,7 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
+          ->remove('/__w/toolkit/toolkit/tests/sandbox/GitHooksCommandsTest/.git/hooks/pre-commit')
 
 - command: 'toolkit:hooks-delete-all'
   configuration: [ ]

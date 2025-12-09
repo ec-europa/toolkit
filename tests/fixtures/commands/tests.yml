@@ -104,7 +104,7 @@
     - contains: |
         Could not find the ruleset file, the default will be created in the project root.
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/phpmd.xml', 'phpmd.xml')
+          ->copy('/__w/toolkit/toolkit/resources/phpmd.xml', 'phpmd.xml')
         [Simulator] Simulating Exec('./vendor/bin/phpmd')
           ->args(array (
             0 => '',

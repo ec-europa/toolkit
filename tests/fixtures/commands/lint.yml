@@ -149,7 +149,7 @@
     - contains: |
         Could not find the config file, the default will be created in the project root.
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/gherkinlint.json', 'gherkinlint.json')
+          ->copy('/__w/toolkit/toolkit/resources/gherkinlint.json', 'gherkinlint.json')
         [Simulator] Simulating Exec('./vendor/bin/gherkinlint lint tests/features')
         [Simulator] Running ./vendor/bin/gherkinlint lint tests/features
 

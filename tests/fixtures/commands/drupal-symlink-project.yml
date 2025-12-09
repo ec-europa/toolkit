@@ -2,7 +2,7 @@
   configuration: []
   resources: []
   expectations:
-    - contains: "[error]  The '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json' was not found."
+    - contains: "[error]  The '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json' was not found."
 
 - command: 'drupal:symlink-project'
   configuration:
@@ -21,12 +21,12 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ules/custom/example')
-          ->mkdir('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ules/custom/example')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ample/composer.json')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... example/example.txt')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example2.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... xample/example2.txt')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/runner.yml', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... /example/runner.yml')
+          ->remove('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... ules/custom/example')
+          ->mkdir('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... ules/custom/example')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... ample/composer.json')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example.txt', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... example/example.txt')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example2.txt', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... xample/example2.txt')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/runner.yml', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... /example/runner.yml')
     - not_contains: 'ignored.txt'
     - not_contains: '.git'
 
@@ -45,9 +45,9 @@
   expectations:
     - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->remove('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... emes/custom/example')
-          ->mkdir('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... emes/custom/example')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... ample/composer.json')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... example/example.txt')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example2.txt', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... xample/example2.txt')
-          ->symlink('/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest/runner.yml', '/test/toolkit/tests/sandbox/SymlinkProjectCommandsTest ... /example/runner.yml')
+          ->remove('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... emes/custom/example')
+          ->mkdir('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... emes/custom/example')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/composer.json', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... ample/composer.json')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example.txt', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... example/example.txt')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/example2.txt', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... xample/example2.txt')
+          ->symlink('/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectCommandsTest/runner.yml', '/__w/toolkit/toolkit/tests/sandbox/SymlinkProjectComma ... /example/runner.yml')
