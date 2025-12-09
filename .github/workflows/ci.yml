@@ -30,7 +30,7 @@ jobs:
         run: |
           git config --global --add safe.directory $GITHUB_WORKSPACE
           composer validate
-          if [[ ${{ matrix.composer_boundary }} == "highest" ]]; then
+          if [ ${{ matrix.composer_boundary }} == "highest" ]; then
             composer install --no-ansi --no-progress --no-interaction
           else
             composer update --prefer-lowest --prefer-stable --no-ansi --no-progress --no-interaction
@@ -55,5 +55,4 @@ jobs:
         run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
 
       - name: PHPUnit
-        run: |
-          ./vendor/bin/run toolkit:test-phpunit
+        run: ./vendor/bin/run toolkit:test-phpunit

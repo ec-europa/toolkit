@@ -54,14 +54,14 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
          *
          * @dataProvider dataProvider
          */
-        public function testDrupalCommands(string $command, array $configuration = [], string $tokens = null, array $resources = [], array $expectations = [])
+        public function testDrupalCommands(string $command, array $configuration = [], string $tokens = '', array $resources = [], array $expectations = [])
         {
             // Setup configuration file.
             if (!empty($configuration)) {
                 $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
             }
 
-            if ($tokens !== null) {
+            if (!empty($tokens)) {
                 putenv('CI_COMMIT_MESSAGE="' . $tokens . '"');
             }
 
