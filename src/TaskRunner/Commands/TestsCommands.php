@@ -628,7 +628,6 @@ class TestsCommands extends AbstractCommands
         $phpunitBin = $this->getBin('phpunit');
         $parallel = $this->taskParallelExec()->printOutput();
         $suites = $this->getPhpUnitSuites();
-        $this->writeln(sprintf('Suites found (%d): %s', count($suites), implode(',', $suites)));
         if (!empty($suites)) {
             $opts = ' ';
             if (!empty($options['options'])) {
@@ -662,21 +661,20 @@ class TestsCommands extends AbstractCommands
      */
     private function getPhpUnitSuites(): array
     {
-        $suites = [];
         $result = $this->taskExec($this->getBin('phpunit'))
             ->option('list-suites')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         preg_match_all('/ - (.+)/', $result, $matches);
         if (!empty($matches[1])) {
-            $suites = array_map(function ($item) {
+            return array_map(function ($item) {
                 if (str_contains($item, '(')) {
                     $item = substr($item, 0, strrpos($item, '('));
                 }
                 return trim($item);
             }, $matches[1]);
         }
-        return $suites;
+        return [];
     }
 
     /**
