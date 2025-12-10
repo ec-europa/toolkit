@@ -1,6 +1,6 @@
 - command: 'drupal:settings-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -18,7 +18,7 @@
 
 - command: 'drupal:settings-setup --root=website'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -36,7 +36,7 @@
 
 - command: 'drupal:settings-setup --sites-subdir=sub_dir'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -54,7 +54,7 @@
 
 - command: 'drupal:settings-setup --force'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -72,7 +72,7 @@
 
 - command: 'drupal:settings-setup --skip-permissions-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - file: 'web/sites/default/settings.php'
@@ -88,7 +88,7 @@
 
 - command: 'drupal:permissions-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -97,7 +97,7 @@
 
 - command: 'drupal:permissions-setup --root=website --sites-subdir=websitesubdir'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -110,7 +110,7 @@
       root: 'web'
       site:
         sites_subdir: 'sites_subdir'
-  tokens: ~
+  tokens: ''
   resources:
     - mkdir: /web/sites/sites_subdir/
     - touch: /web/sites/sites_subdir/settings.php
@@ -123,7 +123,7 @@
 
 - command: 'drupal:disable-cache'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -141,7 +141,7 @@
 
 - command: 'drupal:drush-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -152,7 +152,7 @@
 
 - command: 'drupal:drush-setup --config-dir=website/drush'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -163,7 +163,7 @@
 
 - command: 'drupal:site-install --database-user=root --database-password=1234 --database-name=db'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -204,7 +204,7 @@
               --database-port=3333
               --database-name=test'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -228,7 +228,7 @@
     drupal:
       site:
         generate_db_url: ~
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -247,7 +247,7 @@
 
 - command: 'drupal:site-pre-install'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -259,7 +259,7 @@
     drupal:
         pre_install:
           - { task: 'process', source: 'behat.yml.dist', destination: 'behat.yml' }
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -267,7 +267,7 @@
 
 - command: 'drupal:site-post-install'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -279,7 +279,7 @@
     drupal:
        post_install:
          - './vendor/bin/drush en views -y'
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -289,7 +289,7 @@
 
 - command: 'drupal:upgrade-status'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - from: sample-d9-composer.lock
       to: composer.lock
@@ -309,7 +309,7 @@
 
 - command: 'drupal:upgrade-status'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - from: sample-d8-composer.lock
       to: composer.lock
@@ -336,7 +336,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -371,7 +371,7 @@
           - _password
           - _token
           - _new
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - string_contains: node-field_test_token (string)
@@ -382,7 +382,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - file: .opts.yml
       content: |
@@ -394,7 +394,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - file: .opts.yml
       content: |
@@ -407,7 +407,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - file: .opts.yml
       content: |
@@ -420,7 +420,7 @@
 
 - command: 'drupal:check-sanitisation-classes'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - mkdir: lib/modules/toolkit_module/src/Commands
   expectations:
@@ -428,7 +428,7 @@
 
 - command: 'drupal:check-sanitisation-classes'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - mkdir: lib/modules/toolkit_module/src/Commands
     - file: lib/modules/toolkit_module/src/Commands/ToolkitSanitizeCommand.php
