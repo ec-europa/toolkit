@@ -17,4 +17,4 @@ toolkit:
         - toolkit:test-phpstan
   test:
     phpunit:
-      options: 'fail-on-incomplete fail-on-risky fail-on-warning fail-on-empty-test-suite'
+      options: 'fail-on-incomplete fail-on-risky fail-on-warning fail-on-empty-test-suite display-deprecations display-phpunit-deprecations'

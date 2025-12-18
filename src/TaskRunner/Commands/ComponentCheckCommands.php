@@ -15,6 +15,7 @@ use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -681,14 +682,14 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $composerJson = $this->getJson('composer.json');
-
+        $customTypes = [
+            'drupal-custom-module',
+            'drupal-custom-theme',
+            'drupal-custom-profile',
+        ];
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], [
-                'drupal-custom-module',
-                'drupal-custom-theme',
-                'drupal-custom-profile',
-            ]);
+            $typeBypass = in_array($package['type'], $customTypes);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->composerFailed = true;
                 $message = "Package {$package['name']}:{$package['version']} cannot be used in dev version.";
@@ -784,6 +785,27 @@ class ComponentCheckCommands extends AbstractCommands
             $this->io->error($message);
             $this->composerFailed = true;
             $this->addJunitResult('Composer components', $message);
+        }
+
+        // Custom local packages should respect type drupal-custom-*.
+        $customCodeFolder = $this->getConfigValue('toolkit.build.custom-code-folder');
+        if (is_dir($customCodeFolder)) {
+            $finder = new Finder();
+            $finder
+                ->files()
+                ->depth(['> 1', '< 3'])
+                ->in($customCodeFolder)
+                ->name('composer.json');
+            foreach ($finder as $file) {
+                $pathName = $file->getPathname();
+                $content = $this->getJson($pathName);
+                if (!empty($content['type']) && !in_array($content['type'], $customTypes)) {
+                    $message = "The custom component $pathName has an invalid type {$content['type']}.";
+                    $this->io->error($message);
+                    $this->composerFailed = true;
+                    $this->addJunitResult('Composer components', $message);
+                }
+            }
         }
 
         if (!$this->composerFailed) {

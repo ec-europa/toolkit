@@ -6,13 +6,14 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\Commands\ComponentCheckCommands;
 use EcEuropa\Toolkit\Tests\AbstractTest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Test Toolkit component-check command.
- *
- * @group component-check
  */
+#[Group('component-check')]
 class ComponentCheckCommandsTest extends AbstractTest
 {
 
@@ -40,9 +41,8 @@ class ComponentCheckCommandsTest extends AbstractTest
      *   Resources needed for the test.
      * @param array $expectations
      *   Tests expected.
-     *
-     * @dataProvider dataProvider
      */
+    #[DataProvider('dataProvider')]
     public function testComponentCheck(string $command, array $configuration = [], string $tokens = '', array $resources = [], array $expectations = [])
     {
         // Setup configuration file.

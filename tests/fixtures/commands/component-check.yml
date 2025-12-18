@@ -901,3 +901,39 @@
         }
   expectations:
     - string_contains: Composer validation check passed
+
+- command: 'check:composer'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
+    - file: lib/modules/module1/composer.json
+      content: '{"name": "test/module1", "type": "drupal-custom-module"}'
+    - file: lib/modules/module2/composer.json
+      content: '{"name": "test/module2", "type": "drupal-custom-modules"}'
+    - file: lib/modules/module3/composer.json
+      content: '{"name": "test/module3", "type": "drupal-module"}'
+    - file: lib/themes/theme1/composer.json
+      content: '{"name": "test/theme1", "type": "drupal-custom-theme"}'
+    - file: lib/themes/theme2/composer.json
+      content: '{"name": "test/theme2", "type": "drupal-theme"}'
+  expectations:
+    - not_string_contains: The custom component lib/modules/module1/composer.json
+    - string_contains: |
+        The custom component lib/modules/module2/composer.json has an invalid
+        type drupal-custom-modules.
+    - string_contains: |
+        The custom component lib/modules/module3/composer.json has an invalid
+        type drupal-module.
+    - not_string_contains: The custom component lib/themes/theme1/composer.json
+    - string_contains: |
+        The custom component lib/themes/theme2/composer.json has an invalid
+        type drupal-theme.
