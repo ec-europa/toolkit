@@ -157,7 +157,7 @@ abstract class AbstractTest extends TestCase
      * @param string $command
      *   The command to execute.
      * @param bool $simulate
-     *   Whether use --simulate.
+     *   Whether to use --simulate.
      * @param bool $output
      *   Whether to output.
      *
