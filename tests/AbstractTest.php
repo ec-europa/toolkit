@@ -52,9 +52,10 @@ abstract class AbstractTest extends TestCase
      */
     protected function tearDown(): void
     {
-        $isUnknown = get_class($this->status()) === Unknown::class;
-        if (!$isUnknown && !$this->status()->isSuccess() && $this->usesDataProvider()) {
-            $this->debugExpectations($this->commandOutput, $this->providedData()['expectations']);
+        $failed = method_exists($this, 'status') ? !$this->status()->isSuccess() : $this->hasFailed();
+        if ($failed && $this->usesDataProvider()) {
+            $dataMethod = method_exists($this, 'providedData') ? 'providedData' : 'getProvidedData';
+            $this->debugExpectations($this->commandOutput, $this->$dataMethod()['expectations']);
         }
 
         $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
