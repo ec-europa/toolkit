@@ -9,7 +9,7 @@
     drupal:
       root: 'web'
     symlink_project:
-      ignore: [ '.idea', 'vendor', 'ignored.txt' ]
+      ignore: [ '.idea', 'vendor', 'ignored.txt', '.toolkit-mock' ]
   resources:
     - touch: example.txt
     - touch: example2.txt
@@ -35,7 +35,7 @@
     drupal:
       root: 'build'
     symlink_project:
-      ignore: [ '.idea', 'vendor', 'ignored.txt' ]
+      ignore: [ '.idea', 'vendor', 'ignored.txt', '.toolkit-mock' ]
   resources:
     - touch: example.txt
     - touch: example2.txt

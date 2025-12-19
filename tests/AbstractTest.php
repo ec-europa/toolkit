@@ -44,6 +44,12 @@ abstract class AbstractTest extends TestCase
             $this->fs->mkdir($this->getSandboxRoot());
         }
         $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
+
+        // Look if the mock exists outside the current sandbox test and copy it into the sandbox dir.
+        $from = $this->getSandboxFilepath('../.toolkit-mock');
+        if (file_exists($from)) {
+            $this->fs->mirror($from, $this->getSandboxFilepath('.toolkit-mock'));
+        }
     }
 
     /**
@@ -55,6 +61,13 @@ abstract class AbstractTest extends TestCase
         if ($failed && $this->usesDataProvider()) {
             $dataMethod = method_exists($this, 'providedData') ? 'providedData' : 'getProvidedData';
             $this->debugExpectations($this->commandOutput, $this->$dataMethod()['expectations']);
+        }
+
+        // If the mock exists in the current sandbox test and doesn't exist on sandbox copy it.
+        $from = $this->getSandboxFilepath('.toolkit-mock');
+        $to = $this->getSandboxFilepath('../.toolkit-mock');
+        if (file_exists($from) && !file_exists($to)) {
+            $this->fs->mirror($from, $to);
         }
 
         $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
@@ -185,7 +198,8 @@ abstract class AbstractTest extends TestCase
             return;
         }
 
-        $output = "\n-- TestOutput for {$this->nameWithDataSet()} --\n$content\n-- End TestOutput --\n";
+        $name = method_exists($this, 'nameWithDataSet') ? $this->nameWithDataSet() : $this->getName();
+        $output = "\n-- TestOutput for $name --\n$content\n-- End TestOutput --\n";
         foreach ($expectations as $expectation) {
             if (!empty($expectation['contains'])) {
                 $output .= "-- Expectation: Contains --\n{$expectation['contains']}\n-- End Contains --\n";
