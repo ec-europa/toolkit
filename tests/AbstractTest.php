@@ -6,7 +6,6 @@ namespace EcEuropa\Toolkit\Tests;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestStatus\Unknown;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
