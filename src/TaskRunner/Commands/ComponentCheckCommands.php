@@ -683,9 +683,9 @@ class ComponentCheckCommands extends AbstractCommands
         }
         $composerJson = $this->getJson('composer.json');
         $customTypes = [
-            'drupal-custom-module',
-            'drupal-custom-theme',
-            'drupal-custom-profile',
+            '/modules/custom' => 'drupal-custom-module',
+            '/themes/custom' => 'drupal-custom-theme',
+            '/profiles/custom' => 'drupal-custom-profile',
         ];
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
@@ -752,7 +752,7 @@ class ComponentCheckCommands extends AbstractCommands
                     // If the check value is found in the forbidden values, display an error message.
                     if (in_array($check, $forbiddenValues)) {
                         $message = sprintf($error, $check, $entryName, $forbiddenKey);
-                        $this->io->error($message);
+                        $this->writeln($message);
                         $this->composerFailed = true;
                         $this->addJunitResult('Composer components', $message);
                     }
@@ -773,7 +773,7 @@ class ComponentCheckCommands extends AbstractCommands
             );
             foreach ($missingPlugins as $missingPlugin) {
                 $message = "Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.";
-                $this->io->error($message);
+                $this->writeln($message);
                 $this->composerFailed = true;
                 $this->addJunitResult('Composer components', $message);
             }
@@ -782,7 +782,7 @@ class ComponentCheckCommands extends AbstractCommands
         // Make sure the toolkit-composer-plugin is allowed.
         if (empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
             $message = 'Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.';
-            $this->io->error($message);
+            $this->writeln($message);
             $this->composerFailed = true;
             $this->addJunitResult('Composer components', $message);
         }
@@ -801,9 +801,24 @@ class ComponentCheckCommands extends AbstractCommands
                 $content = $this->getJson($pathName);
                 if (!empty($content['type']) && !in_array($content['type'], $customTypes)) {
                     $message = "The custom component $pathName has an invalid type {$content['type']}.";
-                    $this->io->error($message);
+                    $this->writeln($message);
                     $this->composerFailed = true;
                     $this->addJunitResult('Composer components', $message);
+                }
+            }
+        }
+
+        // The custom packages installer-paths should respect the custom directories.
+        if (!empty($composerJson['extra']['installer-paths'])) {
+            foreach ($composerJson['extra']['installer-paths'] as $dir => $paths) {
+                foreach ($customTypes as $key => $value) {
+                    $currentValue = $paths[0] ?? '';
+                    if (str_ends_with($dir, $key) && !str_ends_with($currentValue, $value)) {
+                        $message = "The installer-path $key has a wrong value $currentValue, it should be $value.";
+                        $this->writeln($message);
+                        $this->composerFailed = true;
+                        $this->addJunitResult('Composer components', $message);
+                    }
                 }
             }
         }
