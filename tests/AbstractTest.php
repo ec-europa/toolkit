@@ -67,6 +67,8 @@ abstract class AbstractTest extends TestCase
      *   Content to test.
      * @param array $expected
      *   Content expected.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function assertDynamic(string $content, array $expected)
     {
