@@ -69,7 +69,6 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
 
             // Run command.
             $result = $this->runCommand($command);
-            $this->debugExpectations($result['output'], $expectations);
             // Assert expectations.
             foreach ($expectations as $expectation) {
                 $this->assertDynamic($result['output'], $expectation);
@@ -100,13 +99,10 @@ namespace EcEuropa\Toolkit\Tests\Features\Commands {
             $this->prepareResources($resources);
 
             // Run command.
-            $this->runCommand($command, false);
-
+            $result = $this->runCommand($command, false);
             // Assert expectations.
             foreach ($expectations as $expectation) {
-                $content = file_get_contents($this->getSandboxFilepath($expectation['file']));
-                $this->debugExpectations($content, $expectations);
-                $this->assertDynamic($content, $expectation);
+                $this->assertDynamic($result['output'], $expectation);
             }
         }
 

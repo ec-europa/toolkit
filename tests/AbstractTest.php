@@ -6,6 +6,7 @@ namespace EcEuropa\Toolkit\Tests;
 
 use EcEuropa\Toolkit\TaskRunner\Runner;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestStatus\Unknown;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -23,6 +24,8 @@ abstract class AbstractTest extends TestCase
      * @var \Symfony\Component\Filesystem\Filesystem
      */
     public Filesystem $fs;
+
+    protected string $commandOutput;
 
     /**
      * {@inheritdoc}
@@ -49,6 +52,11 @@ abstract class AbstractTest extends TestCase
      */
     protected function tearDown(): void
     {
+        $isUnknown = get_class($this->status()) === Unknown::class;
+        if (!$isUnknown && !$this->status()->isSuccess() && $this->usesDataProvider()) {
+            $this->debugExpectations($this->commandOutput, $this->providedData()['expectations']);
+        }
+
         $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
     }
 
@@ -63,6 +71,10 @@ abstract class AbstractTest extends TestCase
     protected function assertDynamic(string $content, array $expected)
     {
         if (!empty($expected['contains'])) {
+            if (!empty($expected['file'])) {
+                $content = file_get_contents($this->getSandboxFilepath($expected['file']));
+                $this->commandOutput = $content ?: '';
+            }
             $this->assertContains($this->trimEachLine($expected['contains']), [$this->trimEachLine($content)]);
             $this->assertEquals(
                 1,
@@ -144,11 +156,12 @@ abstract class AbstractTest extends TestCase
 
         $input = new StringInput($command . $simulation . ' --working-dir=' . $this->getSandboxRoot());
         $runner = new Runner($this->getClassLoader(), $input, $outputObject);
-
-        return [
+        $return = [
             'code' => $runner->run(),
             'output' => $output ? $outputObject->fetch() : '',
         ];
+        $this->commandOutput = $return['output'];
+        return $return;
     }
 
     /**
@@ -169,25 +182,26 @@ abstract class AbstractTest extends TestCase
         if (!getenv('TOOLKIT_DEBUG_EXPECTATIONS')) {
             return;
         }
-        $output = "\n-- Content --\n$content\n-- End Content --\n";
+
+        $output = "\n-- TestOutput for {$this->nameWithDataSet()} --\n$content\n-- End TestOutput --\n";
         foreach ($expectations as $expectation) {
             if (!empty($expectation['contains'])) {
-                $output .= "-- Contains --\n{$expectation['contains']}\n-- End Contains --\n";
+                $output .= "-- Expectation: Contains --\n{$expectation['contains']}\n-- End Contains --\n";
             }
             if (!empty($expectation['not_contains'])) {
-                $output .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
+                $output .= "-- Expectation: NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
             }
             if (!empty($expectation['string_contains'])) {
-                $output .= "-- String --\n{$expectation['string_contains']}\n-- End String --\n";
+                $output .= "-- Expectation: String --\n{$expectation['string_contains']}\n-- End String --\n";
             }
             if (!empty($expectation['not_string_contains'])) {
-                $output .= "-- NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
+                $output .= "-- Expectation: NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
             }
             if (array_key_exists('empty', $expectation)) {
-                $output .= "-- Empty --\n-- End Empty --\n";
+                $output .= "-- Expectation: Empty --\n-- End Empty --\n";
             }
             if (array_key_exists('not_empty', $expectation)) {
-                $output .= "-- NotEmpty --\n-- End NotEmpty --\n";
+                $output .= "-- Expectation: NotEmpty --\n-- End NotEmpty --\n";
             }
             if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
                 $output .= "-- Files equal - expected --\n";
@@ -197,7 +211,7 @@ abstract class AbstractTest extends TestCase
                 $output .= "\n-- END actual --\n";
             }
         }
-        echo $output;
+        echo "$output\n";
     }
 
     /**

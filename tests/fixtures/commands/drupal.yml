@@ -3,8 +3,7 @@
   tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
         [Simulator] Simulating File\Replace('web/sites/default/settings.php')
@@ -21,8 +20,7 @@
   tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('website/sites/default/default.settings.php', 'website/sites/default/settings.php')
         [Simulator] Simulating File\Replace('website/sites/default/settings.php')
@@ -39,8 +37,7 @@
   tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
         ->copy('web/sites/default/default.settings.php', 'web/sites/sub_dir/settings.php')
         [Simulator] Simulating File\Replace('web/sites/sub_dir/settings.php')
@@ -57,8 +54,7 @@
   tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
         [Simulator] Simulating File\Replace('web/sites/default/settings.php')
@@ -75,8 +71,7 @@
   tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
         [Simulator] Simulating File\Replace('web/sites/default/settings.php')
