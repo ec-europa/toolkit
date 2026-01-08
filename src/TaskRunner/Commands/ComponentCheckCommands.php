@@ -714,19 +714,16 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         // Do not allow remote patches. Check if patches from drupal.org are allowed.
-        if (!empty($composerJson['extra']['patches'])) {
-            $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
-            foreach ($composerJson['extra']['patches'] as $packagePatches) {
-                foreach ($packagePatches as $patch) {
-                    $hostname = parse_url($patch, PHP_URL_HOST);
-                    $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
-                    if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
-                        $message = "The patch '$patch' is not valid.";
-                        $this->writeln($message);
-                        $this->composerFailed = true;
-                        $this->addJunitResult('Composer components', $message);
-                    }
-                }
+        $patches = $this->getPatches();
+        $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+        foreach ($patches as $patch) {
+            $hostname = parse_url($patch, PHP_URL_HOST);
+            $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+            if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                $message = "The patch '$patch' is not valid.";
+                $this->writeln($message);
+                $this->composerFailed = true;
+                $this->addJunitResult('Composer components', $message);
             }
         }
 
@@ -1367,6 +1364,24 @@ class ComponentCheckCommands extends AbstractCommands
             return;
         }
         JunitXmlGenerator::addResult('Component check', $testCase, $message, $type);
+    }
+
+    /**
+     * Returns all applied patches.
+     *
+     * @return string[]
+     *   The list of all applied patches.
+     */
+    private function getPatches(): array
+    {
+        $patches = [];
+        $installed = $this->getJson('vendor/composer/installed.json', !$this->isSimulating());
+        foreach ($installed['packages'] ?? [] as $package) {
+            if (!empty($package['extra']['patches_applied'])) {
+                $patches = array_merge($patches, $package['extra']['patches_applied']);
+            }
+        }
+        return $patches;
     }
 
 }
