@@ -63,7 +63,6 @@ class DockerCommandsTest extends AbstractTest
 
         // Run command.
         $result = $this->runCommand($command);
-        $this->debugExpectations($result['output'], $expectations);
         // Assert expectations.
         foreach ($expectations as $expectation) {
             $this->assertDynamic($result['output'], $expectation);
@@ -94,12 +93,10 @@ class DockerCommandsTest extends AbstractTest
         $this->prepareResources($resources);
 
         // Run command.
-        $this->runCommand($command, false);
+        $result = $this->runCommand($command, false);
         // Assert expectations.
         foreach ($expectations as $expectation) {
-            $content = file_get_contents($this->getSandboxFilepath($expectation['file']));
-            $this->debugExpectations($content, [$expectation]);
-            $this->assertDynamic($content, $expectation);
+            $this->assertDynamic($result['output'], $expectation);
         }
     }
 

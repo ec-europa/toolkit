@@ -73,6 +73,7 @@
       content: |
         <?php
         $foo = 'bar';
+
   expectations:
     - file: 'web/sites/default/settings.php'
       contains: |

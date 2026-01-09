@@ -24,6 +24,8 @@ abstract class AbstractTest extends TestCase
      */
     public Filesystem $fs;
 
+    protected string $commandOutput;
+
     /**
      * {@inheritdoc}
      */
@@ -42,6 +44,12 @@ abstract class AbstractTest extends TestCase
             $this->fs->mkdir($this->getSandboxRoot());
         }
         $this->fs->chmod($this->getSandboxRoot(), 0777, umask(), true);
+
+        // Look if the mock exists outside the current sandbox test and copy it into the sandbox dir.
+        $from = $this->getSandboxFilepath('../.toolkit-mock');
+        if (file_exists($from)) {
+            $this->fs->mirror($from, $this->getSandboxFilepath('.toolkit-mock'));
+        }
     }
 
     /**
@@ -49,6 +57,19 @@ abstract class AbstractTest extends TestCase
      */
     protected function tearDown(): void
     {
+        $failed = method_exists($this, 'status') ? !$this->status()->isSuccess() : $this->hasFailed();
+        if ($failed && $this->usesDataProvider()) {
+            $dataMethod = method_exists($this, 'providedData') ? 'providedData' : 'getProvidedData';
+            $this->debugExpectations($this->commandOutput, $this->$dataMethod()['expectations']);
+        }
+
+        // If the mock exists in the current sandbox test and doesn't exist on sandbox copy it.
+        $from = $this->getSandboxFilepath('.toolkit-mock');
+        $to = $this->getSandboxFilepath('../.toolkit-mock');
+        if (file_exists($from) && !file_exists($to)) {
+            $this->fs->mirror($from, $to);
+        }
+
         $this->fs->remove(glob($this->getSandboxRoot() . '/{,.}[!.,!..]*', GLOB_BRACE));
     }
 
@@ -59,10 +80,16 @@ abstract class AbstractTest extends TestCase
      *   Content to test.
      * @param array $expected
      *   Content expected.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function assertDynamic(string $content, array $expected)
     {
         if (!empty($expected['contains'])) {
+            if (!empty($expected['file'])) {
+                $content = file_get_contents($this->getSandboxFilepath($expected['file']));
+                $this->commandOutput = $content ?: '';
+            }
             $this->assertContains($this->trimEachLine($expected['contains']), [$this->trimEachLine($content)]);
             $this->assertEquals(
                 1,
@@ -130,7 +157,7 @@ abstract class AbstractTest extends TestCase
      * @param string $command
      *   The command to execute.
      * @param bool $simulate
-     *   Whether use --simulate.
+     *   Whether to use --simulate.
      * @param bool $output
      *   Whether to output.
      *
@@ -144,11 +171,12 @@ abstract class AbstractTest extends TestCase
 
         $input = new StringInput($command . $simulation . ' --working-dir=' . $this->getSandboxRoot());
         $runner = new Runner($this->getClassLoader(), $input, $outputObject);
-
-        return [
+        $return = [
             'code' => $runner->run(),
             'output' => $output ? $outputObject->fetch() : '',
         ];
+        $this->commandOutput = $return['output'];
+        return $return;
     }
 
     /**
@@ -169,25 +197,27 @@ abstract class AbstractTest extends TestCase
         if (!getenv('TOOLKIT_DEBUG_EXPECTATIONS')) {
             return;
         }
-        $output = "\n-- Content --\n$content\n-- End Content --\n";
+
+        $name = method_exists($this, 'nameWithDataSet') ? $this->nameWithDataSet() : $this->getName();
+        $output = "\n-- TestOutput for $name --\n$content\n-- End TestOutput --\n";
         foreach ($expectations as $expectation) {
             if (!empty($expectation['contains'])) {
-                $output .= "-- Contains --\n{$expectation['contains']}\n-- End Contains --\n";
+                $output .= "-- Expectation: Contains --\n{$expectation['contains']}\n-- End Contains --\n";
             }
             if (!empty($expectation['not_contains'])) {
-                $output .= "-- NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
+                $output .= "-- Expectation: NotContains --\n{$expectation['not_contains']}\n-- End NotContains --\n";
             }
             if (!empty($expectation['string_contains'])) {
-                $output .= "-- String --\n{$expectation['string_contains']}\n-- End String --\n";
+                $output .= "-- Expectation: String --\n{$expectation['string_contains']}\n-- End String --\n";
             }
             if (!empty($expectation['not_string_contains'])) {
-                $output .= "-- NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
+                $output .= "-- Expectation: NotString --\n{$expectation['not_string_contains']}\n-- End NotString --\n";
             }
             if (array_key_exists('empty', $expectation)) {
-                $output .= "-- Empty --\n-- End Empty --\n";
+                $output .= "-- Expectation: Empty --\n-- End Empty --\n";
             }
             if (array_key_exists('not_empty', $expectation)) {
-                $output .= "-- NotEmpty --\n-- End NotEmpty --\n";
+                $output .= "-- Expectation: NotEmpty --\n-- End NotEmpty --\n";
             }
             if (!empty($expectation['file_expected']) && !empty($expectation['file_actual'])) {
                 $output .= "-- Files equal - expected --\n";
@@ -197,7 +227,7 @@ abstract class AbstractTest extends TestCase
                 $output .= "\n-- END actual --\n";
             }
         }
-        echo $output;
+        echo "$output\n";
     }
 
     /**
