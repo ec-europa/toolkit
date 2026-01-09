@@ -15,6 +15,7 @@ use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -681,14 +682,14 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $composerJson = $this->getJson('composer.json');
-
+        $customTypes = [
+            '/modules/custom' => 'drupal-custom-module',
+            '/themes/custom' => 'drupal-custom-theme',
+            '/profiles/custom' => 'drupal-custom-profile',
+        ];
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], [
-                'drupal-custom-module',
-                'drupal-custom-theme',
-                'drupal-custom-profile',
-            ]);
+            $typeBypass = in_array($package['type'], $customTypes);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->composerFailed = true;
                 $message = "Package {$package['name']}:{$package['version']} cannot be used in dev version.";
@@ -751,7 +752,7 @@ class ComponentCheckCommands extends AbstractCommands
                     // If the check value is found in the forbidden values, display an error message.
                     if (in_array($check, $forbiddenValues)) {
                         $message = sprintf($error, $check, $entryName, $forbiddenKey);
-                        $this->io->error($message);
+                        $this->writeln($message);
                         $this->composerFailed = true;
                         $this->addJunitResult('Composer components', $message);
                     }
@@ -772,7 +773,7 @@ class ComponentCheckCommands extends AbstractCommands
             );
             foreach ($missingPlugins as $missingPlugin) {
                 $message = "Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.";
-                $this->io->error($message);
+                $this->writeln($message);
                 $this->composerFailed = true;
                 $this->addJunitResult('Composer components', $message);
             }
@@ -781,9 +782,45 @@ class ComponentCheckCommands extends AbstractCommands
         // Make sure the toolkit-composer-plugin is allowed.
         if (empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
             $message = 'Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.';
-            $this->io->error($message);
+            $this->writeln($message);
             $this->composerFailed = true;
             $this->addJunitResult('Composer components', $message);
+        }
+
+        // Custom local packages should respect type drupal-custom-*.
+        $customCodeFolder = $this->getConfigValue('toolkit.build.custom-code-folder');
+        if (is_dir($customCodeFolder)) {
+            $finder = new Finder();
+            $finder
+                ->files()
+                ->depth(['> 1', '< 3'])
+                ->in($customCodeFolder)
+                ->name('composer.json');
+            foreach ($finder as $file) {
+                $pathName = $file->getPathname();
+                $content = $this->getJson($pathName);
+                if (!empty($content['type']) && !in_array($content['type'], $customTypes)) {
+                    $message = "The custom component $pathName has an invalid type {$content['type']}.";
+                    $this->writeln($message);
+                    $this->composerFailed = true;
+                    $this->addJunitResult('Composer components', $message);
+                }
+            }
+        }
+
+        // The custom packages installer-paths should respect the custom directories.
+        if (!empty($composerJson['extra']['installer-paths'])) {
+            foreach ($composerJson['extra']['installer-paths'] as $dir => $paths) {
+                foreach ($customTypes as $key => $value) {
+                    $currentValue = $paths[0] ?? '';
+                    if (str_ends_with($dir, $key) && !str_ends_with($currentValue, $value)) {
+                        $message = "The installer-path $key has a wrong value $currentValue, it should be $value.";
+                        $this->writeln($message);
+                        $this->composerFailed = true;
+                        $this->addJunitResult('Composer components', $message);
+                    }
+                }
+            }
         }
 
         if (!$this->composerFailed) {

@@ -901,3 +901,63 @@
         }
   expectations:
     - string_contains: Composer validation check passed
+
+- command: 'check:composer'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        {
+          "name": "ec-europa/toolkit",
+          "extra": { "composer-exit-on-patch-failure": true },
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
+    - file: lib/modules/module1/composer.json
+      content: '{"name": "test/module1", "type": "drupal-custom-module"}'
+    - file: lib/modules/module2/composer.json
+      content: '{"name": "test/module2", "type": "drupal-custom-modules"}'
+    - file: lib/modules/module3/composer.json
+      content: '{"name": "test/module3", "type": "drupal-module"}'
+    - file: lib/themes/theme1/composer.json
+      content: '{"name": "test/theme1", "type": "drupal-custom-theme"}'
+    - file: lib/themes/theme2/composer.json
+      content: '{"name": "test/theme2", "type": "drupal-theme"}'
+  expectations:
+    - not_string_contains: The custom component lib/modules/module1/composer.json
+    - string_contains: The custom component lib/modules/module2/composer.json has an invalid type drupal-custom-modules.
+    - string_contains: The custom component lib/modules/module3/composer.json has an invalid type drupal-module.
+    - not_string_contains: The custom component lib/themes/theme1/composer.json
+    - string_contains: The custom component lib/themes/theme2/composer.json has an invalid type drupal-theme.
+
+- command: 'check:composer'
+  configuration: []
+  tokens: ''
+  resources:
+    - from: sample-composer.lock
+      to: composer.lock
+    - file: composer.json
+      content: |
+        {
+          "name": "ec-europa/toolkit",
+          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } },
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "installer-paths": {
+              "web/core": ["type:drupal-core"],
+              "web/libraries/{$name}": ["type:drupal-library"],
+              "web/modules/contrib/{$name}": ["type:drupal-module"],
+              "web/modules/custom": ["type:drupal-custom-modules-dir"],
+              "web/profiles/contrib/{$name}": ["type:drupal-profile"],
+              "web/profiles/custom": ["type:drupal-custom-profiles-dir"],
+              "web/themes/contrib/{$name}": ["type:drupal-theme"],
+              "web/themes/custom": ["type:drupal-custom-theme"]
+            }
+          }
+        }
+  expectations:
+    - string_contains: The installer-path /modules/custom has a wrong value type:drupal-custom-modules-dir, it should be drupal-custom-module.
+    - string_contains: The installer-path /profiles/custom has a wrong value type:drupal-custom-profiles-dir, it should be drupal-custom-profile.
+    - not_string_contains: The installer-path /themes/custom has a wrong value
