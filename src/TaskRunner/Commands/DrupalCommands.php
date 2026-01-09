@@ -251,7 +251,6 @@ class DrupalCommands extends AbstractCommands
      * @option site-name              Site name.
      * @option site-mail              Site mail.
      * @option site-profile           Installation profile
-     * @option site-update            Whereas to enable the update module or not.
      * @option site-locale            Default site locale.
      * @option account-name           Admin account name.
      * @option account-password       Admin account password.
@@ -263,6 +262,7 @@ class DrupalCommands extends AbstractCommands
      * @option database-user          Database username.
      * @option database-password      Database password.
      * @option sites-subdir           Sites subdirectory.
+     * @option site-update            Whether to enable the update module or not during installation.
      * @option existing-config        Whether existing config should be imported during installation.
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
@@ -277,7 +277,6 @@ class DrupalCommands extends AbstractCommands
         'site-name' => InputOption::VALUE_REQUIRED,
         'site-mail' => InputOption::VALUE_REQUIRED,
         'site-profile' => InputOption::VALUE_REQUIRED,
-        'site-update' => InputOption::VALUE_REQUIRED,
         'site-locale' => InputOption::VALUE_REQUIRED,
         'account-name' => InputOption::VALUE_REQUIRED,
         'account-password' => InputOption::VALUE_REQUIRED,
@@ -291,6 +290,7 @@ class DrupalCommands extends AbstractCommands
         'database-name' => InputOption::VALUE_REQUIRED,
         'sites-subdir' => InputOption::VALUE_REQUIRED,
         'config-dir' => InputOption::VALUE_REQUIRED,
+        'site-update' => InputOption::VALUE_NONE,
         'existing-config' => false,
         'skip-permissions-setup' => false,
     ])
@@ -299,6 +299,12 @@ class DrupalCommands extends AbstractCommands
             'site:install',
             $options['site-profile'],
         ];
+
+        // The update module is enabled by default, disable it if indicated.
+        if (!filter_var($options['site-update'], FILTER_VALIDATE_BOOLEAN)) {
+            $execArgs[] = 'install_configure_form.enable_update_status_module=NULL';
+        }
+
         $execOptions = [
             'root' => getcwd() . '/' . $options['root'] . '/',
             'site-name' => $options['site-name'],
