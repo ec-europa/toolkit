@@ -93,7 +93,7 @@ toolkit:
   lint:
     eslint:
       config: .eslintrc.json
-      packages: 'eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit'
+      packages: 'eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit'
       ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: 'no-error-on-unmatched-pattern'
