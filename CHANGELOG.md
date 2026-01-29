@@ -1,5 +1,15 @@
 # Toolkit change log
 
+## Version 10.26.0
+  - DQA-13046: Align toolkit workspace dir with github actions.
+  - DQA-13052: Toolkit phpunit parallel on github actions.
+  - DQA-12988: Detect custom modules mapped to contrib dir.
+  - DQA-13152: PHPUnit mock download improvement.
+  - DQA-13139: Fix site-update parameter to control update module status.
+  - DQA-13173: Update default ESLint packages.
+  - DQA-13251: Remove check of deprecated basename call.
+  - DQA-13313: Pass DB prefix to drupal:install command.
+
 ## Version 10.25.0
   - DQA-12700: Issue with documentation workflow.
   - DQA-12869: Restricted being bypassed when project-id is set to 0.

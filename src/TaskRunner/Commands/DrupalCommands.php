@@ -318,7 +318,7 @@ class DrupalCommands extends AbstractCommands
             'sites-subdir' => $options['sites-subdir'],
         ];
 
-        if (!empty($options['database-prefix'])) {
+        if (!empty($options['database-prefix']) && $options['database-prefix'] !== '${env.DRUPAL_DATABASE_PREFIX}') {
             $execOptions['db-prefix'] = $options['database-prefix'];
         }
 

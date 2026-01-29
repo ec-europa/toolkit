@@ -3283,7 +3283,7 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.4.7",
+            "version": "10.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
