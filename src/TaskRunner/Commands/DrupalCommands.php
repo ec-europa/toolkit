@@ -261,6 +261,7 @@ class DrupalCommands extends AbstractCommands
      * @option database-name          Database name.
      * @option database-user          Database username.
      * @option database-password      Database password.
+     * @option database-prefix        Database prefix.
      * @option sites-subdir           Sites subdirectory.
      * @option site-update            Whether to enable the update module or not during installation.
      * @option existing-config        Whether existing config should be imported during installation.
@@ -288,6 +289,7 @@ class DrupalCommands extends AbstractCommands
         'database-host' => InputOption::VALUE_REQUIRED,
         'database-port' => InputOption::VALUE_REQUIRED,
         'database-name' => InputOption::VALUE_REQUIRED,
+        'database-prefix' => InputOption::VALUE_REQUIRED,
         'sites-subdir' => InputOption::VALUE_REQUIRED,
         'config-dir' => InputOption::VALUE_REQUIRED,
         'site-update' => InputOption::VALUE_NONE,
@@ -315,6 +317,10 @@ class DrupalCommands extends AbstractCommands
             'account-pass' => $options['account-password'],
             'sites-subdir' => $options['sites-subdir'],
         ];
+
+        if (!empty($options['database-prefix'])) {
+            $execOptions['db-prefix'] = $options['database-prefix'];
+        }
 
         if (!empty($dbUrl = $this->getConfig()->get('drupal.site.generate_db_url'))) {
             $dbArray = [
