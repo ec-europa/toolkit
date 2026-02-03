@@ -106,18 +106,13 @@ class MoodleBuildCommands extends AbstractCommands
         $config = $this->getConfig();
         $root = $config->get('drupal.root');
         $distRoot = $config->get('toolkit.build.dist.root');
-        $dataRoot = $config->get('moodle.data_root');
         $requiredResources = $config->get('toolkit.build.dist.keep');
         $unwantedResources = $config->get('toolkit.build.dist.remove');
 
         // Delete and (re)create the dist folder.
         $tasks[] = $this->taskFilesystemStack()
             ->remove($distRoot)
-            ->mkdir($distRoot)
-            ->mkdir("$distRoot/$dataRoot");
-
-        // Protect moodle data directory.
-        $tasks[] = $this->getHtaccessTask("$distRoot/$dataRoot");
+            ->mkdir($distRoot);
 
         // Copy all (tracked) files to the dist folder.
         $tasks[] = $this->taskExec('git archive HEAD | tar -x -C ' . $distRoot);
