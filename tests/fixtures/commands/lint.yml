@@ -5,7 +5,7 @@
     - contains: |
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... pal eslint-junit eslint-plugin-jsdoc -y')
+        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... int-plugin-jsdoc -y')
         [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc -y
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
@@ -20,7 +20,7 @@
     - contains: |
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... pal eslint-junit eslint-plugin-jsdoc -y')
+        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... int-plugin-jsdoc -y')
         [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc -y
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
@@ -38,7 +38,7 @@
         [Simulator] Running rm .eslintrc.json
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... pal eslint-junit eslint-plugin-jsdoc -y')
+        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... int-plugin-jsdoc -y')
         [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc -y
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
