@@ -774,10 +774,14 @@ class ToolCommands extends AbstractCommands
     public static function parseOptsYml()
     {
         $opts = '.opts.yml';
-        if (!file_exists($opts)) {
-            return false;
+        $optsData = [
+            'mydumper' => 'True',
+        ];
+        if (file_exists($opts)) {
+          $optsData += (array) Yaml::parseFile($opts);
         }
-        return (array) Yaml::parseFile($opts);
+
+        return $optsData;
     }
 
     /**
