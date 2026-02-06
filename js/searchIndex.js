@@ -1713,7 +1713,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AparseOptsYml\u0028\u0029",
             "name": "parseOptsYml",
-            "summary": "Returns\u0020the\u0020.opts.yml\u0020file\u0020content.",
+            "summary": "Parses\u0020the\u0020.opts.yml\u0020and\u0020returns\u0020its\u0020contents\u0020merged\u0020with\u0020defaults.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ToolCommands.html#method_parseOptsYml"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ToolCommands\u003A\u003AtoolkitNotifications\u0028\u0029",
