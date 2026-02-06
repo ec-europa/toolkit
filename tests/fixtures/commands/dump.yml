@@ -1,57 +1,3 @@
-- command: 'toolkit:install-dump'
-  configuration:
-    toolkit:
-      tmp_folder: .
-  resources: []
-  expectations:
-    - contains: "[ERROR] './mysql.gz' file not found, use the command 'toolkit:download-dump'."
-
-- command: 'toolkit:install-dump'
-  configuration:
-    toolkit:
-      tmp_folder: .
-  resources:
-    - from: sample-dump.sql.gz
-      to: mysql.gz
-  expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-drop')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-drop -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-create')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-create -y
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->silent(1)
-          ->exec('gunzip < ./mysql.gz | mysql -uroot -hmysql drupal')
-
-- command: 'toolkit:install-dump --dumpfile=dump.gz'
-  configuration:
-    toolkit:
-      tmp_folder: .
-  resources:
-    - from: sample-dump.sql.gz
-      to: dump.gz
-    - file: .opts.yml
-      content: "mydumper: False"
-  expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-drop')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-drop -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-create')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-create -y
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->silent(1)
-          ->exec('gunzip < ./dump.gz | mysql -uroot -hmysql drupal')
-
 - command: 'toolkit:install-dump --dumpfile=mysql.tar'
   configuration:
     toolkit:
@@ -113,28 +59,6 @@
           ->arg('./mysql.tar')
         [Simulator] Running /scripts/importdb.sh ./mysql.tar
 
-- command: 'toolkit:install-dump --dumpfile=mysql.tar'
-  configuration:
-    toolkit:
-      tmp_folder: .
-  resources:
-    - from: sample-dump.sql.gz
-      to: mysql.tar
-  expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-drop')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-drop -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-create')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-create -y
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->silent(1)
-          ->exec('mysql -uroot -hmysql drupal < ./mysql.tar')
-
 - command: 'toolkit:create-dump'
   configuration:
     toolkit:
@@ -173,28 +97,6 @@
         [Simulator] Simulating Exec('/scripts/backupdb.sh')
         ->arg('./mysql.tar')
         [Simulator] Running /scripts/backupdb.sh ./mysql.tar
-
-- command: 'toolkit:install-dump --dumpfile=dump.sql'
-  configuration:
-    toolkit:
-      tmp_folder: .
-  resources:
-    - from: sample-dump.sql.gz
-      to: dump.sql
-  expectations:
-    - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-drop')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-drop -y
-        [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->arg('sql-create')
-          ->option('-y')
-        [Simulator] Running ./vendor/bin/drush sql-create -y
-        [Simulator] Simulating ExecStack()
-          ->stopOnFail()
-          ->silent(1)
-          ->exec('mysql -uroot -hmysql drupal < ./dump.sql')
 
 - command: 'toolkit:download-dump'
   configuration:
@@ -335,46 +237,6 @@
         [Simulator] Running rm ./mysql-latest.sh1 ./mysql.txt
         [Simulator] Running rm ./virtuoso-latest.sh1 ./virtuoso.txt
         [Simulator] Running rm ./solr-latest.sh1 ./solr.txt
-
-- command: 'toolkit:download-dump'
-  configuration:
-    toolkit:
-      tmp_folder: .
-      project_id: digit-qa
-      clone:
-        show_progress: true
-  resources:
-    - from: sample-mysql-latest.sh1
-      to: mysql-latest.sh1
-    - from: sample-dump.sql.gz
-      to: mysql.gz
-  expectations:
-    - contains: |
-        >  Download type is: nextcloud
-        >  Using project_id: digit-qa
-        >  Download services: mysql
-        >  Checking service 'mysql'
-        >  File found './mysql.gz', checking server for newer dump
-        [Simulator] Simulating Filesystem\FilesystemStack()
-        [Simulator] Running wget -i ./mysql.txt -O ./mysql-latest.sh1 -A .sh1 -P ./ --server-response 2>&1
-        >  A newer dump was found, would you like to download? (y/n) Y
-        >  Starting download
-        [Simulator] Simulating Filesystem\FilesystemStack()
-        [Simulator] Running wget -i ./mysql.txt -O ./mysql-latest.sh1 -A .sh1 -P ./ --server-response 2>&1
-
-        MYSQL DATE: 18 Jul 2022 at 00:56
-        ================================
-
-        [Simulator] Simulating Filesystem\FilesystemStack()
-        [Simulator] Simulating Exec('wget')
-          ->option('-i', './mysql.txt')
-          ->option('-O', './mysql.gz')
-          ->option('-A', '.sql.gz,.tar.gz,.tar')
-          ->option('-P', './')
-          ->option('--server-response 2>&1')
-          ->printMetadata()
-        [Simulator] Running wget -i ./mysql.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
-        [Simulator] Running rm ./mysql-latest.sh1 ./mysql.txt
 
 - command: 'toolkit:download-dump'
   configuration:
