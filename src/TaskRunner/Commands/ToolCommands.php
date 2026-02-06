@@ -778,7 +778,7 @@ class ToolCommands extends AbstractCommands
             'mydumper' => true,
         ];
         if (file_exists($opts)) {
-          $optsData += (array) Yaml::parseFile($opts);
+            $optsData += (array) Yaml::parseFile($opts);
         }
 
         return $optsData;
