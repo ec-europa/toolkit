@@ -49,7 +49,7 @@ class DumpCommands extends AbstractCommands
         $config = $this->getConfig();
         $myloader = $config->get('toolkit.clone.myloader');
         $opts = ToolCommands::parseOptsYml();
-        $isMyloader = $options['myloader'] || (isset($opts['mydumper']) && $opts['mydumper']);
+        $isMyloader = $options['myloader'] || $opts['mydumper'];
 
         if ($isMyloader) {
             // The myloader should only be used with docker.
