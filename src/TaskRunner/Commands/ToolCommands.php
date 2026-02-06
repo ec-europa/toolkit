@@ -775,7 +775,7 @@ class ToolCommands extends AbstractCommands
     {
         $opts = '.opts.yml';
         $optsData = [
-            'mydumper' => 'True',
+            'mydumper' => True,
         ];
         if (file_exists($opts)) {
           $optsData += (array) Yaml::parseFile($opts);
