@@ -1380,7 +1380,7 @@ class ComponentCheckCommands extends AbstractCommands
         if (isset($this->optsYml)) {
             return $this->optsYml;
         }
-        return ToolCommands::parseOptsYml() ?: [];
+        return ToolCommands::parseOptsYml();
     }
 
     /**
