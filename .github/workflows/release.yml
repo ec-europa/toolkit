@@ -12,7 +12,7 @@ permissions:
 jobs:
   Documentation:
     runs-on: ubuntu-latest
-    container: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
+    container: fpfis/httpd-php:8.3-ci
     steps:
       - name: Checkout
         uses: actions/checkout@v5
