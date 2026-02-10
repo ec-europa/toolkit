@@ -2,7 +2,9 @@
   configuration:
     toolkit:
       tmp_folder: .
-  resources: []
+  resources:
+    - file: .opts.yml
+      content: "mydumper: False"
   expectations:
     - contains: "[ERROR] './mysql.gz' file not found, use the command 'toolkit:download-dump'."
 
@@ -13,6 +15,8 @@
   resources:
     - from: sample-dump.sql.gz
       to: mysql.gz
+    - file: .opts.yml
+      content: "mydumper: False"
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')
@@ -120,6 +124,8 @@
   resources:
     - from: sample-dump.sql.gz
       to: mysql.tar
+    - file: .opts.yml
+      content: "mydumper: False"
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')
@@ -181,6 +187,8 @@
   resources:
     - from: sample-dump.sql.gz
       to: dump.sql
+    - file: .opts.yml
+      content: "mydumper: False"
   expectations:
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/drush')
@@ -348,6 +356,8 @@
       to: mysql-latest.sh1
     - from: sample-dump.sql.gz
       to: mysql.gz
+    - file: .opts.yml
+      content: "mydumper: False"
   expectations:
     - contains: |
         >  Download type is: nextcloud

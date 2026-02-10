@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.26.1
+  - DROPSEC-16324: Fix opts.yml loader default.
+
 ## Version 10.26.0
   - DQA-13046: Align toolkit workspace dir with github actions.
   - DQA-13052: Toolkit phpunit parallel on github actions.
