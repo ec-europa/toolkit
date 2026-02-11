@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.26.2
+  - DROPSEC-16324: Fix opts.yml loader default.
+  - DQA-13173: Added dependency required by Drupal 11.3.x.
+
 ## Version 10.26.1
   - DROPSEC-16324: Fix opts.yml loader default.
 

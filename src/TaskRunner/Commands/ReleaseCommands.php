@@ -270,6 +270,8 @@ class ReleaseCommands extends AbstractCommands
      */
     private function prepareChangelog(string $from, array $options)
     {
+        // Add working directory as safe.
+        $this->taskExec('git config --global --add safe.directory ' . $this->getWorkingDir())->run();
         // Get git log.
         $result = $this->taskExec('git')
             ->arg('log')
