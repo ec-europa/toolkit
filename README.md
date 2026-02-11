@@ -2,7 +2,7 @@
 
 The Toolkit is a composer package designed to speed up the development of Drupal websites in Drupal 9+. Its main core is the robo based build system that builds your development environments, deploy and test your code.
 
-[![Build Status](https://github.com/ec-europa/toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ec-europa/toolkit/actions/workflows/ci.yml) [![Documentation pipeline](https://github.com/ec-europa/toolkit/actions/workflows/release.yml/badge.svg)](https://github.com/ec-europa/toolkit/actions/workflows/release.yml) ![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)
+[![Build Status](https://github.com/ec-europa/toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ec-europa/toolkit/actions/workflows/ci.yml) [![Documentation pipeline](https://github.com/ec-europa/toolkit/actions/workflows/release.yml/badge.svg)](https://github.com/ec-europa/toolkit/actions/workflows/release.yml) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE.txt)
 
 ## Prerequisites
 You need to have the following software installed on your local development environment:
