@@ -87,7 +87,7 @@ See bellow current list of available commands:
    toolkit:run-axe-scan-summary        [tk-axe-sum] Run the axe-scan summary.
    toolkit:run-blackfire               [tk-bfire|tbf] Run Blackfire.
    toolkit:run-deploy                  [tk-deploy] Run deployment sequence.
-   toolkit:run-gitleaks                [tk-gitleaks] Executes the Gitleaks.
+   toolkit:run-gitleaks                [tk-gitleaks] Executes the Gitleaks. Use --update to regenerate .leaksignore.
    toolkit:run-phpcbf                  [tk-phpcbf] Run PHP code autofixing.
    toolkit:run-tests                   Execute all or specific tools for testing.
    toolkit:setup-axe-scan              Make sure axe-scan is installed and properly configured.
