@@ -32,9 +32,9 @@ class GitleaksCommands extends AbstractCommands
     /**
      * Executes the Gitleaks.
      *
-     * When used with --update, regenerates the leaksignore file with all
-     * current findings grouped by rule, sorted with natural order.
-     * Stale entries from files that no longer exist are removed.
+     * When used with --update, builds a distribution package (if not already
+     * present) and scans only production code (excluding require-dev
+     * dependencies). Without --update, scans the current directory as-is.
      *
      * @param array<mixed> $options
      *   Command options.
@@ -97,8 +97,25 @@ class GitleaksCommands extends AbstractCommands
             return $this->taskExec($this->getBin('gitleaks') . ' ' . $command . ' ' . $options['options']);
         }
 
-        // With --update, regenerate the leaksignore file.
-        return $this->updateLeaksignore($io, $command, $options);
+        // With --update, scan the dist directory for production code only.
+        $distRoot = $this->getConfig()->get('toolkit.build.dist.root');
+        if (!is_dir($distRoot) || (new \FilesystemIterator($distRoot))->valid() === false) {
+            $io->error(sprintf(
+                'The dist directory "%s" is empty or does not exist. Run "toolkit:build-dist" first.',
+                $distRoot
+            ));
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        // Point gitleaks at the dist directory.
+        if ($command === 'directory') {
+            $command .= ' ' . $distRoot;
+        } else {
+            $options['options'] .= ' --source=' . $distRoot;
+        }
+
+        // Regenerate the leaksignore file.
+        return $this->updateLeaksignore($io, $command, $options, $distRoot);
     }
 
     /**
@@ -110,15 +127,18 @@ class GitleaksCommands extends AbstractCommands
      *   The gitleaks command (detect or directory).
      * @param array<mixed> $options
      *   The command options.
+     * @param string $distRoot
+     *   The distribution root directory.
      *
      * @return int
      *   The exit code.
      */
-    private function updateLeaksignore(ConsoleIO $io, string $command, array $options): int
+    private function updateLeaksignore(ConsoleIO $io, string $command, array $options, string $distRoot): int
     {
         $reportPath = sys_get_temp_dir() . '/gitleaks-report.json';
         $leaksignorePath = $options['leaksignore'];
         $containerRoot = rtrim($options['container-root'], '/') . '/';
+        $distPrefix = rtrim($distRoot, '/') . '/';
 
         // Clear leaksignore before scan to avoid stale entries.
         file_put_contents($leaksignorePath, '');
@@ -147,6 +167,15 @@ class GitleaksCommands extends AbstractCommands
                 }
             }
         }
+
+        // Strip dist root prefix from fingerprints so paths match the
+        // deployed structure (e.g. dist/vendor/... becomes vendor/...).
+        $entries = array_map(static function (string $entry) use ($distPrefix): string {
+            if (str_starts_with($entry, $distPrefix)) {
+                return substr($entry, strlen($distPrefix));
+            }
+            return $entry;
+        }, $entries);
 
         // Normalize paths: prefix relative paths with container root.
         $entries = array_map(static function (string $entry) use ($containerRoot): string {
@@ -198,7 +227,7 @@ class GitleaksCommands extends AbstractCommands
     /**
      * Resolve the gitleaks TOML config file path.
      *
-     * Priority: explicit option > project .gitleaks.toml > toolkit default.
+     * Priority: explicit option > project .gitleaks.toml.
      *
      * @param string $configFile
      *   The config file option value.
@@ -216,12 +245,6 @@ class GitleaksCommands extends AbstractCommands
         // Project-level .gitleaks.toml.
         if (file_exists('.gitleaks.toml')) {
             return '.gitleaks.toml';
-        }
-
-        // Toolkit default.
-        $default = Toolkit::getToolkitRoot() . '/resources/gitleaks.toml';
-        if (file_exists($default)) {
-            return $default;
         }
 
         return null;

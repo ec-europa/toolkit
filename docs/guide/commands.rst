@@ -88,6 +88,31 @@ See bellow current list of available commands:
    toolkit:run-blackfire               [tk-bfire|tbf] Run Blackfire.
    toolkit:run-deploy                  [tk-deploy] Run deployment sequence.
    toolkit:run-gitleaks                [tk-gitleaks] Executes the Gitleaks. Use --update to regenerate .leaksignore.
+
+.. toolkit-block-gitleaks
+
+toolkit:run-gitleaks --update
+^^^^
+
+When used with ``--update``, the command scans the ``dist/`` directory to
+ensure only production code is analysed (excluding ``require-dev``
+dependencies). You must build the distribution package **before** running
+the update:
+
+.. code-block::
+
+ ./vendor/bin/run toolkit:build-dist
+ ./vendor/bin/run toolkit:run-gitleaks --update
+
+The command validates the ``dist/`` directory before scanning:
+
+- ``dist/`` does not exist → error: *"Run toolkit:build-dist first."*
+- ``dist/`` exists but is empty (failed build) → same error.
+- ``dist/`` exists and contains files → gitleaks scans the directory.
+
+Without ``--update``, the command scans the current directory as-is.
+
+.. toolkit-block-gitleaks-end
    toolkit:run-phpcbf                  [tk-phpcbf] Run PHP code autofixing.
    toolkit:run-tests                   Execute all or specific tools for testing.
    toolkit:setup-axe-scan              Make sure axe-scan is installed and properly configured.
