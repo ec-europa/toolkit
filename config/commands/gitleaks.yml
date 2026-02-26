@@ -5,6 +5,3 @@ command:
         tag: ${gitleaks.tag}
         os: ${gitleaks.os}
         options: ${gitleaks.options}
-        config-file: ${gitleaks.config_file}
-        container-root: ${gitleaks.container_root}
-        leaksignore: ${gitleaks.leaksignore}

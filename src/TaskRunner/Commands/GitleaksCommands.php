@@ -41,13 +41,10 @@ class GitleaksCommands extends AbstractCommands
      *
      * @command toolkit:run-gitleaks
      *
-     * @option tag            The release tag of Gitleaks.
-     * @option os             The current OS version.
-     * @option options        The options to use when executing gitleaks command.
-     * @option config-file    The path to the gitleaks TOML config file.
-     * @option update         Regenerate the leaksignore file with findings.
-     * @option container-root The container root path for fingerprint normalization.
-     * @option leaksignore    The path to the leaksignore file.
+     * @option tag      The release tag of Gitleaks.
+     * @option os       The current OS version.
+     * @option options  The options to use when executing gitleaks command.
+     * @option update   Regenerate the leaksignore file scanning dist/.
      *
      * @return int|\Robo\Collection\CollectionBuilder
      *   The object collection builder or integer if failed.
@@ -58,10 +55,7 @@ class GitleaksCommands extends AbstractCommands
         'tag' => InputOption::VALUE_REQUIRED,
         'os' => InputOption::VALUE_REQUIRED,
         'options' => InputOption::VALUE_REQUIRED,
-        'config-file' => InputOption::VALUE_REQUIRED,
         'update' => false,
-        'container-root' => InputOption::VALUE_REQUIRED,
-        'leaksignore' => InputOption::VALUE_REQUIRED,
     ])
     {
         $repo = $this->getConfig()->get('gitleaks.repo');
@@ -72,12 +66,6 @@ class GitleaksCommands extends AbstractCommands
 
         $command = 'detect';
         $optionsExploded = array_filter(explode(' ', $options['options']));
-
-        // Resolve gitleaks config file: project-level, then toolkit default.
-        $configFile = $this->resolveConfigFile($options['config-file']);
-        if ($configFile !== null) {
-            $optionsExploded[] = '--config=' . $configFile;
-        }
 
         // Detect newer versions of gitleaks and adapt command and options.
         // @see https://github.com/gitleaks/gitleaks?tab=readme-ov-file#commands
@@ -136,8 +124,8 @@ class GitleaksCommands extends AbstractCommands
     private function updateLeaksignore(ConsoleIO $io, string $command, array $options, string $distRoot): int
     {
         $reportPath = sys_get_temp_dir() . '/gitleaks-report.json';
-        $leaksignorePath = $options['leaksignore'];
-        $containerRoot = rtrim($options['container-root'], '/') . '/';
+        $leaksignorePath = $this->getConfig()->get('gitleaks.leaksignore');
+        $containerRoot = rtrim($this->getConfig()->get('gitleaks.container_root'), '/') . '/';
         $distPrefix = rtrim($distRoot, '/') . '/';
 
         // Clear leaksignore before scan to avoid stale entries.
@@ -222,32 +210,6 @@ class GitleaksCommands extends AbstractCommands
         ));
 
         return ResultData::EXITCODE_OK;
-    }
-
-    /**
-     * Resolve the gitleaks TOML config file path.
-     *
-     * Priority: explicit option > project .gitleaks.toml.
-     *
-     * @param string $configFile
-     *   The config file option value.
-     *
-     * @return string|null
-     *   The resolved config file path, or null if none found.
-     */
-    private function resolveConfigFile(string $configFile): ?string
-    {
-        // Explicit path provided via option or runner.yml.
-        if (!empty($configFile) && file_exists($configFile)) {
-            return $configFile;
-        }
-
-        // Project-level .gitleaks.toml.
-        if (file_exists('.gitleaks.toml')) {
-            return '.gitleaks.toml';
-        }
-
-        return null;
     }
 
     /**
