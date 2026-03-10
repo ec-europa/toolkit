@@ -706,8 +706,9 @@ class ComponentCheckCommands extends AbstractCommands
             $this->addJunitResult('Composer components', $message);
         }
 
-        // Enforce setting composer-exit-on-patch-failure.
-        if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
+        // Enforce setting composer-exit-on-patch-failure if using version 1 of cweagans/composer-patches.
+        $composerPatchesVersion = ToolCommands::getPackagePropertyFromComposer('cweagans/composer-patches', 'version');
+        if (str_starts_with($composerPatchesVersion, '1') && empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
             $this->composerFailed = true;
             $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
             $this->writeln($message);
