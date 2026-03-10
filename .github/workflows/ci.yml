@@ -4,10 +4,6 @@ on:
   workflow_dispatch:
   push:
 
-permissions:
-  contents: read
-  pull-requests: read
-
 env:
   DOCUMENT_ROOT: /__w/toolkit/toolkit
   QA_API_AUTH_TOKEN: ${{ secrets.QA_API_AUTH_TOKEN }}
