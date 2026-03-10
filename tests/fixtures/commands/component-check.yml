@@ -201,7 +201,7 @@
     - string_contains: Development module check      passed
     - string_contains: Composer validation check     passed
 
-- command: 'toolkit:component-check'
+- command: 'check:evaluation'
   configuration: [ ]
   tokens: ''
   resources:
@@ -209,9 +209,9 @@
     - from: sample-internal-dependency.lock
       to: composer.lock
   expectations:
-    - string_contains: Evaluation module check       passed
+    - string_contains: Evaluation module check passed
 
-- command: 'toolkit:component-check'
+- command: 'check:composer'
   configuration: [ ]
   tokens: ''
   resources:
@@ -230,9 +230,9 @@
     - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
     - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
     - string_contains: Plugin ec-europa/toolkit-composer-plugin must be allowed
-    - string_contains: Composer validation check     failed
+    - not_string_contains: Composer validation check passed
 
-- command: 'toolkit:component-check'
+- command: 'check:composer'
   configuration: [ ]
   tokens: ''
   resources:
@@ -244,9 +244,9 @@
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
-    - string_contains: Composer validation check     failed
+    - not_string_contains: Composer validation check passed
 
-- command: 'toolkit:component-check'
+- command: 'check:composer'
   configuration: [ ]
   tokens: ''
   resources:
@@ -262,41 +262,73 @@
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
     - not_string_contains: extra.enable-patching
-    - string_contains: Composer validation check     passed
+    - string_contains: Composer validation check passed
 
-- command: 'toolkit:component-check'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "extra": { "composer-exit-on-patch-failure": false } }
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
-  expectations:
-    - string_contains: The composer property 'extra.composer-exit-on-patch-failure' must be set to true.
-    - string_contains: Composer validation check     failed
-
-- command: 'toolkit:component-check'
+# test composer-exit-on-patch-failure: true.
+- command: 'check:composer'
   configuration: [ ]
   tokens: ''
   resources:
     - file: composer.json
       content: |
         {
-          "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        "extra": { "composer-exit-on-patch-failure": true },
+        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+  expectations:
+    - not_string_contains: composer-exit-on-patch-failure
+    - string_contains: Composer validation check passed
+
+# test not using package.
+- command: 'check:composer'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        {
+        "extra": { "composer-exit-on-patch-failure": false },
+        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
         }
     - file: composer.lock
       content: |
         { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
   expectations:
-    - not_string_contains: extra.composer-exit-on-patch-failure
-    - string_contains: Composer validation check     passed
+    - not_string_contains: composer-exit-on-patch-failure
+    - string_contains: Composer validation check passed
 
-- command: 'toolkit:component-check'
+# test composer-exit-on-patch-failure should only report in version 1.
+- command: 'check:composer'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        {
+        "extra": { "composer-exit-on-patch-failure": false },
+        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
+        ] }
+  expectations:
+    - not_string_contains: composer-exit-on-patch-failure
+    - string_contains: Composer validation check passed
+
+
+
+
+
+- command: 'check:composer'
   configuration:
     toolkit:
       components:
@@ -329,9 +361,9 @@
     - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check     passed
+    - string_contains: Composer validation check passed
 
-- command: 'toolkit:component-check'
+- command: 'check:composer'
   configuration:
     toolkit:
       components:
@@ -365,9 +397,9 @@
     - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check     failed
+    - not_string_contains: Composer validation check passed
 
-- command: 'toolkit:component-check'
+- command: 'check:evaluation'
   configuration:
     toolkit:
       project_id: digit-dqa
@@ -380,7 +412,7 @@
   expectations:
     - string_contains: The package drupal/codesnippet is authorised for the project digit-dqa
 
-- command: 'toolkit:component-check'
+- command: 'check:evaluation'
   configuration: [ ]
   tokens: ''
   resources:
@@ -421,7 +453,7 @@
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the type of project Openeuropa
 
-- command: 'toolkit:component-check'
+- command: 'check:evaluation'
   configuration: [ ]
   tokens: ''
   resources:
@@ -462,13 +494,13 @@
   expectations:
     - string_contains: The package drupal/pipeline is authorised for the profile minimal
 
-- command: 'toolkit:component-check'
+- command: 'check:mandatory'
   configuration: [ ]
   tokens: ''
   resources:
     - file: composer.lock
       content: |
-        { "packages": [ { "name": "ec-europa/toolkit" } ] }
+        { "packages": [ { "name": "ec-europa/toolkit", "type": "library", "version": "11.26.2" } ] }
     - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
       content: |
         [ {
@@ -488,7 +520,7 @@
     - string_contains: Package mandatory is mandatory and is not present on the project
     - not_string_contains: Package pipeline is mandatory and is not present on the project
 
-- command: 'toolkit:component-check'
+- command: 'check:composer'
   configuration:
     toolkit:
       components:
@@ -532,7 +564,7 @@
     - string_contains: Subsite\composer\SetupWizard::setup
     - string_contains: scripts/composer/SetupWizard.php
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -550,7 +582,7 @@
     - not_string_contains: grumphp.yml.dist file was detected
     - string_contains: .env file was detected
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -561,7 +593,7 @@
   expectations:
     - string_contains: grumphp.yml.dist file was detected
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -587,7 +619,7 @@
     - string_contains: ASDA_PASSWORD
     - not_string_contains: QA_API_BASIC_AUTH
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -611,7 +643,7 @@
     - string_contains: ASDA_PASSWORD
     - not_string_contains: QA_API_BASIC_AUTH
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -632,7 +664,7 @@
     - string_contains: ASDA_PASSWORD
     - not_string_contains: QA_API_BASIC_AUTH
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -651,7 +683,7 @@
   expectations:
     - string_contains: When using phpstan/extension-installer you should not manually include
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -666,7 +698,7 @@
   expectations:
     - string_contains: When using phpstan/extension-installer you should not manually include
 
-- command: 'toolkit:component-check'
+- command: 'check:configuration'
   configuration: []
   tokens: ''
   resources:
@@ -683,7 +715,7 @@
   expectations:
     - not_string_contains: When using phpstan/extension-installer you should not manually include
 
-- command: 'toolkit:component-check'
+- command: 'check:composer'
   configuration: []
   tokens: ''
   resources:
@@ -708,7 +740,7 @@
     - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
     - string_contains: "config.allow-plugins: phpstan/extension-installer"
 
-- command: 'toolkit:component-check'
+- command: 'check:npm-outdated'
   configuration:
     toolkit:
       components:
@@ -730,7 +762,7 @@
       content: |
         { "npm_install": "True" }
   expectations:
-    - string_contains: NPM Outdated check            passed
+    - string_contains: NPM Outdated check passed
 
 - command: 'toolkit:component-check'
   configuration:
