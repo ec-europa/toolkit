@@ -4,6 +4,8 @@ The Toolkit is a composer package designed to speed up the development of Drupal
 
 [![Build Status](https://github.com/ec-europa/toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ec-europa/toolkit/actions/workflows/ci.yml) [![Documentation pipeline](https://github.com/ec-europa/toolkit/actions/workflows/release.yml/badge.svg)](https://github.com/ec-europa/toolkit/actions/workflows/release.yml) [![License](https://img.shields.io/badge/License-EUPL%201.1-blue.svg)](LICENSE.txt)
 
+test
+
 ## Prerequisites
 You need to have the following software installed on your local development environment:
 
