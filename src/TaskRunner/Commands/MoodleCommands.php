@@ -42,8 +42,8 @@ class MoodleCommands extends AbstractCommands
      *
      * > moodle:
      * >   additional_settings: |
-     * >   $CFG->dbhost = getenv('MOODLE_DB_HOST');
-     * >   $CFG->dbname = getenv('MOODLE_DB_NAME');
+     * >   $CFG->dbhost = getenv('DRUPAL_DATABASE_HOST');
+     * >   $CFG->dbname = getenv('DRUPAL_DATABASE_NAME');
      *
      * @param array<mixed> $options
      *   Command options.

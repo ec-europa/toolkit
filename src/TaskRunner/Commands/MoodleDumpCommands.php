@@ -46,7 +46,7 @@ class MoodleDumpCommands extends AbstractCommands
     ])
     {
         $config = $this->getConfig()->get('drupal.database');
-        $databaseName = !empty($config['name']) && $config['name'] !== '${env.MOODLE_DB_NAME}' ? $config['name'] : '';
+        $databaseName = !empty($config['name']) && $config['name'] !== '${env.DRUPAL_DATABASE_NAME}' ? $config['name'] : '';
 
         $dumpFile = $this->tmpDirectory() . '/' . $options['dumpfile'];
         if (!file_exists($dumpFile)) {
@@ -54,9 +54,9 @@ class MoodleDumpCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $user = !empty($config['user']) && $config['user'] !== '${env.MOODLE_DB_USER}' ? $config['user'] : '';
-        $pass = !empty($config['password']) && $config['password'] !== '${env.MOODLE_DB_PASS}' ? $config['password'] : '';
-        $host = !empty($config['host']) && $config['host'] !== '${env.MOODLE_DB_HOST}' ? $config['host'] : '';
+        $user = !empty($config['user']) && $config['user'] !== '${env.DRUPAL_DATABASE_USER}' ? $config['user'] : '';
+        $pass = !empty($config['password']) && $config['password'] !== '${env.DRUPAL_DATABASE_PASS}' ? $config['password'] : '';
+        $host = !empty($config['host']) && $config['host'] !== '${env.DRUPAL_DATABASE_HOST}' ? $config['host'] : '';
 
         $tasks = [];
 
