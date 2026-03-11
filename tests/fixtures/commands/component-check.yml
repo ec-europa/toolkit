@@ -65,24 +65,20 @@
         Package's version constraints:
         Package drupal/github_connect:2.0.0-alpha1 does not meet the whitelist version constraint: ^1.0.
 
-
         Checking Development components.
         ================================
 
         >  Development components check passed.
-
 
         Checking Composer components.
         =============================
 
         >  Composer validation check passed.
 
-
         Checking Configuration components.
         ==================================
 
         >  Project configuration check passed.
-
 
         Results:
         ========
@@ -155,841 +151,837 @@
     - string_contains: Outdated module check         passed (Skipping)
     - string_contains: Unsupported module check      passed (Skipping)
 
-- command: 'toolkit:component-check --test-command'
-  configuration:
-    toolkit:
-      components:
-        outdated:
-          check: false
-  tokens: '[skip_insecure][skip_d9c]'
-  resources:
-    - touch: composer.json
-    - from: sample-composer.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Insecure module check         passed (Skipping)
-    - string_contains: Outdated module check         passed (Skipping)
-
-- command: 'toolkit:component-check'
-  configuration:
-    toolkit:
-      clean:
-        config_file: core.extensions-good.yml
-  tokens: ''
-  resources:
-    - from: sample-core.extensions-good.yml
-      to: core.extensions-good.yml
-    - file: composer.json
-      content: |
-        {
-          "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - from: sample-composer.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Package drupal/config_readonly is recommended but is not present on the project
-    - string_contains: Package drupal/dropsolid_purge is recommended but is not present on the project
-    - string_contains: Mandatory module check        passed
-    - string_contains: Recommended module check      2 warnings
-    - string_contains: Insecure module check         passed
-    - string_contains: Outdated module check         passed
-    - string_contains: Abandoned module check        passed
-    - string_contains: Unsupported module check      passed
-    - string_contains: Evaluation module check       failed
-    - string_contains: Development module check      passed
-    - string_contains: Composer validation check     passed
-
-- command: 'check:evaluation'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - from: sample-internal-dependency.lock
-      to: composer.lock
-  expectations:
-    - string_contains: Evaluation module check passed
-
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "test/package", "type": "library", "version": "dev-1.0.0" },
-          { "name": "test/package2", "type": "library", "version": "1.0.0-dev" },
-          { "name": "test/module", "type": "drupal-custom-module", "version": "1.0.0-dev" }
-        ] }
-  expectations:
-    - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
-    - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
-    - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
-    - string_contains: Plugin ec-europa/toolkit-composer-plugin must be allowed
-    - not_string_contains: Composer validation check passed
-
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "extra": { "enable-patching": true } }
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
-  expectations:
-    - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
-    - not_string_contains: Composer validation check passed
-
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        {
-          "name": "ec-europa/toolkit",
-          "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true },
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
-  expectations:
-    - not_string_contains: extra.enable-patching
-    - string_contains: Composer validation check passed
-
-# test composer-exit-on-patch-failure: true.
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        {
-        "extra": { "composer-exit-on-patch-failure": true },
-        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "test/package", "type": "library", "version": "1.0.0" },
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
-        ] }
-  expectations:
-    - not_string_contains: composer-exit-on-patch-failure
-    - string_contains: Composer validation check passed
-
-# test not using package.
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        {
-        "extra": { "composer-exit-on-patch-failure": false },
-        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
-  expectations:
-    - not_string_contains: composer-exit-on-patch-failure
-    - string_contains: Composer validation check passed
-
-# test composer-exit-on-patch-failure should only report in version 1.
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        {
-        "extra": { "composer-exit-on-patch-failure": false },
-        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "test/package", "type": "library", "version": "1.0.0" },
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
-        ] }
-  expectations:
-    - not_string_contains: composer-exit-on-patch-failure
-    - string_contains: Composer validation check passed
-
-
-
-
-
-- command: 'check:composer'
-  configuration:
-    toolkit:
-      components:
-        composer:
-          drupal_patches: true
-  tokens: ''
-  resources:
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
-    - file: composer.json
-      content: |
-        {
-          "name": "toolkit",
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } },
-          "extra": {
-            "composer-exit-on-patch-failure": true,
-            "patches": {
-              "local/package": [ "./resources/local.patch" ],
-              "drupal/package": [
-                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
-                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
-                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
-              ]
-            }
-          }
-        }
-  expectations:
-    - not_string_contains: The patch './resources/local.patch' is not valid
-    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
-    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
-    - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - string_contains: Composer validation check passed
-
-- command: 'check:composer'
-  configuration:
-    toolkit:
-      components:
-        composer:
-          drupal_patches: false
-  tokens: ''
-  resources:
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
-    - file: composer.json
-      content: |
-        {
-          "name": "toolkit",
-          "extra": {
-            "composer-exit-on-patch-failure": true,
-            "patches": {
-              "local/package": [ "./resources/local.patch" ],
-              "web/package": [ "http://example.com/test-package.patch" ],
-              "drupal/package": [
-                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
-                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
-                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
-              ]
-            }
-          }
-        }
-  expectations:
-    - not_string_contains: The patch './resources/local.patch' is not valid
-    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
-    - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
-    - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
-    - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
-    - not_string_contains: Composer validation check passed
-
-- command: 'check:evaluation'
-  configuration:
-    toolkit:
-      project_id: digit-dqa
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "drupal/codesnippet", "type": "drupal-module", "version": "1.8.0" } ] }
-  expectations:
-    - string_contains: The package drupal/codesnippet is authorised for the project digit-dqa
-
-- command: 'check:evaluation'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.85/api/v1/project/ec-europa/toolkit/information.json
-      content: |
-        [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.85/api/v1/toolkit-requirements.json
-      content: |
-        { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
-      content: |
-        [ {
-          "type": "drupal-module",
-          "machine_name": "pipeline",
-          "name": "drupal/pipeline",
-          "full_name": "drupal/pipeline",
-          "version_drupal": "8.x-1.0-alpha3",
-          "version": "^1.0-alpha3",
-          "whitelist": "^1.0-alpha3",
-          "blacklist": false,
-          "secure": false,
-          "status": "restricted",
-          "restricted_use": "1",
-          "allowed_profiles": "minimal",
-          "allowed_project_types": "Openeuropa",
-          "mandatory": false,
-          "mandatory_date": false,
-          "core": "8.x",
-          "cores": "8.x",
-          "usage": "Free",
-          "nid": "10889",
-          "dev_component": false
-        } ]
-  expectations:
-    - string_contains: The package drupal/pipeline is authorised for the type of project Openeuropa
-
-- command: 'check:evaluation'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.85/api/v1/project/ec-europa/toolkit/information.json
-      content: |
-        [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.85/api/v1/toolkit-requirements.json
-      content: |
-        { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
-      content: |
-        [ {
-          "type": "drupal-module",
-          "machine_name": "pipeline",
-          "name": "drupal/pipeline",
-          "full_name": "drupal/pipeline",
-          "version_drupal": "8.x-1.0-alpha3",
-          "version": "^1.0-alpha3",
-          "whitelist": "^1.0-alpha3",
-          "blacklist": false,
-          "secure": false,
-          "status": "restricted",
-          "restricted_use": "1",
-          "allowed_profiles": "minimal",
-          "allowed_project_types": false,
-          "mandatory": false,
-          "mandatory_date": false,
-          "core": "8.x",
-          "cores": "8.x",
-          "usage": "Free",
-          "nid": "10889",
-          "dev_component": false
-        } ]
-  expectations:
-    - string_contains: The package drupal/pipeline is authorised for the profile minimal
-
-- command: 'check:mandatory'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.lock
-      content: |
-        { "packages": [ { "name": "ec-europa/toolkit", "type": "library", "version": "11.26.2" } ] }
-    - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
-      content: |
-        [ {
-          "type": "drupal-module",
-          "machine_name": "mandatory",
-          "name": "drupal/mandatory",
-          "full_name": "drupal/mandatory",
-          "mandatory": "1"
-        }, {
-          "type": "module",
-          "machine_name": "pipeline",
-          "name": "drupal/pipeline",
-          "full_name": "drupal/pipeline",
-          "mandatory": true
-        } ]
-  expectations:
-    - string_contains: Package mandatory is mandatory and is not present on the project
-    - not_string_contains: Package pipeline is mandatory and is not present on the project
-
-- command: 'check:composer'
-  configuration:
-    toolkit:
-      components:
-        composer:
-          forbidden:
-            autoload:
-              psr-4:
-                - 'MyForbiddenVendor\MyProject\'
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        {
-          "name": "toolkit",
-          "scripts": {
-            "post-root-package-install": [
-              "./allowed-script-01.sh",
-              "Subsite\\composer\\SetupWizard::setup"
-            ],
-            "post-install-cmd": [
-              "./allowed-script-02.sh",
-              "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-            ]
-          },
-          "autoload": {
-            "classmap": [
-              "scripts/composer/SetupWizard.php"
-            ],
-            "psr-4": {
-              "MyForbiddenVendor\\MyProject\\": "./src/"
-            }
-          }
-        }
-  expectations:
-    - not_string_contains: ./allowed-script-01.sh
-    - not_string_contains: ./allowed-script-02.sh
-    - string_contains: MyForbiddenVendor\MyProject\
-    - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
-    - string_contains: Subsite\composer\SetupWizard::setup
-    - string_contains: scripts/composer/SetupWizard.php
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "phpro/grumphp", "type": "composer-plugin", "version": "v2.4.0" }
-        ] }
-    - touch: composer.json
-    - touch: .env
-    - touch: grumphp.yml.dist
-    - touch: allowed-file.ext
-  expectations:
-    - not_string_contains: allowed-file.ext
-    - not_string_contains: grumphp.yml.dist file was detected
-    - string_contains: .env file was detected
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - touch: composer.json
-    - touch: grumphp.yml.dist
-  expectations:
-    - string_contains: grumphp.yml.dist file was detected
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - touch: composer.json
-    - file: docker-compose.yml
-      content: |
-        services:
-          web:
-            environment:
-              NEXTCLOUD_USER:
-              NEXTCLOUD_PASS:
-              ASDA_URL:
-              ASDA_USER:
-              ASDA_PASSWORD:
-              QA_API_BASIC_AUTH:
-  expectations:
-    - not_string_contains: NEXTCLOUD_USER
-    - not_string_contains: NEXTCLOUD_PASS
-    - string_contains: ASDA_URL
-    - string_contains: ASDA_USER
-    - string_contains: ASDA_PASSWORD
-    - not_string_contains: QA_API_BASIC_AUTH
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - touch: composer.json
-    - file: .env
-      content: |
-        # Use special characters like `~/.bashrc` or (parentheses).
-        # This is the user for the Nextcloud.
-        NEXTCLOUD_USER=
-        NEXTCLOUD_PASS=
-        # This is the deprecated ASDA user.
-        ASDA_USER=
-        ASDA_PASSWORD=
-        QA_API_BASIC_AUTH=
-  expectations:
-    - not_string_contains: NEXTCLOUD_USER
-    - not_string_contains: NEXTCLOUD_PASS
-    - string_contains: ASDA_USER
-    - string_contains: ASDA_PASSWORD
-    - not_string_contains: QA_API_BASIC_AUTH
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - touch: composer.json
-    - file: .env.dist
-      content: |
-        NEXTCLOUD_USER=
-        NEXTCLOUD_PASS=
-        ASDA_USER=
-        ASDA_PASSWORD=
-        QA_API_BASIC_AUTH=
-  expectations:
-    - not_string_contains: NEXTCLOUD_USER
-    - not_string_contains: NEXTCLOUD_PASS
-    - string_contains: ASDA_USER
-    - string_contains: ASDA_PASSWORD
-    - not_string_contains: QA_API_BASIC_AUTH
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
-        ] }
-    - file: phpstan.neon
-      content: |
-        parameters:
-          level: 5
-        includes:
-          - vendor/phpstan/phpstan-deprecation-rules/rules.neon
-  expectations:
-    - string_contains: When using phpstan/extension-installer you should not manually include
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - file: composer.lock
-      content: |
-        { "packages": [] }
-    - file: phpstan.neon
-      content: |
-        parameters:
-          level: 5
-  expectations:
-    - string_contains: When using phpstan/extension-installer you should not manually include
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - touch: composer.json
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
-        ] }
-    - file: phpstan.neon
-      content: |
-        parameters:
-          level: 5
-  expectations:
-    - not_string_contains: When using phpstan/extension-installer you should not manually include
-
-- command: 'check:composer'
-  configuration: []
-  tokens: ''
-  resources:
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
-          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
-        ] }
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
-    - mkdir: /vendor/composer/
-    - file: /vendor/composer/installed.json
-      content: |
-        { "packages": [
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
-          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
-        ] }
-  expectations:
-    - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
-    - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
-    - string_contains: "config.allow-plugins: phpstan/extension-installer"
-
-- command: 'check:npm-outdated'
-  configuration:
-    toolkit:
-      components:
-        npm:
-          outdated:
-            check: true
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
-        ] }
-    - touch: package-lock.json
-    - file: .opts.yml
-      content: |
-        { "npm_install": "True" }
-  expectations:
-    - string_contains: NPM Outdated check passed
-
-- command: 'toolkit:component-check'
-  configuration:
-    toolkit:
-      components:
-        npm:
-          outdated:
-            check: false
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
-        ] }
-    - touch: package-lock.json
-    - file: .opts.yml
-      content: |
-        { "npm_install": "True" }
-  expectations:
-    - string_contains: NPM Outdated check            passed (Skipping)
-
-- command: 'toolkit:component-check'
-  configuration: []
-  tokens: '[skip_npm_insecure]'
-  resources:
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
-        ] }
-    - touch: package-lock.json
-    - touch: .opts.yml
-    - file: .opts.yml
-      content: |
-        { "npm_install": "True"  }
-  expectations:
-    - string_contains: NPM Insecure check            passed (Skipping)
-
-- command: 'check:mandatory'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-core.extensions-good.yml
-      to: config/sync/core.extension.yml
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Mandatory components check passed
-
-- command: 'check:recommended'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Package drupal/config_readonly is recommended but is not present on the project.
-
-- command: 'check:insecure'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Insecure components check passed
-
-- command: 'check:outdated'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Outdated components check passed
-
-- command: 'check:abandoned'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Abandoned components check passed
-
-- command: 'check:unsupported'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Website not installed, skipping
-
-- command: 'check:evaluation'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Restricted package(s)
-
-- command: 'check:development'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Development components check passed
-
-- command: 'check:configuration'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
-  expectations:
-    - string_contains: Project configuration check passed
-
-- command: 'check:composer'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        {
-          "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-  expectations:
-    - string_contains: Composer validation check passed
-
-- command: 'check:composer'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        {
-          "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - file: lib/modules/module1/composer.json
-      content: '{"name": "test/module1", "type": "drupal-custom-module"}'
-    - file: lib/modules/module2/composer.json
-      content: '{"name": "test/module2", "type": "drupal-custom-modules"}'
-    - file: lib/modules/module3/composer.json
-      content: '{"name": "test/module3", "type": "drupal-module"}'
-    - file: lib/themes/theme1/composer.json
-      content: '{"name": "test/theme1", "type": "drupal-custom-theme"}'
-    - file: lib/themes/theme2/composer.json
-      content: '{"name": "test/theme2", "type": "drupal-theme"}'
-  expectations:
-    - not_string_contains: The custom component lib/modules/module1/composer.json
-    - string_contains: The custom component lib/modules/module2/composer.json has an invalid type drupal-custom-modules.
-    - string_contains: The custom component lib/modules/module3/composer.json has an invalid type drupal-module.
-    - not_string_contains: The custom component lib/themes/theme1/composer.json
-    - string_contains: The custom component lib/themes/theme2/composer.json has an invalid type drupal-theme.
-
-- command: 'check:composer'
-  configuration: []
-  tokens: ''
-  resources:
-    - from: sample-composer.lock
-      to: composer.lock
-    - file: composer.json
-      content: |
-        {
-          "name": "ec-europa/toolkit",
-          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } },
-          "extra": {
-            "composer-exit-on-patch-failure": true,
-            "installer-paths": {
-              "web/core": ["type:drupal-core"],
-              "web/libraries/{$name}": ["type:drupal-library"],
-              "web/modules/contrib/{$name}": ["type:drupal-module"],
-              "web/modules/custom": ["type:drupal-custom-modules-dir"],
-              "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-              "web/profiles/custom": ["type:drupal-custom-profiles-dir"],
-              "web/themes/contrib/{$name}": ["type:drupal-theme"],
-              "web/themes/custom": ["type:drupal-custom-theme"]
-            }
-          }
-        }
-  expectations:
-    - string_contains: The installer-path /modules/custom has a wrong value type:drupal-custom-modules-dir, it should be drupal-custom-module.
-    - string_contains: The installer-path /profiles/custom has a wrong value type:drupal-custom-profiles-dir, it should be drupal-custom-profile.
-    - not_string_contains: The installer-path /themes/custom has a wrong value
+#- command: 'toolkit:component-check --test-command'
+#  configuration:
+#    toolkit:
+#      components:
+#        outdated:
+#          check: false
+#  tokens: '[skip_insecure][skip_d9c]'
+#  resources:
+#    - touch: composer.json
+#    - from: sample-composer.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Insecure module check         passed (Skipping)
+#    - string_contains: Outdated module check         passed (Skipping)
+#
+#- command: 'toolkit:component-check'
+#  configuration:
+#    toolkit:
+#      clean:
+#        config_file: core.extensions-good.yml
+#  tokens: ''
+#  resources:
+#    - from: sample-core.extensions-good.yml
+#      to: core.extensions-good.yml
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "ec-europa/toolkit",
+#          "extra": { "composer-exit-on-patch-failure": true },
+#          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#    - from: sample-composer.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Package drupal/config_readonly is recommended but is not present on the project
+#    - string_contains: Package drupal/dropsolid_purge is recommended but is not present on the project
+#    - string_contains: Mandatory module check        passed
+#    - string_contains: Recommended module check      2 warnings
+#    - string_contains: Insecure module check         passed
+#    - string_contains: Outdated module check         passed
+#    - string_contains: Abandoned module check        passed
+#    - string_contains: Unsupported module check      passed
+#    - string_contains: Evaluation module check       failed
+#    - string_contains: Development module check      passed
+#    - string_contains: Composer validation check     passed
+#
+#- command: 'check:evaluation'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - from: sample-internal-dependency.lock
+#      to: composer.lock
+#  expectations:
+#    - string_contains: Evaluation module check passed
+#
+#- command: 'check:composer'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "test/package", "type": "library", "version": "dev-1.0.0" },
+#          { "name": "test/package2", "type": "library", "version": "1.0.0-dev" },
+#          { "name": "test/module", "type": "drupal-custom-module", "version": "1.0.0-dev" }
+#        ] }
+#  expectations:
+#    - string_contains: Package test/package:dev-1.0.0 cannot be used in dev version.
+#    - string_contains: Package test/package2:1.0.0-dev cannot be used in dev version.
+#    - not_string_contains: Package test/module:1.0.0-dev cannot be used in dev version.
+#    - string_contains: Plugin ec-europa/toolkit-composer-plugin must be allowed
+#    - not_string_contains: Composer validation check passed
+#
+#- command: 'check:composer'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "extra": { "enable-patching": true } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+#  expectations:
+#    - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
+#    - not_string_contains: Composer validation check passed
+#
+#- command: 'check:composer'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "ec-europa/toolkit",
+#          "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true },
+#          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+#  expectations:
+#    - not_string_contains: extra.enable-patching
+#    - string_contains: Composer validation check passed
+#
+## test composer-exit-on-patch-failure: true.
+#- command: 'check:composer'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        {
+#        "extra": { "composer-exit-on-patch-failure": true },
+#        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "test/package", "type": "library", "version": "1.0.0" },
+#          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+#        ] }
+#  expectations:
+#    - not_string_contains: composer-exit-on-patch-failure
+#    - string_contains: Composer validation check passed
+#
+## test not using package.
+#- command: 'check:composer'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        {
+#        "extra": { "composer-exit-on-patch-failure": false },
+#        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+#  expectations:
+#    - not_string_contains: composer-exit-on-patch-failure
+#    - string_contains: Composer validation check passed
+#
+## test composer-exit-on-patch-failure should only report in version 1.
+#- command: 'check:composer'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        {
+#        "extra": { "composer-exit-on-patch-failure": false },
+#        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "test/package", "type": "library", "version": "1.0.0" },
+#          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
+#        ] }
+#  expectations:
+#    - not_string_contains: composer-exit-on-patch-failure
+#    - string_contains: Composer validation check passed
+#
+#- command: 'check:composer'
+#  configuration:
+#    toolkit:
+#      components:
+#        composer:
+#          drupal_patches: true
+#  tokens: ''
+#  resources:
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "toolkit",
+#          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } },
+#          "extra": {
+#            "composer-exit-on-patch-failure": true,
+#            "patches": {
+#              "local/package": [ "./resources/local.patch" ],
+#              "drupal/package": [
+#                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+#                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+#                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+#              ]
+#            }
+#          }
+#        }
+#  expectations:
+#    - not_string_contains: The patch './resources/local.patch' is not valid
+#    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+#    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+#    - not_string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+#    - string_contains: Composer validation check passed
+#
+#- command: 'check:composer'
+#  configuration:
+#    toolkit:
+#      components:
+#        composer:
+#          drupal_patches: false
+#  tokens: ''
+#  resources:
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "toolkit",
+#          "extra": {
+#            "composer-exit-on-patch-failure": true,
+#            "patches": {
+#              "local/package": [ "./resources/local.patch" ],
+#              "web/package": [ "http://example.com/test-package.patch" ],
+#              "drupal/package": [
+#                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+#                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+#                "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+#              ]
+#            }
+#          }
+#        }
+#  expectations:
+#    - not_string_contains: The patch './resources/local.patch' is not valid
+#    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
+#    - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+#    - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+#    - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+#    - not_string_contains: Composer validation check passed
+#
+#- command: 'check:evaluation'
+#  configuration:
+#    toolkit:
+#      project_id: digit-dqa
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "drupal/codesnippet", "type": "drupal-module", "version": "1.8.0" } ] }
+#  expectations:
+#    - string_contains: The package drupal/codesnippet is authorised for the project digit-dqa
+#
+#- command: 'check:evaluation'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
+#    - file: .toolkit-mock/0.0.85/api/v1/project/ec-europa/toolkit/information.json
+#      content: |
+#        [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
+#    - file: .toolkit-mock/0.0.85/api/v1/toolkit-requirements.json
+#      content: |
+#        { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
+#    - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
+#      content: |
+#        [ {
+#          "type": "drupal-module",
+#          "machine_name": "pipeline",
+#          "name": "drupal/pipeline",
+#          "full_name": "drupal/pipeline",
+#          "version_drupal": "8.x-1.0-alpha3",
+#          "version": "^1.0-alpha3",
+#          "whitelist": "^1.0-alpha3",
+#          "blacklist": false,
+#          "secure": false,
+#          "status": "restricted",
+#          "restricted_use": "1",
+#          "allowed_profiles": "minimal",
+#          "allowed_project_types": "Openeuropa",
+#          "mandatory": false,
+#          "mandatory_date": false,
+#          "core": "8.x",
+#          "cores": "8.x",
+#          "usage": "Free",
+#          "nid": "10889",
+#          "dev_component": false
+#        } ]
+#  expectations:
+#    - string_contains: The package drupal/pipeline is authorised for the type of project Openeuropa
+#
+#- command: 'check:evaluation'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
+#    - file: .toolkit-mock/0.0.85/api/v1/project/ec-europa/toolkit/information.json
+#      content: |
+#        [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
+#    - file: .toolkit-mock/0.0.85/api/v1/toolkit-requirements.json
+#      content: |
+#        { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
+#    - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
+#      content: |
+#        [ {
+#          "type": "drupal-module",
+#          "machine_name": "pipeline",
+#          "name": "drupal/pipeline",
+#          "full_name": "drupal/pipeline",
+#          "version_drupal": "8.x-1.0-alpha3",
+#          "version": "^1.0-alpha3",
+#          "whitelist": "^1.0-alpha3",
+#          "blacklist": false,
+#          "secure": false,
+#          "status": "restricted",
+#          "restricted_use": "1",
+#          "allowed_profiles": "minimal",
+#          "allowed_project_types": false,
+#          "mandatory": false,
+#          "mandatory_date": false,
+#          "core": "8.x",
+#          "cores": "8.x",
+#          "usage": "Free",
+#          "nid": "10889",
+#          "dev_component": false
+#        } ]
+#  expectations:
+#    - string_contains: The package drupal/pipeline is authorised for the profile minimal
+#
+#- command: 'check:mandatory'
+#  configuration: [ ]
+#  tokens: ''
+#  resources:
+#    - file: composer.lock
+#      content: |
+#        { "packages": [ { "name": "ec-europa/toolkit", "type": "library", "version": "11.26.2" } ] }
+#    - file: .toolkit-mock/0.0.85/api/v1/package-reviews.json
+#      content: |
+#        [ {
+#          "type": "drupal-module",
+#          "machine_name": "mandatory",
+#          "name": "drupal/mandatory",
+#          "full_name": "drupal/mandatory",
+#          "mandatory": "1"
+#        }, {
+#          "type": "module",
+#          "machine_name": "pipeline",
+#          "name": "drupal/pipeline",
+#          "full_name": "drupal/pipeline",
+#          "mandatory": true
+#        } ]
+#  expectations:
+#    - string_contains: Package mandatory is mandatory and is not present on the project
+#    - not_string_contains: Package pipeline is mandatory and is not present on the project
+#
+#- command: 'check:composer'
+#  configuration:
+#    toolkit:
+#      components:
+#        composer:
+#          forbidden:
+#            autoload:
+#              psr-4:
+#                - 'MyForbiddenVendor\MyProject\'
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "toolkit",
+#          "scripts": {
+#            "post-root-package-install": [
+#              "./allowed-script-01.sh",
+#              "Subsite\\composer\\SetupWizard::setup"
+#            ],
+#            "post-install-cmd": [
+#              "./allowed-script-02.sh",
+#              "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+#            ]
+#          },
+#          "autoload": {
+#            "classmap": [
+#              "scripts/composer/SetupWizard.php"
+#            ],
+#            "psr-4": {
+#              "MyForbiddenVendor\\MyProject\\": "./src/"
+#            }
+#          }
+#        }
+#  expectations:
+#    - not_string_contains: ./allowed-script-01.sh
+#    - not_string_contains: ./allowed-script-02.sh
+#    - string_contains: MyForbiddenVendor\MyProject\
+#    - string_contains: DrupalComposer\DrupalScaffold\Plugin::scaffold
+#    - string_contains: Subsite\composer\SetupWizard::setup
+#    - string_contains: scripts/composer/SetupWizard.php
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "phpro/grumphp", "type": "composer-plugin", "version": "v2.4.0" }
+#        ] }
+#    - touch: composer.json
+#    - touch: .env
+#    - touch: grumphp.yml.dist
+#    - touch: allowed-file.ext
+#  expectations:
+#    - not_string_contains: allowed-file.ext
+#    - not_string_contains: grumphp.yml.dist file was detected
+#    - string_contains: .env file was detected
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - touch: composer.json
+#    - touch: grumphp.yml.dist
+#  expectations:
+#    - string_contains: grumphp.yml.dist file was detected
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - touch: composer.json
+#    - file: docker-compose.yml
+#      content: |
+#        services:
+#          web:
+#            environment:
+#              NEXTCLOUD_USER:
+#              NEXTCLOUD_PASS:
+#              ASDA_URL:
+#              ASDA_USER:
+#              ASDA_PASSWORD:
+#              QA_API_BASIC_AUTH:
+#  expectations:
+#    - not_string_contains: NEXTCLOUD_USER
+#    - not_string_contains: NEXTCLOUD_PASS
+#    - string_contains: ASDA_URL
+#    - string_contains: ASDA_USER
+#    - string_contains: ASDA_PASSWORD
+#    - not_string_contains: QA_API_BASIC_AUTH
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - touch: composer.json
+#    - file: .env
+#      content: |
+#        # Use special characters like `~/.bashrc` or (parentheses).
+#        # This is the user for the Nextcloud.
+#        NEXTCLOUD_USER=
+#        NEXTCLOUD_PASS=
+#        # This is the deprecated ASDA user.
+#        ASDA_USER=
+#        ASDA_PASSWORD=
+#        QA_API_BASIC_AUTH=
+#  expectations:
+#    - not_string_contains: NEXTCLOUD_USER
+#    - not_string_contains: NEXTCLOUD_PASS
+#    - string_contains: ASDA_USER
+#    - string_contains: ASDA_PASSWORD
+#    - not_string_contains: QA_API_BASIC_AUTH
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - touch: composer.json
+#    - file: .env.dist
+#      content: |
+#        NEXTCLOUD_USER=
+#        NEXTCLOUD_PASS=
+#        ASDA_USER=
+#        ASDA_PASSWORD=
+#        QA_API_BASIC_AUTH=
+#  expectations:
+#    - not_string_contains: NEXTCLOUD_USER
+#    - not_string_contains: NEXTCLOUD_PASS
+#    - string_contains: ASDA_USER
+#    - string_contains: ASDA_PASSWORD
+#    - not_string_contains: QA_API_BASIC_AUTH
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+#        ] }
+#    - file: phpstan.neon
+#      content: |
+#        parameters:
+#          level: 5
+#        includes:
+#          - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+#  expectations:
+#    - string_contains: When using phpstan/extension-installer you should not manually include
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - file: composer.lock
+#      content: |
+#        { "packages": [] }
+#    - file: phpstan.neon
+#      content: |
+#        parameters:
+#          level: 5
+#  expectations:
+#    - string_contains: When using phpstan/extension-installer you should not manually include
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - touch: composer.json
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+#        ] }
+#    - file: phpstan.neon
+#      content: |
+#        parameters:
+#          level: 5
+#  expectations:
+#    - not_string_contains: When using phpstan/extension-installer you should not manually include
+#
+#- command: 'check:composer'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
+#          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
+#        ] }
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+#    - mkdir: /vendor/composer/
+#    - file: /vendor/composer/installed.json
+#      content: |
+#        { "packages": [
+#          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" },
+#          { "name": "dealerdirect/phpcodesniffer-composer-installer", "type": "composer-plugin", "version": "v1.0.0" }
+#        ] }
+#  expectations:
+#    - not_string_contains: "config.allow-plugins: cweagans/composer-patches"
+#    - not_string_contains: "config.allow-plugins: dealerdirect/phpcodesniffer-composer-installer"
+#    - string_contains: "config.allow-plugins: phpstan/extension-installer"
+#
+#- command: 'check:npm-outdated'
+#  configuration:
+#    toolkit:
+#      components:
+#        npm:
+#          outdated:
+#            check: true
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+#        ] }
+#    - touch: package-lock.json
+#    - file: .opts.yml
+#      content: |
+#        { "npm_install": "True" }
+#  expectations:
+#    - string_contains: NPM Outdated check passed
+#
+#- command: 'toolkit:component-check'
+#  configuration:
+#    toolkit:
+#      components:
+#        npm:
+#          outdated:
+#            check: false
+#  tokens: ''
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+#        ] }
+#    - touch: package-lock.json
+#    - file: .opts.yml
+#      content: |
+#        { "npm_install": "True" }
+#  expectations:
+#    - string_contains: NPM Outdated check            passed (Skipping)
+#
+#- command: 'toolkit:component-check'
+#  configuration: []
+#  tokens: '[skip_npm_insecure]'
+#  resources:
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "config": { "allow-plugins": { "cweagans/composer-patches": true, "dealerdirect/phpcodesniffer-composer-installer": false, "phpstan/extension-installer": true } } }
+#    - file: composer.lock
+#      content: |
+#        { "packages": [
+#          { "name": "phpstan/extension-installer", "type": "composer-plugin", "version": "1.2.0" }
+#        ] }
+#    - touch: package-lock.json
+#    - touch: .opts.yml
+#    - file: .opts.yml
+#      content: |
+#        { "npm_install": "True"  }
+#  expectations:
+#    - string_contains: NPM Insecure check            passed (Skipping)
+#
+#- command: 'check:mandatory'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-core.extensions-good.yml
+#      to: config/sync/core.extension.yml
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Mandatory components check passed
+#
+#- command: 'check:recommended'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Package drupal/config_readonly is recommended but is not present on the project.
+#
+#- command: 'check:insecure'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Insecure components check passed
+#
+#- command: 'check:outdated'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Outdated components check passed
+#
+#- command: 'check:abandoned'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Abandoned components check passed
+#
+#- command: 'check:unsupported'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Website not installed, skipping
+#
+#- command: 'check:evaluation'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Restricted package(s)
+#
+#- command: 'check:development'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Development components check passed
+#
+#- command: 'check:configuration'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        { "name": "ec-europa/toolkit", "extra": { "composer-exit-on-patch-failure": true } }
+#  expectations:
+#    - string_contains: Project configuration check passed
+#
+#- command: 'check:composer'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "ec-europa/toolkit",
+#          "extra": { "composer-exit-on-patch-failure": true },
+#          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#  expectations:
+#    - string_contains: Composer validation check passed
+#
+#- command: 'check:composer'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "ec-europa/toolkit",
+#          "extra": { "composer-exit-on-patch-failure": true },
+#          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+#        }
+#    - file: lib/modules/module1/composer.json
+#      content: '{"name": "test/module1", "type": "drupal-custom-module"}'
+#    - file: lib/modules/module2/composer.json
+#      content: '{"name": "test/module2", "type": "drupal-custom-modules"}'
+#    - file: lib/modules/module3/composer.json
+#      content: '{"name": "test/module3", "type": "drupal-module"}'
+#    - file: lib/themes/theme1/composer.json
+#      content: '{"name": "test/theme1", "type": "drupal-custom-theme"}'
+#    - file: lib/themes/theme2/composer.json
+#      content: '{"name": "test/theme2", "type": "drupal-theme"}'
+#  expectations:
+#    - not_string_contains: The custom component lib/modules/module1/composer.json
+#    - string_contains: The custom component lib/modules/module2/composer.json has an invalid type drupal-custom-modules.
+#    - string_contains: The custom component lib/modules/module3/composer.json has an invalid type drupal-module.
+#    - not_string_contains: The custom component lib/themes/theme1/composer.json
+#    - string_contains: The custom component lib/themes/theme2/composer.json has an invalid type drupal-theme.
+#
+#- command: 'check:composer'
+#  configuration: []
+#  tokens: ''
+#  resources:
+#    - from: sample-composer.lock
+#      to: composer.lock
+#    - file: composer.json
+#      content: |
+#        {
+#          "name": "ec-europa/toolkit",
+#          "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } },
+#          "extra": {
+#            "composer-exit-on-patch-failure": true,
+#            "installer-paths": {
+#              "web/core": ["type:drupal-core"],
+#              "web/libraries/{$name}": ["type:drupal-library"],
+#              "web/modules/contrib/{$name}": ["type:drupal-module"],
+#              "web/modules/custom": ["type:drupal-custom-modules-dir"],
+#              "web/profiles/contrib/{$name}": ["type:drupal-profile"],
+#              "web/profiles/custom": ["type:drupal-custom-profiles-dir"],
+#              "web/themes/contrib/{$name}": ["type:drupal-theme"],
+#              "web/themes/custom": ["type:drupal-custom-theme"]
+#            }
+#          }
+#        }
+#  expectations:
+#    - string_contains: The installer-path /modules/custom has a wrong value type:drupal-custom-modules-dir, it should be drupal-custom-module.
+#    - string_contains: The installer-path /profiles/custom has a wrong value type:drupal-custom-profiles-dir, it should be drupal-custom-profile.
+#    - not_string_contains: The installer-path /themes/custom has a wrong value
