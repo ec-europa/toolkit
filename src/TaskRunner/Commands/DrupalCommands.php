@@ -636,9 +636,9 @@ class DrupalCommands extends AbstractCommands
   'database' => getenv('DRUPAL_DATABASE_NAME'),
   'username' => getenv('DRUPAL_DATABASE_USERNAME'),
   'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
-  'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
+  'prefix' => getenv('DRUPAL_DATABASE_PREFIX') ?: '',
   'host' => getenv('DRUPAL_DATABASE_HOST'),
-  'port' => getenv('DRUPAL_DATABASE_PORT'),
+  'port' => getenv('DRUPAL_DATABASE_PORT') ?: 3306,
   'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\\\Core\\\\Database\\\\Driver\\\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
   'init_commands' => array (
@@ -649,9 +649,9 @@ class DrupalCommands extends AbstractCommands
 // Location of the site configuration files, relative to the site root.
 \$settings['config_sync_directory'] = '../config/sync';
 
-\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '$hashSalt';
-\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
-\$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
+\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: '$hashSalt';
+\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
+\$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
 // Reverse proxy.
 if (filter_var(getenv('DRUPAL_REVERSE_PROXY_ENABLE'), FILTER_VALIDATE_BOOLEAN)) {
