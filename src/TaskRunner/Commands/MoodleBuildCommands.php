@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\Toolkit;
 use Robo\Collection\CollectionBuilder;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -13,6 +14,14 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class MoodleBuildCommands extends AbstractCommands
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFile()
+    {
+        return Toolkit::getToolkitRoot() . '/config/commands/build.yml';
+    }
 
     /**
      * Build site for local development.
