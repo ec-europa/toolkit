@@ -25,11 +25,11 @@ class MoodleBuildCommands extends AbstractCommands
      *
      * @throws \Robo\Exception\TaskException
      *
-     * @command moodle:build-dev
+     * @command toolkit:build-dev
      *
      * @option root Moodle root.
      *
-     * @aliases md-bdev
+     * @aliases tk-bdev
      */
     public function moodleBuildDev(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
