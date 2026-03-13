@@ -84,18 +84,18 @@ class MoodleBuildCommands extends AbstractCommands
      *
      * @throws \Robo\Exception\TaskException
      *
-     * @command moodle:build-dist
+     * @command toolkit:build-dist
      *
      * @option tag Version tag for manifest.
      * @option sha Commit hash for manifest.
      *
-     * @aliases md-bdist
+     * @aliases tk-bdist
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function moodleBuildDist(array $options = [
+    public function buildDist(array $options = [
         'tag' => InputOption::VALUE_OPTIONAL,
         'sha' => InputOption::VALUE_OPTIONAL,
     ]): CollectionBuilder
