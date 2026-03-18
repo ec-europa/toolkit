@@ -57,7 +57,7 @@ See bellow current list of available commands:
    toolkit:check-version               Check the Toolkit version.
    toolkit:code-review                 Execute all or specific tools for static testing.
    toolkit:complock-check              Check if 'composer.lock' exists on the project root folder.
-   toolkit:component-check             Check composer for components that are not whitelisted/blacklisted.
+   toolkit:component-check             [tk-components] Check composer for components that are not whitelisted/blacklisted.
    toolkit:create-dump                 [tk-cdump] Export the local snapshot.
    toolkit:download-dump               [tk-ddump] Download database snapshot.
    toolkit:fix-permissions             Run script to fix permissions (experimental).
@@ -89,6 +89,7 @@ See bellow current list of available commands:
    toolkit:run-deploy                  [tk-deploy] Run deployment sequence.
    toolkit:run-gitleaks                [tk-gitleaks] Executes the Gitleaks.
    toolkit:run-phpcbf                  [tk-phpcbf] Run PHP code autofixing.
+   toolkit:run-tests                   Execute all or specific tools for testing.
    toolkit:setup-axe-scan              Make sure axe-scan is installed and properly configured.
    toolkit:setup-behat                 Setup the Behat file.
    toolkit:setup-blackfire-behat       Copy the needed resources to run Behat with Blackfire.
@@ -110,7 +111,7 @@ Creating custom commands
 To provide custom commands, make sure that your classes are loaded, for example using
 PSR-4 namespacing set the autoload in the composer.json file.
 
-.. code-block::
+.. code-block:: json
 
     {
       "autoload": {
@@ -122,7 +123,7 @@ PSR-4 namespacing set the autoload in the composer.json file.
 
 Create your command class under ``src/TaskRunner/Commands`` that will extend the abstract Toolkit command, like:
 
-.. code-block::
+.. code-block:: php
 
     <?php
     namespace My\Project\TaskRunner\Commands;
@@ -134,8 +135,7 @@ Create your command class under ``src/TaskRunner/Commands`` that will extend the
       public function commandOne() { }
     }
 
-For more detail, check the `consolidation/annotated-command <https://github.com/consolidation/annotated-command#hooks>`_
-documentation.
+For more detail, check the `consolidation/annotated-command`_ documentation.
 
 Passing default options for a command
 ----
@@ -143,7 +143,7 @@ Passing default options for a command
 You can pass default values for the command options, for that you
 need to define a configuration file, and import it as shown below.
 
-.. code-block::
+.. code-block:: yaml
 
     # config/commands/config.yml
     commands:
@@ -152,7 +152,7 @@ need to define a configuration file, and import it as shown below.
           options:
             output: false
 
-.. code-block::
+.. code-block:: php
 
     <?php
     namespace My\Project\TaskRunner\Commands;
@@ -177,7 +177,7 @@ need to define a configuration file, and import it as shown below.
 Creating configuration commands
 ----
 
-Configuration commands are created in the configuration file ``runner.yml``, like shown below:
+Configuration commands are created in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_, like shown below:
 
 .. code-block:: yaml
 
@@ -222,7 +222,7 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | mirror        | `FilesystemStack <https://robo.li/tasks/Filesystem.html>`_             |
 +---------------+------------------------------------------------------------------------+
-| process       | `Process </src/Task/File/Process.php>`_                                |
+| process       | `Process </src/Task/File/Process.php>`                                 |
 +---------------+------------------------------------------------------------------------+
 | append        | `Write with append() <https://robo.li/tasks/File.html#write>`_         |
 +---------------+------------------------------------------------------------------------+
@@ -232,5 +232,7 @@ list of available tasks is:
 +---------------+------------------------------------------------------------------------+
 | drush         | Executes a Drush command                                               |
 +---------------+------------------------------------------------------------------------+
-| replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`_                      |
+| replace-block | `ReplaceBlock </src/Task/File/ReplaceBlock.php>`                       |
 +---------------+------------------------------------------------------------------------+
+
+.. include:: inc/_common.rst

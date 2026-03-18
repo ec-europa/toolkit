@@ -48,7 +48,7 @@ Commands to run before/after Behat tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional commands can be run before and/or after the test. Such commands
-should be defined in the configuration file ``runner.yml``:
+should be defined in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
 .. code-block:: yaml
 
@@ -65,10 +65,10 @@ should be defined in the configuration file ``runner.yml``:
                command: whoami
              - ...
 
-Behat tests in GitLab CI
+Behat tests in CI
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-In GitLab CI, it is possible to run behat in parallel, to do so, the suites must be split like shown below:
+In the CI, it is possible to run behat in parallel, to do so, the suites must be split like shown below:
 
 .. code-block:: yaml
 
@@ -89,7 +89,7 @@ To run coding standard tests you can make use of the ``toolkit:test-phpcs`` comm
    docker-compose exec web ./vendor/bin/run toolkit:test-phpcs
 
 If the configuration ``phpcs.xml`` file is not found, it will be created with the configurations
-provided in the ``runner.yml`` file.
+provided in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 You can manually generate the configuration file using the command ``toolkit:setup-phpcs``:
 
 .. code-block::
@@ -111,7 +111,7 @@ This will enforce the usage of the following standards:
    vendor/drupal/coder/coder_sniffer/DrupalPractice
    vendor/ec-europa/qa-automation/phpcs/QualityAssurance
 
-These are the default configurations in the ``runner.yml`` file.
+These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 
 .. code-block:: yaml
@@ -148,7 +148,7 @@ These are the default configurations in the ``runner.yml`` file.
            - ./src
 
 If you want to use GrumPHP, you need to require the dependency in your ``composer.json``
-and set the phpcs mode in the configuration file ``runner.yml`` as shown below:
+and set the phpcs mode in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_ as shown below:
 
 .. code-block:: yaml
 
@@ -218,7 +218,7 @@ Commands to run before/after PHPUnit tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Additional commands can be run before and/or after the test. Such commands
-should be defined in the configuration file ``runner.yml``:
+should be defined in the configuration file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
 .. code-block:: yaml
 
@@ -248,7 +248,7 @@ To run the PHP Mess Detector checks:
 
    docker-compose exec web ./vendor/bin/run toolkit:test-phpmd
 
-These are the default configurations in the ``runner.yml`` file.
+These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 .. code-block:: yaml
 
@@ -282,9 +282,9 @@ To run the PHPStan tests you can make use of the ``toolkit:test-phpstan`` comman
    docker-compose exec web ./vendor/bin/run toolkit:test-phpstan
 
 If the configuration ``phpstan.neon`` file is not found, it will be created with the configurations
-provided in the ``runner.yml`` file.
+provided in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
-These are the default configurations in the ``runner.yml`` file.
+These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 .. code-block:: yaml
 
@@ -315,7 +315,7 @@ If the configuration file ``.eslintrc.json`` is not found, it will be created wi
 the default configurations including the Drupal .eslintrc.json. The file
 ``.prettierignore`` will also be created.
 
-These are the default configurations in the ``runner.yml`` file.
+These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 .. code-block:: yaml
 
@@ -357,7 +357,7 @@ To run the CSpell tests you can make use of the ``toolkit:lint-cspell`` command:
 
    docker-compose exec web ./vendor/bin/run toolkit:lint-cspell
 
-These are the default configurations in the ``runner.yml`` file.
+These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 .. code-block:: yaml
 
@@ -377,7 +377,7 @@ To run the Behat lint you can make use of the ``toolkit:lint-behat`` command:
 
    docker-compose exec web ./vendor/bin/run toolkit:lint-behat
 
-These are the default configurations in the ``runner.yml`` file.
+These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
 .. code-block:: yaml
 
@@ -393,4 +393,4 @@ Testing in CI
 Toolkit is full integrated with official pipeline that currently requires minimum
 of 1 behat test and a clean report for phpcs check.
 
-Any customization done in your project will be respected in Drone build.
+Any customization done in your project will be respected in pipeline build.

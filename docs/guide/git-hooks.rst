@@ -158,7 +158,7 @@ use the hook ``prepare-commit-msg``, so we add the file ``resources/git/hooks/pr
 Add the hook to the active hooks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In your ``runner.yml``, extend the Toolkit configuration to add your custom hook.
+In your `runner.yml.dist and/or runner.yml <runner-yml_>`_, extend the Toolkit configuration to add your custom hook.
 
 Do not forget to copy the existing ones (in case you want to use them),
 otherwise your configuration will override the default provided by Toolkit.

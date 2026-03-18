@@ -20,17 +20,17 @@ Building theme assets (general)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Toolkit will install all packages and create config files (if not exist) on the first run.
-Add the chosen runners and packages to your runner.yml.dist file
+Add the chosen runners and packages to your `runner.yml.dist and/or runner.yml <runner-yml_>`_ file
 like shown below:
 
-.. code-block::
+.. code-block:: yaml
 
   toolkit:
     build:
       npm:
         theme-task-runner: ecl-builder gulp
         packages: '@ecl/builder pikaday moment gulp gulp-concat gulp-sass gulp-clean-css gulp-minify'
-        ecl-command: 'styles scripts'
+        ecl-command: 'styles scripts copy'
 
 Command to run:
 
@@ -58,9 +58,9 @@ Build theme assets (ecl-builder)
 
 By default Toolkit compiles the Css and Js files, defined in the configuration file
 'ecl-builder.config.js' as entry and destination paths.
-The ecl-builder command used for this action is 'styles'. This the default command.
+The ecl-builder commands used by default are related to 'ecl-command' in your `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
-To use other command listed on 'ecl-builder' options an additional parameter can be provided:
+To use a specific command listed on 'ecl-builder' options an additional parameter can be provided:
 '--ecl-command'
 
 .. code-block::
@@ -90,9 +90,9 @@ The default theme can be specified in a parameter in the task call:
 Define 'custom-code-folder'
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If for some reason your project is running custom code in other folder then ``lib``, it's possible to make it configurable with the following:
+If for some reason your project is running custom code in a folder other than ``lib``, it's possible to make it configurable with the following:
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      build:
@@ -104,7 +104,7 @@ Enable build assets during CI
 
 To enable auto build of assets you should extend the tasks ``toolkit:build-dev`` and ``toolkit:build-dist``. See example below.
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      project_id: "my-project"
@@ -117,6 +117,20 @@ To enable auto build of assets you should extend the tasks ``toolkit:build-dev``
          commands:
          - ...
          - ./vendor/bin/run toolkit:build-assets-dist
+
+If your custom theme is located in a folder other than ``themes`` (default folder for ``toolkit:build-assets-dist``).
+For example the folder ``themes/custom`` as in the original digit drupal template:
+
+.. code-block:: yaml
+
+   toolkit:
+     build:
+       dist:
+         commands:
+         - ...
+         - { task: run, command: toolkit:build-assets, options: {
+           custom-code-folder: '${toolkit.build.dist.root}/${drupal.root}/themes/custom'
+         }}
 
 
 Install additional npm packages
@@ -133,9 +147,9 @@ The package version can be added after the package name like shown in the exampl
 
    'gulp@4.0.1'
 
-To do it add them to the file 'runner.yml.dist':
+To do it add them to the file `runner.yml.dist and/or runner.yml <runner-yml_>`_:
 
-.. code-block::
+.. code-block:: yaml
 
    toolkit:
      build:
