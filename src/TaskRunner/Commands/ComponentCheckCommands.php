@@ -15,7 +15,6 @@ use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -23,6 +22,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ComponentCheckCommands extends AbstractCommands
 {
@@ -547,34 +547,29 @@ class ComponentCheckCommands extends AbstractCommands
      *   The check evaluation status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function componentEvaluation(ConsoleIO $io)
     {
         $this->io = $io;
-        if (!$this->loadComposerLock() || !$this->loadWebsitePackages()) {
+        if (!$this->loadComposerLock()) {
             return 1;
         }
-
+        if (!$this->loadWebsitePackages()) {
+            return 1;
+        }
+        // Get vendor list.
         $toolkitRequirements = Website::requirements();
         $vendorList = $toolkitRequirements['vendor_list'] ?? [];
 
+        // Proceed with 'blocker' option. Loop over the packages.
         $groupComponents = [];
         foreach ($this->composerLock['packages'] as $package) {
-            $vendor = strtok($package['name'], '/');
-            $isMonitoredVendor = in_array($vendor, $vendorList, true);
-            $isReviewedPackage = isset($this->packageReviews[$package['name']]);
-
-            // Skip packages that don't belong to either group and not evaluated.
-            if (!$isMonitoredVendor && !$isReviewedPackage) {
-                continue;
-            }
-
-            // Validate & group.
-            $validated = $this->validateComponent($package);
-            if ($validated) {
-                [$message, $group] = $validated;
-                $groupComponents[$group][] = $message;
+            // Check if vendor belongs to the monitored vendor list.
+            if (in_array(explode('/', $package['name'])['0'], $vendorList)) {
+                $validateComponent = $this->validateComponent($package);
+                if ($validateComponent) {
+                    $groupComponents[$validateComponent['1']][] = $validateComponent['0'];
+                }
             }
         }
         foreach ($groupComponents as $groupComponent => $messages) {
@@ -582,7 +577,7 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($messages as $message) {
                 $this->writeln($message);
             }
-            if ($groupComponent == 'Restricted package(s):') {
+            if ($groupComponent == 'Packages rejected/restricted:') {
                 $this->writeln('<options=reverse>In the case you want to use one of the modules listed as restricted, please open a ticket to Quality Assurance indicating the use case for evaluation and more information.</>');
             }
         }
@@ -682,14 +677,14 @@ class ComponentCheckCommands extends AbstractCommands
             return 1;
         }
         $composerJson = $this->getJson('composer.json');
-        $customTypes = [
-            '/modules/custom' => 'drupal-custom-module',
-            '/themes/custom' => 'drupal-custom-theme',
-            '/profiles/custom' => 'drupal-custom-profile',
-        ];
+
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
-            $typeBypass = in_array($package['type'], $customTypes);
+            $typeBypass = in_array($package['type'], [
+                'drupal-custom-module',
+                'drupal-custom-theme',
+                'drupal-custom-profile',
+            ]);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->composerFailed = true;
                 $message = "Package {$package['name']}:{$package['version']} cannot be used in dev version.";
@@ -752,7 +747,7 @@ class ComponentCheckCommands extends AbstractCommands
                     // If the check value is found in the forbidden values, display an error message.
                     if (in_array($check, $forbiddenValues)) {
                         $message = sprintf($error, $check, $entryName, $forbiddenKey);
-                        $this->writeln($message);
+                        $this->io->error($message);
                         $this->composerFailed = true;
                         $this->addJunitResult('Composer components', $message);
                     }
@@ -773,7 +768,7 @@ class ComponentCheckCommands extends AbstractCommands
             );
             foreach ($missingPlugins as $missingPlugin) {
                 $message = "Plugin not installed, please remove from composer.json config.allow-plugins: $missingPlugin.";
-                $this->writeln($message);
+                $this->io->error($message);
                 $this->composerFailed = true;
                 $this->addJunitResult('Composer components', $message);
             }
@@ -782,45 +777,9 @@ class ComponentCheckCommands extends AbstractCommands
         // Make sure the toolkit-composer-plugin is allowed.
         if (empty($composerJson['config']['allow-plugins'][Toolkit::PLUGIN])) {
             $message = 'Plugin ' . Toolkit::PLUGIN . ' must be allowed in the config.allow-plugins section of the composer.json.';
-            $this->writeln($message);
+            $this->io->error($message);
             $this->composerFailed = true;
             $this->addJunitResult('Composer components', $message);
-        }
-
-        // Custom local packages should respect type drupal-custom-*.
-        $customCodeFolder = $this->getConfigValue('toolkit.build.custom-code-folder');
-        if (is_dir($customCodeFolder)) {
-            $finder = new Finder();
-            $finder
-                ->files()
-                ->depth(['> 1', '< 3'])
-                ->in($customCodeFolder)
-                ->name('composer.json');
-            foreach ($finder as $file) {
-                $pathName = $file->getPathname();
-                $content = $this->getJson($pathName);
-                if (!empty($content['type']) && !in_array($content['type'], $customTypes)) {
-                    $message = "The custom component $pathName has an invalid type {$content['type']}.";
-                    $this->writeln($message);
-                    $this->composerFailed = true;
-                    $this->addJunitResult('Composer components', $message);
-                }
-            }
-        }
-
-        // The custom packages installer-paths should respect the custom directories.
-        if (!empty($composerJson['extra']['installer-paths'])) {
-            foreach ($composerJson['extra']['installer-paths'] as $dir => $paths) {
-                foreach ($customTypes as $key => $value) {
-                    $currentValue = $paths[0] ?? '';
-                    if (str_ends_with($dir, $key) && !str_ends_with($currentValue, $value)) {
-                        $message = "The installer-path $key has a wrong value $currentValue, it should be $value.";
-                        $this->writeln($message);
-                        $this->composerFailed = true;
-                        $this->addJunitResult('Composer components', $message);
-                    }
-                }
-            }
         }
 
         if (!$this->composerFailed) {
@@ -1072,7 +1031,6 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function validateComponent(array $package)
     {
@@ -1085,12 +1043,10 @@ class ComponentCheckCommands extends AbstractCommands
         if (!empty($package['transport-options']['relative'])) {
             return;
         }
-
         $config = $this->getConfig();
         $modules = $this->packageReviews;
         $packageName = $package['name'];
-        $isRestricted = ($modules[$packageName]['status'] ?? '') === 'restricted';
-        $isRejected = ($modules[$packageName]['status'] ?? '') === 'rejected';
+        $isRestricted = isset($modules[$packageName]['restricted_use']) && $modules[$packageName]['restricted_use'] !== '0';
         $hasBeenQaEd = isset($modules[$packageName]);
         $packageVersion = isset($package['extra']['drupal']['version']) ? explode('+', str_replace('8.x-', '', $package['extra']['drupal']['version']))[0] : $package['version'];
 
@@ -1098,87 +1054,79 @@ class ComponentCheckCommands extends AbstractCommands
         $packageVersion = in_array($packageVersion, $config->get('toolkit.invalid-versions')) ? $package['version'] : $packageVersion;
 
         // Define vars.
-        $message = $messageType = false;
+        $message = false;
+        $messageType = false;
 
         // If module was not reviewed yet.
         if (!$hasBeenQaEd) {
             $this->evaluationFailed = true;
             $message = "Package $packageName:$packageVersion has not been reviewed by QA.";
-            $messageType = 'Not reviewed packages(s):';
+            $messageType = 'Packages not reviewed:';
             $this->addJunitResult('Evaluation components', $message);
-
-            return [$message, $messageType];
         }
-
-        // Validate package version against our constraints.
-        $constraints = ['whitelist' => false, 'blacklist' => true];
-        foreach ($constraints as $constraint => $result) {
-            $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
-            try {
-                if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+        if ($hasBeenQaEd) {
+            // Validate package version against our constraints.
+            $constraints = ['whitelist' => false, 'blacklist' => true];
+            foreach ($constraints as $constraint => $result) {
+                $constraintValue = !empty($modules[$packageName][$constraint]) ? $modules[$packageName][$constraint] : null;
+                try {
+                    if (!is_null($constraintValue) && Semver::satisfies($packageVersion, $constraintValue) === $result) {
+                        $this->evaluationFailed = true;
+                        $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
+                        $messageType = "Package's version constraints:";
+                        $this->addJunitResult('Evaluation components', $message);
+                    }
+                } catch (\UnexpectedValueException $exception) {
                     $this->evaluationFailed = true;
-                    $message = "Package $packageName:$packageVersion does not meet the $constraint version constraint: $constraintValue.";
+                    $message = "Package $packageName:$packageVersion failed to parse $constraint version constraint: $constraintValue.";
                     $messageType = "Package's version constraints:";
                     $this->addJunitResult('Evaluation components', $message);
                 }
-            } catch (\UnexpectedValueException $exception) {
-                $this->evaluationFailed = true;
-                $message = "Package $packageName:$packageVersion failed to parse $constraint version constraint: $constraintValue.";
-                $messageType = "Package's version constraints:";
-                $this->addJunitResult('Evaluation components', $message);
-            }
-        }
-
-        if (empty($message) &&  $isRejected) {
-            $this->evaluationFailed = true;
-            $message = "Package $packageName:$packageVersion has been rejected by QA.";
-            $messageType = 'Rejected package(s):';
-            $this->addJunitResult('Evaluation components', $message);
-        }
-
-        if (empty($message) && $isRestricted) {
-            $projectId = $config->get('toolkit.project_id');
-            // Check if the module is allowed for this project id.
-            $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
-            if ($allowedInProject) {
-                $message = "The package $packageName is authorised for the project $projectId";
-                $messageType = 'Authorised package(s):';
             }
 
-            // Check if the module is allowed for this type of project.
-            $allowedProjectTypes = !empty($modules[$packageName]['allowed_project_types']) ? $modules[$packageName]['allowed_project_types'] : '';
-            if (!$allowedInProject && !empty($allowedProjectTypes)) {
-                $allowedProjectTypes = array_map('trim', explode(',', $allowedProjectTypes));
-                // Load the project from the website.
-                $project = Website::projectInformation($projectId);
-                if (in_array($project['type'], $allowedProjectTypes)) {
-                    $allowedInProject = true;
-                    $message = "The package $packageName is authorised for the type of project {$project['type']}";
-                    $messageType = 'Authorised package(s):';
+            if (empty($message) && $isRestricted) {
+                $projectId = $config->get('toolkit.project_id');
+                // Check if the module is allowed for this project id.
+                $allowedInProject = in_array($projectId, array_map('trim', explode(',', $modules[$packageName]['restricted_use'])));
+                if ($allowedInProject) {
+                    $message = "The package $packageName is authorised for the project $projectId";
+                    $messageType = 'Packages authorised:';
+                }
+
+                // Check if the module is allowed for this type of project.
+                $allowedProjectTypes = !empty($modules[$packageName]['allowed_project_types']) ? $modules[$packageName]['allowed_project_types'] : '';
+                if (!$allowedInProject && !empty($allowedProjectTypes)) {
+                    $allowedProjectTypes = array_map('trim', explode(',', $allowedProjectTypes));
+                    // Load the project from the website.
+                    $project = Website::projectInformation($projectId);
+                    if (in_array($project['type'], $allowedProjectTypes)) {
+                        $allowedInProject = true;
+                        $message = "The package $packageName is authorised for the type of project {$project['type']}";
+                        $messageType = 'Packages authorised:';
+                    }
+                }
+
+                // Check if the module is allowed for this profile.
+                $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
+                if (!$allowedInProject && !empty($allowedProfiles)) {
+                    $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
+                    $profile = $this->getProjectProfile($projectId);
+                    if (in_array($profile, $allowedProfiles)) {
+                        $allowedInProject = true;
+                        $message = "The package $packageName is authorised for the profile $profile";
+                        $messageType = 'Packages authorised:';
+                    }
+                }
+
+                // If module was not allowed in project.
+                if (!$allowedInProject) {
+                    $this->evaluationFailed = true;
+                    $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
+                    $messageType = 'Packages rejected/restricted:';
+                    $this->addJunitResult('Evaluation components', $message);
                 }
             }
-
-            // Check if the module is allowed for this profile.
-            $allowedProfiles = !empty($modules[$packageName]['allowed_profiles']) ? $modules[$packageName]['allowed_profiles'] : '';
-            if (!$allowedInProject && !empty($allowedProfiles)) {
-                $allowedProfiles = array_map('trim', explode(',', $allowedProfiles));
-                $profile = $this->getProjectProfile($projectId);
-                if (in_array($profile, $allowedProfiles)) {
-                    $allowedInProject = true;
-                    $message = "The package $packageName is authorised for the profile $profile";
-                    $messageType = 'Authorised package(s):';
-                }
-            }
-
-            // If module was not allowed in project.
-            if (!$allowedInProject) {
-                $this->evaluationFailed = true;
-                $message = "The use of $packageName:$packageVersion is {$modules[$packageName]['status']}.";
-                $messageType = 'Restricted package(s):';
-                $this->addJunitResult('Evaluation components', $message);
-            }
         }
-
         if ($message && $messageType) {
             return [$message, $messageType];
         }
@@ -1187,7 +1135,7 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Loads the composer lock packages.
      */
-    private function loadComposerLock(): bool
+    protected function loadComposerLock(): bool
     {
         if (!empty($this->composerLock['packages'])) {
             return true;
@@ -1203,7 +1151,7 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Loads the composer outdated results.
      */
-    private function loadComposerOutdated(): bool
+    protected function loadComposerOutdated(): bool
     {
         if (!empty($this->composerOutdated)) {
             return true;
@@ -1218,7 +1166,7 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Loads the packages from the website.
      */
-    private function loadWebsitePackages(): bool
+    protected function loadWebsitePackages(): bool
     {
         if (!empty($this->packageReviews)) {
             return true;
@@ -1305,7 +1253,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @param bool $value
      *   The value to check.
      */
-    private function getFailedOrPassed(bool $value): string
+    protected function getFailedOrPassed(bool $value): string
     {
         return $value ? 'failed' : 'passed';
     }
@@ -1375,12 +1323,12 @@ class ComponentCheckCommands extends AbstractCommands
      * @return array<mixed>
      *   The opts.yml file content.
      */
-    private function getOptsYml(): array
+    protected function getOptsYml(): array
     {
         if (isset($this->optsYml)) {
             return $this->optsYml;
         }
-        return ToolCommands::parseOptsYml();
+        return ToolCommands::parseOptsYml() ?: [];
     }
 
     /**
@@ -1397,7 +1345,7 @@ class ComponentCheckCommands extends AbstractCommands
      *
      * @see JunitXmlGenerator::addResult()
      */
-    private function addJunitResult(string $testCase, string $message, string $type = 'error'): void
+    protected function addJunitResult(string $testCase, string $message, string $type = 'error'): void
     {
         // Skip if no junit option is used.
         if (!$this->isJunit()) {
