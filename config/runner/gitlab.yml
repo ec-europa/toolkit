@@ -1,5 +1,5 @@
 gitlab:
-  base_url: https://git.fpfis.tech.ec.europa.eu
+  base_url: https://gitlab.dhs.tech.ec.europa.eu
   base_url_api: '${gitlab.base_url}/api/v4'
   token: ${env.GITLAB_API_TOKEN}
   endpoints:

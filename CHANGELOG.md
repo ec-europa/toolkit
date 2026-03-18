@@ -1,5 +1,61 @@
 # Toolkit change log
 
+## Version 10.26.2
+  - DROPSEC-16324: Fix opts.yml loader default.
+  - DQA-13173: Added dependency required by Drupal 11.3.x.
+
+## Version 10.26.1
+  - DROPSEC-16324: Fix opts.yml loader default.
+
+## Version 10.26.0
+  - DQA-13046: Align toolkit workspace dir with github actions.
+  - DQA-13052: Toolkit phpunit parallel on github actions.
+  - DQA-12988: Detect custom modules mapped to contrib dir.
+  - DQA-13152: PHPUnit mock download improvement.
+  - DQA-13139: Fix site-update parameter to control update module status.
+  - DQA-13173: Update default ESLint packages.
+  - DQA-13251: Remove check of deprecated basename call.
+  - DQA-13313: Pass DB prefix to drupal:install command.
+
+## Version 10.25.0
+  - DQA-12700: Issue with documentation workflow.
+  - DQA-12869: Restricted being bypassed when project-id is set to 0.
+  - DQA-12860: Ignore vendor settings if module is included in the inventory.
+  - DQA-13031: Adapt Sanitisation classes detection for drush >13.7.
+  - DQA-12981: Fix rejected status and improve messages.
+
+## Version 10.24.0
+  - DQA-12429: Cspell to use drupal.root config.
+  - DQA-12468: Add possibility to have options on lint-css and alter defaults.
+  - DQA-12406: Check existing config in runner.
+  - DQA-12403: Add workflow for testing on Github Actions.
+  - DQA-12549: Remove package.json file.
+  - DQA-12285: Improve toolkit:download-dump.
+
+## Version 10.23.1
+  - DQA-12227: Gitignore fix and more common links.
+  - DQA-12429: Improve configs & fix code-review.
+
+## Version 10.23.0
+  - DQA-12268: DQA url change.
+  - DQA-12227: Update documentation.
+
+## Version 10.22.0
+  - DQA-11963: Validate component form.
+  - DQA-11050: Update gitleaks.
+  - DQA-12096: Add reportUnmatchedIgnoredErrors to phpstan.
+  - DQA-12200: Enable the mandatory modules field view and requirements list.
+
+## Version 10.21.0
+  - DQA-12052: Update Git Hooks to use format method.
+  - DQA-12096: Drupal 11.2.2 compatibility.
+  - Extra info about custom-folder for build-assets-dist VS build-assets.
+  - Extra information about copy and watch ecl commands.
+
+## Version 10.20.0
+  - DQA-11464: Toolkit add command to run all tests in a single command.
+  - DQA-11776: Update image registry.
+
 ## Version 10.19.2
   - DQA-11542: Toolkit command to generate composer.json for packages.
   - DQA-11423: User escalation: Fallback to ci token.

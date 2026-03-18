@@ -1,11 +1,5 @@
 - command: 'toolkit:opts-review'
   configuration: []
-  resources: []
-  expectations:
-    - contains: ">  The file '.opts.yml' was not found, skipping."
-
-- command: 'toolkit:opts-review'
-  configuration: []
   resources:
     - file: .opts.yml
       content: "php_version: 8.0"

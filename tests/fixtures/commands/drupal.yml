@@ -1,10 +1,9 @@
 - command: 'drupal:settings-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
         [Simulator] Simulating File\Replace('web/sites/default/settings.php')
@@ -18,11 +17,10 @@
 
 - command: 'drupal:settings-setup --root=website'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('website/sites/default/default.settings.php', 'website/sites/default/settings.php')
         [Simulator] Simulating File\Replace('website/sites/default/settings.php')
@@ -36,11 +34,10 @@
 
 - command: 'drupal:settings-setup --sites-subdir=sub_dir'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
         ->copy('web/sites/default/default.settings.php', 'web/sites/sub_dir/settings.php')
         [Simulator] Simulating File\Replace('web/sites/sub_dir/settings.php')
@@ -54,11 +51,10 @@
 
 - command: 'drupal:settings-setup --force'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
         [Simulator] Simulating File\Replace('web/sites/default/settings.php')
@@ -72,11 +68,10 @@
 
 - command: 'drupal:settings-setup --skip-permissions-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
-    - file: 'web/sites/default/settings.php'
-      contains: |
+    - contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->copy('web/sites/default/default.settings.php', 'web/sites/default/settings.php')
         [Simulator] Simulating File\Replace('web/sites/default/settings.php')
@@ -88,7 +83,7 @@
 
 - command: 'drupal:permissions-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -97,7 +92,7 @@
 
 - command: 'drupal:permissions-setup --root=website --sites-subdir=websitesubdir'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -110,7 +105,7 @@
       root: 'web'
       site:
         sites_subdir: 'sites_subdir'
-  tokens: ~
+  tokens: ''
   resources:
     - mkdir: /web/sites/sites_subdir/
     - touch: /web/sites/sites_subdir/settings.php
@@ -123,7 +118,7 @@
 
 - command: 'drupal:disable-cache'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -141,7 +136,7 @@
 
 - command: 'drupal:drush-setup'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -152,7 +147,7 @@
 
 - command: 'drupal:drush-setup --config-dir=website/drush'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -163,7 +158,7 @@
 
 - command: 'drupal:site-install --database-user=root --database-password=1234 --database-name=db'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -172,13 +167,10 @@
         [Simulator] Simulating Filesystem\FilesystemStack()
           ->chmod('web/sites/default', 509)
         [Simulator] Simulating Exec('./vendor/bin/drush')
-          ->args(array (
-            0 => 'site:install',
-            1 => 'minimal',
-          ))
-            ->options(array ( ... ), '=')
-            ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/DrupalCommandsTest/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://root:1234@mysql:3306/db' -y
+          ->args(array ( ... ))
+          ->options(array ( ... ), '=')
+          ->option('-y')
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal 'install_configure_form.enable_update_status_module=NULL' --root=/__w/toolkit/toolkit/tests/sandbox/DrupalCommandsTest/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --db-url='mysql://root:1234@mysql:3306/db' -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
@@ -191,7 +183,7 @@
               --account-name=user
               --sites-subdir=web
               --site-profile=minimal
-              --site-update=true
+              --site-update
               --site-locale=fr
               --account-name=superadmin
               --account-password=12345
@@ -204,7 +196,7 @@
               --database-port=3333
               --database-name=test'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -217,9 +209,9 @@
             0 => 'site:install',
             1 => 'minimal',
           ))
-            ->options(array ( ... ), '=')
-            ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/DrupalCommandsTest/website/ --site-name='The site name' --site-mail=info@example.org --locale=fr --account-mail=superadmin@example.org --account-name=superadmin --account-pass=12345 --sites-subdir=web --db-url='mysql://root:1234@mysql:3333/test' -y
+          ->options(array ( ... ), '=')
+          ->option('-y')
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/__w/toolkit/toolkit/tests/sandbox/DrupalCommandsTest/website/ --site-name='The site name' --site-mail=info@example.org --locale=fr --account-mail=superadmin@example.org --account-name=superadmin --account-pass=12345 --sites-subdir=web --db-url='mysql://root:1234@mysql:3333/test' -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
@@ -228,7 +220,8 @@
     drupal:
       site:
         generate_db_url: ~
-  tokens: ~
+        update: true
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -239,15 +232,15 @@
             0 => 'site:install',
             1 => 'minimal',
           ))
-            ->options(array ( ... ), '=')
-            ->option('-y')
-        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/test/toolkit/tests/sandbox/DrupalCommandsTest/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --existing-config -y
+          ->options(array ( ... ), '=')
+          ->option('-y')
+        [Simulator] Running ./vendor/bin/drush 'site:install' minimal --root=/__w/toolkit/toolkit/tests/sandbox/DrupalCommandsTest/web/ --site-name='Site name' --site-mail=info@example.org --locale=en --account-mail=admin@example.org --account-name=admin --account-pass=admin --sites-subdir=default --existing-config -y
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array (
         ))
 
 - command: 'drupal:site-pre-install'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -259,7 +252,7 @@
     drupal:
         pre_install:
           - { task: 'process', source: 'behat.yml.dist', destination: 'behat.yml' }
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -267,7 +260,7 @@
 
 - command: 'drupal:site-post-install'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -279,7 +272,7 @@
     drupal:
        post_install:
          - './vendor/bin/drush en views -y'
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -289,7 +282,7 @@
 
 - command: 'drupal:upgrade-status'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - from: sample-d9-composer.lock
       to: composer.lock
@@ -309,7 +302,7 @@
 
 - command: 'drupal:upgrade-status'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - from: sample-d8-composer.lock
       to: composer.lock
@@ -336,7 +329,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - contains: |
@@ -371,7 +364,7 @@
           - _password
           - _token
           - _new
-  tokens: ~
+  tokens: ''
   resources: []
   expectations:
     - string_contains: node-field_test_token (string)
@@ -382,7 +375,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - file: .opts.yml
       content: |
@@ -394,7 +387,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - file: .opts.yml
       content: |
@@ -407,7 +400,7 @@
 
 - command: 'drupal:check-sanitisation-fields'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - file: .opts.yml
       content: |
@@ -420,7 +413,7 @@
 
 - command: 'drupal:check-sanitisation-classes'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - mkdir: lib/modules/toolkit_module/src/Commands
   expectations:
@@ -428,7 +421,7 @@
 
 - command: 'drupal:check-sanitisation-classes'
   configuration: []
-  tokens: ~
+  tokens: ''
   resources:
     - mkdir: lib/modules/toolkit_module/src/Commands
     - file: lib/modules/toolkit_module/src/Commands/ToolkitSanitizeCommand.php

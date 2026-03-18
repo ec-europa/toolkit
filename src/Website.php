@@ -24,7 +24,7 @@ class Website
      *
      * @var string
      */
-    protected static string $url = 'https://digit-dqa.fpfis.tech.ec.europa.eu';
+    protected static string $url = 'https://digit-dqa.dhs.tech.ec.europa.eu';
 
     /**
      * Returns the QA website base url.
@@ -192,7 +192,7 @@ class Website
             return '';
         }
         $ch = curl_init(self::url() . '/node?_format=hal_json');
-        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields, JSON_UNESCAPED_SLASHES));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -313,7 +313,11 @@ class Website
         if (empty($auth = self::apiAuth())) {
             return false;
         }
-        $data = self::getWithMockFallback(self::url() . '/api/v1/package-reviews', $auth);
+        $url = self::url() . '/api/v1/package-reviews';
+        if (!empty($projectId = getenv('TOOLKIT_PROJECT_ID'))) {
+            $url .= '?project=' . $projectId;
+        }
+        $data = self::getWithMockFallback($url, $auth);
         return empty($data) ? false : $data;
     }
 

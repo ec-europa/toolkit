@@ -1,4 +1,4 @@
-name: 'Release pipeline'
+name: 'Documentation pipeline'
 
 on:
   workflow_dispatch:
@@ -12,16 +12,16 @@ permissions:
 jobs:
   Documentation:
     runs-on: ubuntu-latest
-    container: registry.fpfis.eu/digit/devsecops/httpd-php:8.1-ci
+    container: fpfis/httpd-php:8.3-ci
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Validate composer
-        run: composer validate
+        uses: actions/checkout@v5
 
       - name: Composer
-        run: composer install --prefer-dist --no-ansi --no-interaction
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          composer validate
+          composer install --prefer-dist --no-ansi --no-progress --no-interaction
 
       - name: Generate documentation
         run: ./vendor/bin/run toolkit:generate-documentation --token=${{ secrets.API_TOKEN }} --push || echo "skip"

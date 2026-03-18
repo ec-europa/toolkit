@@ -17,7 +17,7 @@ final class Mock
      *
      * @var string
      */
-    private static string $defaultTag = '0.0.53';
+    private static string $defaultTag = '0.0.85';
 
     /**
      * The directory to download the mock to.
@@ -66,8 +66,7 @@ final class Mock
      */
     public static function getEndpointContent(string $endpoint)
     {
-        $tag = self::tag();
-        $mockDir = self::$directory . '/' . $tag;
+        $mockDir = self::$directory . '/' . self::tag();
         if (!file_exists($mockDir)) {
             throw new \Exception("Mock not found at '$mockDir'.");
         }

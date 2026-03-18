@@ -251,7 +251,6 @@ class DrupalCommands extends AbstractCommands
      * @option site-name              Site name.
      * @option site-mail              Site mail.
      * @option site-profile           Installation profile
-     * @option site-update            Whereas to enable the update module or not.
      * @option site-locale            Default site locale.
      * @option account-name           Admin account name.
      * @option account-password       Admin account password.
@@ -262,7 +261,9 @@ class DrupalCommands extends AbstractCommands
      * @option database-name          Database name.
      * @option database-user          Database username.
      * @option database-password      Database password.
+     * @option database-prefix        Database prefix.
      * @option sites-subdir           Sites subdirectory.
+     * @option site-update            Whether to enable the update module or not during installation.
      * @option existing-config        Whether existing config should be imported during installation.
      * @option skip-permissions-setup Whether to skip making the settings file and folder writable during installation.
      *
@@ -277,7 +278,6 @@ class DrupalCommands extends AbstractCommands
         'site-name' => InputOption::VALUE_REQUIRED,
         'site-mail' => InputOption::VALUE_REQUIRED,
         'site-profile' => InputOption::VALUE_REQUIRED,
-        'site-update' => InputOption::VALUE_REQUIRED,
         'site-locale' => InputOption::VALUE_REQUIRED,
         'account-name' => InputOption::VALUE_REQUIRED,
         'account-password' => InputOption::VALUE_REQUIRED,
@@ -289,8 +289,10 @@ class DrupalCommands extends AbstractCommands
         'database-host' => InputOption::VALUE_REQUIRED,
         'database-port' => InputOption::VALUE_REQUIRED,
         'database-name' => InputOption::VALUE_REQUIRED,
+        'database-prefix' => InputOption::VALUE_REQUIRED,
         'sites-subdir' => InputOption::VALUE_REQUIRED,
         'config-dir' => InputOption::VALUE_REQUIRED,
+        'site-update' => InputOption::VALUE_NONE,
         'existing-config' => false,
         'skip-permissions-setup' => false,
     ])
@@ -299,6 +301,12 @@ class DrupalCommands extends AbstractCommands
             'site:install',
             $options['site-profile'],
         ];
+
+        // The update module is enabled by default, disable it if indicated.
+        if (!filter_var($options['site-update'], FILTER_VALIDATE_BOOLEAN)) {
+            $execArgs[] = 'install_configure_form.enable_update_status_module=NULL';
+        }
+
         $execOptions = [
             'root' => getcwd() . '/' . $options['root'] . '/',
             'site-name' => $options['site-name'],
@@ -309,6 +317,10 @@ class DrupalCommands extends AbstractCommands
             'account-pass' => $options['account-password'],
             'sites-subdir' => $options['sites-subdir'],
         ];
+
+        if (!empty($options['database-prefix']) && $options['database-prefix'] !== '${env.DRUPAL_DATABASE_PREFIX}') {
+            $execOptions['db-prefix'] = $options['database-prefix'];
+        }
 
         if (!empty($dbUrl = $this->getConfig()->get('drupal.site.generate_db_url'))) {
             $dbArray = [
@@ -624,9 +636,9 @@ class DrupalCommands extends AbstractCommands
   'database' => getenv('DRUPAL_DATABASE_NAME'),
   'username' => getenv('DRUPAL_DATABASE_USERNAME'),
   'password' => getenv('DRUPAL_DATABASE_PASSWORD'),
-  'prefix' => getenv('DRUPAL_DATABASE_PREFIX'),
+  'prefix' => getenv('DRUPAL_DATABASE_PREFIX') ?: '',
   'host' => getenv('DRUPAL_DATABASE_HOST'),
-  'port' => getenv('DRUPAL_DATABASE_PORT'),
+  'port' => getenv('DRUPAL_DATABASE_PORT') ?: 3306,
   'namespace' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? 'Drupal\\\\Core\\\\Database\\\\Driver\\\\' . getenv('DRUPAL_DATABASE_DRIVER') : 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => getenv('DRUPAL_DATABASE_DRIVER') !== FALSE ? getenv('DRUPAL_DATABASE_DRIVER') : 'mysql',
   'init_commands' => array (
@@ -637,9 +649,9 @@ class DrupalCommands extends AbstractCommands
 // Location of the site configuration files, relative to the site root.
 \$settings['config_sync_directory'] = '../config/sync';
 
-\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') !== FALSE ? getenv('DRUPAL_HASH_SALT') : '$hashSalt';
-\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') !== FALSE ? getenv('DRUPAL_PRIVATE_FILE_SYSTEM') : 'sites/default/private_files';
-\$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') !== FALSE ? getenv('DRUPAL_FILE_TEMP_PATH') : '/tmp';
+\$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: '$hashSalt';
+\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
+\$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
 // Reverse proxy.
 if (filter_var(getenv('DRUPAL_REVERSE_PROXY_ENABLE'), FILTER_VALIDATE_BOOLEAN)) {

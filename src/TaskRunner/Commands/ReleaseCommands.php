@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use Composer\Semver\Semver;
+use EcEuropa\Toolkit\Mock;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -122,11 +123,25 @@ class ReleaseCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $task = $this->taskReplaceInFile($mockFile)
+        $tasks = [];
+        $tasks[] = $this->taskReplaceInFile($mockFile)
             ->regex("#\\\$defaultTag = '[^']*'#")
             ->to("\\\$defaultTag = '" . $latestTag . "'");
 
-        return $this->collectionBuilder()->addTask($task);
+        // Replace the mock version in specific test files.
+        $files = [
+            'tests/fixtures/commands/component-check.yml',
+            'tests/fixtures/commands/notifications.yml',
+        ];
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                $tasks[] = $this->taskReplaceInFile($file)
+                    ->from('.toolkit-mock/' . Mock::tag() . '/api')
+                    ->to(".toolkit-mock/$latestTag/api");
+            }
+        }
+
+        return $this->collectionBuilder()->addTaskList($tasks);
     }
 
     /**
@@ -255,6 +270,8 @@ class ReleaseCommands extends AbstractCommands
      */
     private function prepareChangelog(string $from, array $options)
     {
+        // Add working directory as safe.
+        $this->taskExec('git config --global --add safe.directory ' . $this->getWorkingDir())->run();
         // Get git log.
         $result = $this->taskExec('git')
             ->arg('log')

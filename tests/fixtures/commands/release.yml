@@ -83,6 +83,8 @@
       to: CHANGELOG.md
   expectations:
     - contains: |
+        [Simulator] Simulating Exec('git config --global --add safe.directory /__w/toolkit/ ... ReleaseCommandsTest')
+        [Simulator] Running git config --global --add safe.directory /__w/toolkit/toolkit/tests/sandbox/ReleaseCommandsTest
         [Simulator] Running git log 9.5.0...release/10.x --pretty='%s##%an##%ae' --reverse
         [Simulator] Simulating Development\Changelog('CHANGELOG.md')
           ->setHeader('# Toolkit change log
@@ -101,6 +103,8 @@
       to: CHANGELOG.md
   expectations:
     - contains: |
+        [Simulator] Simulating Exec('git config --global --add safe.directory /__w/toolkit/ ... ReleaseCommandsTest')
+        [Simulator] Running git config --global --add safe.directory /__w/toolkit/toolkit/tests/sandbox/ReleaseCommandsTest
         [Simulator] Running git log 9.5.0...release/10.x --pretty='%s##%an##%ae' --reverse
         [Simulator] Simulating Development\Changelog('CHANGELOG.md')
           ->setHeader('# Toolkit change log

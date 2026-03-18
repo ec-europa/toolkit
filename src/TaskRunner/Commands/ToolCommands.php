@@ -21,7 +21,6 @@ use Symfony\Component\Yaml\Yaml;
  * Generic tools.
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ToolCommands extends AbstractCommands
 {
@@ -111,14 +110,6 @@ class ToolCommands extends AbstractCommands
         }
         $reviewOk = true;
         $parseOptsFile = self::parseOptsYml();
-        if ($parseOptsFile === false) {
-            $io->say("The file '.opts.yml' was not found, skipping.");
-            if ($this->isJunit()) {
-                JunitXmlGenerator::generate('junit-opts.xml');
-            }
-            return ResultData::EXITCODE_OK;
-        }
-
         if ($this->isJunit()) {
             JunitXmlGenerator::addTestCase('OPTS review', 'PHP version');
             JunitXmlGenerator::addTestCase('OPTS review', 'Sanitise options');
@@ -692,9 +683,7 @@ class ToolCommands extends AbstractCommands
         }
 
         if (empty($options['packages'])) {
-            if (!($opts = self::parseOptsYml())) {
-                return $return;
-            }
+            $opts = self::parseOptsYml();
             $packages = $opts['extra_pkgs'] ?? [];
             if (empty($packages)) {
                 return $return;
@@ -764,21 +753,23 @@ class ToolCommands extends AbstractCommands
     }
 
     /**
-     * Returns the .opts.yml file content.
+     * Parses the .opts.yml and returns its contents merged with defaults.
      *
-     * @return array<mixed>|false
-     *   An array with the content or false if the file do not exist.
+     * @return array<mixed>
+     *   An array with the content, the defaults and values found in .opts.yml.
      *
      * @throws \Symfony\Component\Yaml\Exception\ParseException
      *   If the file could not be read or the YAML is not valid.
      */
-    public static function parseOptsYml()
+    public static function parseOptsYml(): array
     {
         $opts = '.opts.yml';
-        if (!file_exists($opts)) {
-            return false;
-        }
-        return (array) Yaml::parseFile($opts);
+        $defaults = [
+            'mydumper' => true,
+        ];
+        $fileData = file_exists($opts) ? (array) Yaml::parseFile($opts) : [];
+
+        return array_merge($defaults, $fileData);
     }
 
     /**

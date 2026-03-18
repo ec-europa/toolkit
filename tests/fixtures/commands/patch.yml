@@ -2,7 +2,7 @@
   configuration: []
   resources: []
   expectations:
-    - contains: "[error]  The '/test/toolkit/tests/sandbox/PatchCommandsTest/composer.json' was not found."
+    - contains: "[error]  The '/__w/toolkit/toolkit/tests/sandbox/PatchCommandsTest/composer.json' was not found."
 
 - command: 'toolkit:patch-download'
   configuration: []

@@ -5,8 +5,8 @@
     - contains: |
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... pal eslint-junit -y')
-        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit -y
+        [Simulator] Simulating Exec('npm install --save-dev eslint@^8.57.1 eslint-config-ai ... int-plugin-jsdoc -y')
+        [Simulator] Running npm install --save-dev eslint@^8.57.1 eslint-config-airbnb-base eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc -y
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
@@ -20,8 +20,8 @@
     - contains: |
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... pal eslint-junit -y')
-        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit -y
+        [Simulator] Simulating Exec('npm install --save-dev eslint@^8.57.1 eslint-config-ai ... int-plugin-jsdoc -y')
+        [Simulator] Running npm install --save-dev eslint@^8.57.1 eslint-config-airbnb-base eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc -y
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
@@ -38,8 +38,8 @@
         [Simulator] Running rm .eslintrc.json
         [Simulator] Simulating Exec('npm ini -y')
         [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint-config-drupal eslint-plu ... pal eslint-junit -y')
-        [Simulator] Running npm install --save-dev eslint-config-drupal eslint-plugin-yml stylelint stylelint-config-drupal eslint-junit -y
+        [Simulator] Simulating Exec('npm install --save-dev eslint@^8.57.1 eslint-config-ai ... int-plugin-jsdoc -y')
+        [Simulator] Running npm install --save-dev eslint@^8.57.1 eslint-config-airbnb-base eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc -y
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
 
@@ -66,12 +66,9 @@
           ->arg('toolkit:setup-eslint')
         [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
-          ->options(array (
-            'config' => '.eslintrc.json',
-            'ext' => '.yml,.yaml',
-          ))
+          ->options(array ( ... ))
           ->arg('.')
-        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext '.yml,.yaml' .
+        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext '.yml,.yaml' --no-error-on-unmatched-pattern .
 
 - command: 'toolkit:lint-yaml --options=fix'
   configuration: []
@@ -95,12 +92,9 @@
           ->arg('toolkit:setup-eslint')
         [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
-          ->options(array (
-            'config' => '.eslintrc.json',
-            'ext' => '.js',
-          ))
+          ->options(array ( ... ))
           ->arg('.')
-        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext .js .
+        [Simulator] Running ./node_modules/.bin/eslint --config .eslintrc.json --ext .js --no-error-on-unmatched-pattern .
 
 - command: 'toolkit:lint-js --options=fix'
   configuration: []
@@ -155,7 +149,7 @@
     - contains: |
         Could not find the config file, the default will be created in the project root.
         [Simulator] Simulating Filesystem\FilesystemStack()
-          ->copy('/test/toolkit/resources/gherkinlint.json', 'gherkinlint.json')
+          ->copy('/__w/toolkit/toolkit/resources/gherkinlint.json', 'gherkinlint.json')
         [Simulator] Simulating Exec('./vendor/bin/gherkinlint lint tests/features')
         [Simulator] Running ./vendor/bin/gherkinlint lint tests/features
 
@@ -168,3 +162,24 @@
     - contains: |
         [Simulator] Simulating Exec('./vendor/bin/gherkinlint lint tests/features')
         [Simulator] Running ./vendor/bin/gherkinlint lint tests/features
+
+- command: 'toolkit:lint-css'
+  configuration: []
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Exec('./vendor/bin/run')
+          ->arg('toolkit:setup-eslint')
+        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Simulating ExecStack()
+          ->exec('npm -v || npm i npm')
+          ->exec('[ -f package.json ] || npm init -y --scope')
+          ->exec('npm list stylelint-config-drupal && npm update styleli ... nt-config-drupal -y')
+        [Simulator] Simulating File\Write('.stylelintrc.json')
+          ->text('{
+            "extends": "stylelint-config-drupal"
+          }')
+        [Simulator] Simulating Exec('./node_modules/.bin/stylelint')
+          ->rawArg('"lib/themes/*/css/*.css" "!lib/themes/*/css/*.min.css"')
+          ->option('allow-empty-input')
+        [Simulator] Running ./node_modules/.bin/stylelint "lib/themes/*/css/*.css" "!lib/themes/*/css/*.min.css" --allow-empty-input

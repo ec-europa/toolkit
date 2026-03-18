@@ -17,8 +17,6 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class TestsCommands extends AbstractCommands
 {
@@ -390,6 +388,7 @@ class TestsCommands extends AbstractCommands
         if (!file_exists($options['config'])) {
             $configContent = [
                 'parameters' => [
+                    'reportUnmatchedIgnoredErrors' => false,
                     'level' => $options['level'],
                     'paths' => array_values($options['files']),
                     'excludePaths' => $ignores,
@@ -625,12 +624,9 @@ class TestsCommands extends AbstractCommands
     private function toolkitTestPhpunitParallelTask(array $options)
     {
         $phpunitBin = $this->getBin('phpunit');
-        $result = $this->taskExec($phpunitBin)->option('list-suites')
-            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
-            ->run()->getMessage();
-        preg_match_all('/ - ([\w\s]+)/', $result, $matches);
         $parallel = $this->taskParallelExec()->printOutput();
-        if (!empty($matches[1])) {
+        $suites = $this->getPhpUnitSuites();
+        if (!empty($suites)) {
             $opts = ' ';
             if (!empty($options['options'])) {
                 $options['options'] = str_replace('--', '', $options['options']);
@@ -644,7 +640,7 @@ class TestsCommands extends AbstractCommands
             if ($options['printer'] === true) {
                 $opts .= " --printer=" . $this->getConfig()->get('toolkit.test.phpunit.printer');
             }
-            foreach (array_map('trim', $matches[1]) as $suite) {
+            foreach ($suites as $suite) {
                 if (strlen($suite) > 2) {
                     $parallel->process("$phpunitBin --testsuite='$suite'$opts");
                 }
@@ -653,6 +649,30 @@ class TestsCommands extends AbstractCommands
             $this->writeln('No items found.');
         }
         return $parallel;
+    }
+
+    /**
+     * Return the test suites found by PHPUnit.
+     *
+     * @return array<string>
+     *   The suites.
+     */
+    private function getPhpUnitSuites(): array
+    {
+        $result = $this->taskExec($this->getBin('phpunit'))
+            ->option('list-suites')
+            ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+            ->run()->getMessage();
+        preg_match_all('/ - (.+)/', $result, $matches);
+        if (!empty($matches[1])) {
+            return array_map(function ($item) {
+                if (str_contains($item, '(')) {
+                    $item = substr($item, 0, strrpos($item, '('));
+                }
+                return trim($item);
+            }, $matches[1]);
+        }
+        return [];
     }
 
     /**

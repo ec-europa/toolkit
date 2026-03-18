@@ -10,18 +10,19 @@
     <php>
         <env name="CI" value="drone" force="true"/>
         <env name="QA_WEBSITE_URL" value="http://web:8080" force="true"/>
-        <env name="TOOLKIT_DEBUG_EXPECTATIONS" value="false"/>
+        <env name="TOOLKIT_DEBUG_EXPECTATIONS" value="true"/>
         <env name="DRUPAL_DATABASE_NAME" value="drupal"/>
         <env name="DRUPAL_DATABASE_USERNAME" value="root"/>
         <env name="DRUPAL_DATABASE_HOST" value="mysql"/>
         <env name="DRUPAL_DATABASE_PORT" value="3306"/>
+        <env name="NEXTCLOUD_USER" value="test"/>
+        <env name="NEXTCLOUD_PASS" value="test"/>
     </php>
     <testsuites>
-        <testsuite name="Unit GitHooks">
+        <testsuite name="Unit">
             <file>tests/Unit/GitHooksCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="Unit ReplaceBlock">
             <file>tests/Unit/ReplaceBlockTest.php</file>
+            <file>tests/Unit/DrupalCore11UpgradeTest.php</file>
         </testsuite>
         <testsuite name="Blackfire and Build">
             <file>tests/Features/Commands/BlackfireCommandsTest.php</file>
@@ -39,9 +40,6 @@
         <testsuite name="Docker">
             <file>tests/Features/Commands/DockerCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Documentation">
-            <file>tests/Features/Commands/DocumentationCommandsTest.php</file>
-        </testsuite>
         <testsuite name="Drupal">
             <file>tests/Features/Commands/DrupalCommandsTest.php</file>
         </testsuite>
@@ -54,9 +52,6 @@
         <testsuite name="GitHooks">
             <file>tests/Features/Commands/GitHooksCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Gitleaks">
-            <file>tests/Features/Commands/GitleaksCommandsTest.php</file>
-        </testsuite>
         <testsuite name="Install">
             <file>tests/Features/Commands/InstallCommandsTest.php</file>
         </testsuite>
@@ -66,11 +61,11 @@
         <testsuite name="Patch">
             <file>tests/Features/Commands/PatchCommandsTest.php</file>
         </testsuite>
-        <testsuite name="Release">
+        <testsuite name="Internal">
             <file>tests/Features/Commands/ReleaseCommandsTest.php</file>
-        </testsuite>
-        <testsuite name="SymlinkProject">
+            <file>tests/Features/Commands/DocumentationCommandsTest.php</file>
             <file>tests/Features/Commands/SymlinkProjectCommandsTest.php</file>
+            <file>tests/Features/Commands/GitleaksCommandsTest.php</file>
         </testsuite>
         <testsuite name="Tests">
             <file>tests/Features/Commands/TestsCommandsTest.php</file>
