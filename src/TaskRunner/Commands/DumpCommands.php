@@ -431,7 +431,7 @@ class DumpCommands extends AbstractCommands
         $link .= "/$service";
         // Download the .sha file.
         $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
-        $sha1 = trim(explode('  ', $latest)[0]);
+        $sha1 = $this->parseLatestShaData($latest, $service)['sha1'];
 
         // Compare with the local dump.
         if ($sha1 !== sha1_file($dump)) {
@@ -459,7 +459,12 @@ class DumpCommands extends AbstractCommands
     {
         // Download the .sha file.
         $latest = $this->downloadShaFile($link, $tmpFolder, $service, $projectId);
-        $filename = trim(explode('  ', $latest)[1]);
+        $latestData = $this->parseLatestShaData($latest, $service);
+        $filename = $latestData['filename'];
+
+        if ($filename === '') {
+            throw new \RuntimeException("Failed parsing filename for service '$service'.");
+        }
 
         // Display information about ASDA creation date.
         $output = strtoupper($service) . ' DATE: ' . $this->getAsdaDate($filename);
@@ -469,10 +474,66 @@ class DumpCommands extends AbstractCommands
         // Download the database file.
         $this->wgetGenerateInputFile("$link/$filename", "$tmpFolder/$service.txt", true);
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
+        $destination = "$tmpFolder/$service.$extension";
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
-        $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", "$tmpFolder/$service.$extension", '.sql.gz,.tar.gz,.tar', !$show)
+        $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", $destination, '.sql.gz,.tar.gz,.tar', !$show)
             ->run();
         $this->handleWgetErrors($result, $projectId);
+        $this->verifyDownloadedFileSha($latestData['sha1'], $destination, $service);
+    }
+
+    /**
+     * Parse Nextcloud checksum file content.
+     *
+     * @param string $latest
+     *   The checksum file content.
+     * @param string $service
+     *   The service to use.
+     *
+     * @return array{sha1: string, filename: string}
+     *   Parsed checksum data.
+     */
+    private function parseLatestShaData(string $latest, string $service): array
+    {
+        $parts = preg_split('/\s+/', trim($latest), 2) ?: [];
+        $sha1 = $parts[0] ?? '';
+        $filename = $parts[1] ?? '';
+        if ($sha1 === '') {
+            throw new \RuntimeException("Failed parsing checksum for service '$service'.");
+        }
+        return [
+            'sha1' => $sha1,
+            'filename' => $filename,
+        ];
+    }
+
+    /**
+     * Verify checksum for a downloaded dump file.
+     *
+     * @param string $expectedSha1
+     *   The expected sha1 checksum from latest.sh1.
+     * @param string $dumpFile
+     *   The downloaded dump file path.
+     * @param string $service
+     *   The service to use.
+     *
+     * @return void
+     *   Throws if checksum mismatch is detected.
+     */
+    private function verifyDownloadedFileSha(string $expectedSha1, string $dumpFile, string $service): void
+    {
+        if ($this->isSimulating()) {
+            return;
+        }
+        if (!file_exists($dumpFile) || filesize($dumpFile) === 0) {
+            throw new \RuntimeException("Downloaded dump file '$dumpFile' for service '$service' is missing or empty.");
+        }
+
+        $actualSha1 = sha1_file($dumpFile);
+        if ($actualSha1 === false || $actualSha1 !== $expectedSha1) {
+            @unlink($dumpFile);
+            throw new \RuntimeException("Checksum mismatch for service '$service'. Expected '$expectedSha1', got '" . ($actualSha1 ?: 'N/A') . "'.");
+        }
     }
 
     /**
