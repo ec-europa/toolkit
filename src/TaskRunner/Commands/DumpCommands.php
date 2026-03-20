@@ -354,8 +354,23 @@ class DumpCommands extends AbstractCommands
 
         // Download the file.
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
-        $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar', !$show)
-            ->run();
+        $maxRetries = (int) $this->getConfigValue('toolkit.clone.download_retries', 3);
+
+        for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+            if ($attempt > 1) {
+                $this->say("Retrying download (attempt $attempt of $maxRetries)...");
+                if (file_exists($destination)) {
+                    $this->taskExec('rm')->arg($destination)
+                        ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
+                        ->run();
+                }
+            }
+            $this->wgetDownloadFile($tmpFile, $destination, '.sql.gz,.tar.gz,.tar', !$show)
+                ->run();
+            if (file_exists($destination) && filesize($destination) > 0) {
+                break;
+            }
+        }
 
         // Remove temporary file.
         $this->taskExec('rm')->arg($tmpFile)
@@ -476,10 +491,32 @@ class DumpCommands extends AbstractCommands
         $extension = str_ends_with($filename, '.gz') ? 'gz' : 'tar';
         $destination = "$tmpFolder/$service.$extension";
         $show = $this->getConfigValue('toolkit.clone.show_progress', false);
-        $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", $destination, '.sql.gz,.tar.gz,.tar', !$show)
-            ->run();
-        $this->handleWgetErrors($result, $projectId);
-        $this->verifyDownloadedFileSha($latestData['sha1'], $destination, $service);
+        $maxRetries = (int) $this->getConfigValue('toolkit.clone.download_retries', 3);
+
+        $lastException = null;
+        for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+            if ($attempt > 1) {
+                $this->say("Retrying download (attempt $attempt of $maxRetries)...");
+                if (file_exists($destination)) {
+                    @unlink($destination);
+                }
+            }
+            try {
+                $result = $this->wgetDownloadFile("$tmpFolder/$service.txt", $destination, '.sql.gz,.tar.gz,.tar', !$show)
+                    ->run();
+                $this->handleWgetErrors($result, $projectId);
+                $this->verifyDownloadedFileSha($latestData['sha1'], $destination, $service);
+                $lastException = null;
+                break;
+            } catch (\RuntimeException $e) {
+                $lastException = $e;
+                $this->say('Download failed: ' . $e->getMessage());
+            }
+        }
+
+        if ($lastException !== null) {
+            throw $lastException;
+        }
     }
 
     /**
