@@ -1,5 +1,14 @@
 # Toolkit change log
 
+## Version 10.27.0
+  - DQA-13733: Set new gitlab & nextcloud urls.
+  - DQA-13747: Support Coder 9.0.
+  - DQA-13741: PHP 8.5 compatibility.
+  - DQA-13613: Check composer-patches v2.
+  - DQA-13523: Adapt DQA for new gitlab instance.
+  - DQA-13626: Improve database default values.
+  - DQA-13253: Prevent usage of eslint >=9, to align with drupal/core.
+
 ## Version 10.26.2
   - DROPSEC-16324: Fix opts.yml loader default.
   - DQA-13173: Added dependency required by Drupal 11.3.x.
