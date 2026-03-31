@@ -34,13 +34,14 @@
             "requireReturn": false
         }],
         "no-unused-vars": ["warn"],
-        "operator-linebreak": ["error", "after", { "overrides": { "?": "ignore", ":": "ignore" } }]
+        "operator-linebreak": ["error", "after", { "overrides": { "?": "ignore", ":": "ignore" } }],
+        "no-multiple-empty-lines": ["error"]
     },
     "ignorePatterns": [
         "vendor/*",
         "config/*",
         "resources/docker",
-        "tests/fixtures"
+        "tests/fixtures/samples/sample-docker*.yml"
     ],
     "overrides": [
         {

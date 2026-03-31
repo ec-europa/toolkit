@@ -689,6 +689,9 @@ class ComponentCheckCommands extends AbstractCommands
         ];
         // Check packages used in dev version.
         foreach ($this->composerLock['packages'] as $package) {
+            if (empty($package['type']) || empty($package['version'])) {
+                continue;
+            }
             $typeBypass = in_array($package['type'], $customTypes);
             if (!$typeBypass && preg_match('[^dev\-|\-dev$]', $package['version'])) {
                 $this->composerFailed = true;
@@ -706,8 +709,10 @@ class ComponentCheckCommands extends AbstractCommands
             $this->addJunitResult('Composer components', $message);
         }
 
-        // Enforce setting composer-exit-on-patch-failure.
-        if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
+        // Enforce setting composer-exit-on-patch-failure if using cweagans/composer-patches version 1.
+        $exitOnPatchFail = !empty($composerJson['extra']['composer-exit-on-patch-failure']);
+        $composerPatchesVersion = ToolCommands::getPackagePropertyFromComposer('cweagans/composer-patches', 'version');
+        if ($composerPatchesVersion && str_starts_with($composerPatchesVersion, '1.') && !$exitOnPatchFail) {
             $this->composerFailed = true;
             $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
             $this->writeln($message);
