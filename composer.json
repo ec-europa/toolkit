@@ -24,7 +24,7 @@
         "cweagans/composer-patches": "^1.7 || ^2.0",
         "dantleech/gherkin-lint": "^0.2.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
-        "drupal/coder": "^8.3.10 || ^9.0",
+        "drupal/coder": "^8.3.30 || ^9.0",
         "drush/drush": "^11.0.4 || ^12.0 || ^13.0",
         "ec-europa/toolkit-composer-plugin": "^0.0.1",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
