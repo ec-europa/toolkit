@@ -45,5 +45,6 @@ phpro
 reqs
 robo
 ruleset
+Squiz
 webform
 xmlsitemap
