@@ -35,7 +35,6 @@ toolkit:
       standards:
         - ./vendor/drupal/coder/coder_sniffer/Drupal
         - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-        - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
       ignore_patterns:
         - ${toolkit.build.dist.root}/
         - .cache/

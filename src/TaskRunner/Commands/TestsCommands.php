@@ -13,7 +13,6 @@ use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
@@ -241,20 +240,6 @@ class TestsCommands extends AbstractCommands
     protected function toolkitRunGrumphp()
     {
         $bin = $this->getBin('grumphp');
-        $grumphpFile = './grumphp.yml.dist';
-        $containsQaConventions = false;
-
-        if (file_exists($grumphpFile)) {
-            $grumphpArray = (array) Yaml::parse(file_get_contents($grumphpFile));
-            if (isset($grumphpArray['imports'])) {
-                foreach ($grumphpArray['imports'] as $import) {
-                    if (isset($import['resource']) && $import['resource'] === 'vendor/ec-europa/qa-automation/dist/qa-conventions.yml') {
-                        $containsQaConventions = true;
-                    }
-                }
-            }
-        }
-
         $composer = $this->getJson('composer.json');
         if (isset($composer['extra']['grumphp']['config-default-path'])) {
             $configDefaultPath = $composer['extra']['grumphp']['config-default-path'];
@@ -262,16 +247,7 @@ class TestsCommands extends AbstractCommands
             echo "\n\"grumphp\": {\n    \"config-default-path\": \"$configDefaultPath\"\n}\n\n";
         }
 
-        if ($containsQaConventions) {
-            return $this->taskExec("$bin run")->run();
-        } else {
-            $this->say('All Drupal projects in the ec-europa namespace need to use Quality Assurance provided standards.');
-            $this->say('Your configuration has to import the resource vendor/ec-europa/qa-automation/dist/qa-conventions.yml.');
-            $this->say('For more information visit: https://ec-europa.github.io/toolkit/guide/testing-project.html#phpcs-testing');
-            $this->say('Add the following lines to your grumphp.yml.dist:');
-            echo "\nimports:\n  - { resource: vendor/ec-europa/qa-automation/dist/qa-conventions.yml }\n\n";
-            return new ResultData(1);
-        }
+        return $this->taskExec("$bin run")->run();
     }
 
     /**
@@ -326,7 +302,6 @@ class TestsCommands extends AbstractCommands
         $standards = [
             './vendor/drupal/coder/coder_sniffer/Drupal',
             './vendor/drupal/coder/coder_sniffer/DrupalPractice',
-            './vendor/ec-europa/qa-automation/phpcs/QualityAssurance',
         ];
         $rules = [];
         $data = simplexml_load_file($configFile);

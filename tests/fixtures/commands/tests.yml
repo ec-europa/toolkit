@@ -142,7 +142,6 @@
         [error]  The following standards are missing, please add them to the configuration file 'phpcs.xml'.
         ./vendor/drupal/coder/coder_sniffer/Drupal
         ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-        ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
 
 - command: 'toolkit:check-phpcs-requirements'
   configuration: []
