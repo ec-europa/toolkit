@@ -62,7 +62,14 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      */
     protected function getBinPath(string $name): string
     {
-        return $this->getConfigValue('runner.bin_dir') . '/' . $name;
+        $bin = $this->getConfigValue('runner.bin_dir') . '/' . $name;
+
+        // When testing toolkit itself, Composer may not create vendor/bin/run.
+        if ($name === 'run' && !file_exists($bin)) {
+            return Toolkit::getToolkitRoot() . '/run';
+        }
+
+        return $bin;
     }
 
     /**
