@@ -134,13 +134,10 @@ class DumpCommands extends AbstractCommands
      * @param array<mixed> $options
      *   Command options.
      *
-     * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
-     *
      * Configuration for database snapshot in NEXTCLOUD.
      * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
      * - Runner variables:
      *
-     * @code
      * toolkit:
      *   clone:
      *     type: 'nextcloud'
@@ -150,12 +147,10 @@ class DumpCommands extends AbstractCommands
      *         - mysql
      *         - solr
      *         - virtuoso
-     * @endcode
      *
      * Configuration for database snapshot in custom server.
      * - Runner variables:
      *
-     * @code
      * toolkit:
      *   clone:
      *     type: 'custom'
@@ -164,9 +159,6 @@ class DumpCommands extends AbstractCommands
      *       url: example.com/databases
      *       user: username
      *       pass: secret-password
-     * @endcode
-     *
-     * @codingStandardsIgnoreEnd
      *
      * @command toolkit:download-dump
      *

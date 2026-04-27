@@ -42,6 +42,7 @@
         <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine"/>
         <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/>
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
         <exclude name="Generic.Formatting.NoSpaceAfterCast.SpaceFound"/>
         <exclude name="Generic.Formatting.SpaceBeforeCast.NoSpace"/>
         <exclude name="Generic.PHP.ClosingPHPTag.NotFound"/>
@@ -293,7 +294,6 @@
     <rule ref="Drupal.Classes.FullyQualifiedNamespace"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
     <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
-    <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
     <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations"/>
     <rule ref="Drupal.Commenting.DocComment"/>
     <rule ref="Drupal.Commenting.DocCommentAlignment.SpaceAfterStar"/>
