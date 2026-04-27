@@ -128,7 +128,7 @@ class DumpCommands extends AbstractCommands
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
-    // phpcs:disable Generic.Commenting.DocComment.TagsNotGrouped,Drupal.Commenting.FunctionComment.ParamCommentIndentation,Drupal.Commenting.FunctionComment.ParamCommentFullStop
+    // phpcs:disable Generic.Commenting.DocComment.TagsNotGrouped,Drupal.Commenting.FunctionComment.ParamCommentIndentation,Drupal.Commenting.FunctionComment.ParamCommentFullStop,Squiz.WhiteSpace.FunctionSpacing.Before,Squiz.WhiteSpace.FunctionSpacing.After
     /**
      * Download database snapshot.
      *
