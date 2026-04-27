@@ -38,23 +38,23 @@ jobs:
           fi
 
       - name: PHPcs
-        run: ./vendor/bin/run toolkit:test-phpcs
+        run: ./run toolkit:test-phpcs
 
       - name: PHPmd
-        run: ./vendor/bin/run toolkit:test-phpmd --files=src/,tests/
+        run: ./run toolkit:test-phpmd --files=src/,tests/
 
       - name: PHPStan
-        run: ./vendor/bin/run toolkit:test-phpstan
+        run: ./run toolkit:test-phpstan
 
       - name: Lint PHP
-        run: ./vendor/bin/run toolkit:lint-php
+        run: ./run toolkit:lint-php
 
       - name: Lint Yaml
-        run: ./vendor/bin/run toolkit:lint-yaml
+        run: ./run toolkit:lint-yaml
 
       - name: Lint CSpell
-        run: ./vendor/bin/run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
+        run: ./run toolkit:lint-cspell --files=src --config=resources/cspell/.cspell.json
 
       - name: PHPUnit
         shell: bash
-        run: ./vendor/bin/run toolkit:test-phpunit --execution=parallel
+        run: ./run toolkit:test-phpunit --execution=parallel
