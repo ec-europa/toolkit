@@ -128,6 +128,7 @@ class DumpCommands extends AbstractCommands
         return $this->collectionBuilder()->addTaskList($tasks);
     }
 
+    // phpcs:disable Generic.Commenting.DocComment.TagsNotGrouped,Drupal.Commenting.FunctionComment.ParamCommentIndentation,Drupal.Commenting.FunctionComment.ParamCommentFullStop
     /**
      * Download database snapshot.
      *
@@ -182,6 +183,7 @@ class DumpCommands extends AbstractCommands
         }
         return $this->customDownloadDump($io, $options);
     }
+    // phpcs:enable
 
     /**
      * Download the available services from Nextcloud.
