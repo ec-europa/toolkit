@@ -13,6 +13,7 @@ use Robo\Exception\AbortTasksException;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class TestsCommands.
