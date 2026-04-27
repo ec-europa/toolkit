@@ -312,9 +312,10 @@
 
     <!-- Drupal. -->
     <rule ref="Drupal.Classes.FullyQualifiedNamespace"/>
-    <rule ref="Drupal.Classes.UnusedUseStatement"/>
-    <rule ref="Drupal.Classes.UseLeadingBackslash"/>
-    <rule ref="Drupal.Commenting.DataTypeNamespace"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
+    <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations"/>
     <rule ref="Drupal.Commenting.DocComment"/>
     <rule ref="Drupal.Commenting.DocCommentAlignment.SpaceAfterStar"/>
     <rule ref="Drupal.Commenting.DocCommentStar"/>
