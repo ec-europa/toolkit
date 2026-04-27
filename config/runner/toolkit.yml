@@ -13,7 +13,7 @@ toolkit:
     nextcloud:
       # Nextcloud supports the following services: mysql, virtuoso, solr.
       services: 'mysql'
-      url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+      url: 'files.dhs.tech.ec.europa.eu/remote.php/dav/files'
       admin: false
       vendor: 'ec-europa'
       source: 'reference'
