@@ -312,7 +312,6 @@
     <rule ref="Drupal.NamingConventions"/>
     <rule ref="Drupal.Scope"/>
     <rule ref="Drupal.Semantics"/>
-    <rule ref="DrupalPractice.CodeAnalysis.VariableAnalysis"/>
     <rule ref="DrupalPractice.Commenting"/>
     <rule ref="DrupalPractice.Constants"/>
     <rule ref="DrupalPractice.FunctionCalls"/>
