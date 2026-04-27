@@ -25,7 +25,6 @@
         "dantleech/gherkin-lint": "^0.2.3",
         "drupal/coder": "^8.3.10 || ^9.0",
         "drush/drush": "^11.0.4 || ^12.0 || ^13.0",
-        "ec-europa/qa-automation": "^9.5.1",
         "ec-europa/toolkit-composer-plugin": "^0.0.1",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jakeasmith/http_build_url": "^1.0",
@@ -64,16 +63,5 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "ec-europa/toolkit-composer-plugin": true
         }
-    },
-    "scripts": {
-        "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/qa-automation/phpcs'",
-        "post-install-cmd": [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'",
-            "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
-        ],
-        "post-update-cmd": [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/qa-automation/phpcs'",
-            "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
-        ]
     }
 }
