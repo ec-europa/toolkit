@@ -136,18 +136,18 @@
   resources: [ ]
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:test-phpcs')
-        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpcs'
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:test-phpcs'
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:test-phpmd')
-        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpmd'
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:test-phpmd'
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:lint-php')
-        [Simulator] Running ./vendor/bin/run 'toolkit:lint-php'
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:lint-php'
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:opts-review')
-        [Simulator] Running ./vendor/bin/run 'toolkit:opts-review'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:opts-review'
 
 - command: 'toolkit:hooks-run pre-push'
   configuration:
@@ -159,9 +159,9 @@
   resources: [ ]
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:test-phpmd')
-        [Simulator] Running ./vendor/bin/run 'toolkit:test-phpmd'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:test-phpmd'
     - not_string_contains: toolkit:test-phpcs
     - not_string_contains: toolkit:lint-php
     - not_string_contains: toolkit:opts-review

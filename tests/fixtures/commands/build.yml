@@ -15,8 +15,8 @@
           ->noDev()
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
-          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+          ->exec('/__w/toolkit/toolkit/run drupal:permissions-setup --root=dist/web')
+          ->exec('/__w/toolkit/toolkit/run drupal:settings-setup --root=dist/web')
         [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
@@ -48,8 +48,8 @@
           ->noDev()
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
-          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+          ->exec('/__w/toolkit/toolkit/run drupal:permissions-setup --root=dist/web')
+          ->exec('/__w/toolkit/toolkit/run drupal:settings-setup --root=dist/web')
         [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +')
         [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "vendor" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
@@ -78,8 +78,8 @@
           ->noDev()
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
-          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+          ->exec('/__w/toolkit/toolkit/run drupal:permissions-setup --root=dist/web')
+          ->exec('/__w/toolkit/toolkit/run drupal:settings-setup --root=dist/web')
         [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "web" ! - ... " -exec rm -rf {} +')
         [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "web" ! -name "config" ! -name "vendor" ! -name "composer.lock" ! -name "composer.json" ! -name ".leaksignore" ! -name ".snyk" -exec rm -rf {} +
         [Simulator] Simulating File\Write('dist/manifest.json')
@@ -96,8 +96,8 @@
     - contains: |
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run toolkit:install-dependencies')
-          ->exec('./vendor/bin/run drupal:settings-setup --root=web')
+          ->exec('/__w/toolkit/toolkit/run toolkit:install-dependencies')
+          ->exec('/__w/toolkit/toolkit/run drupal:settings-setup --root=web')
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
           ->exec('mkdir -p web/sites/default/files')
@@ -114,8 +114,8 @@
     - contains: |
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run toolkit:install-dependencies')
-          ->exec('./vendor/bin/run drupal:settings-setup --root=test')
+          ->exec('/__w/toolkit/toolkit/run toolkit:install-dependencies')
+          ->exec('/__w/toolkit/toolkit/run drupal:settings-setup --root=test')
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
           ->exec('mkdir -p test/sites/default/files')
@@ -136,7 +136,7 @@
         [Simulator] Simulating Composer\Install('composer')
         [Simulator] Simulating ExecStack()
           ->stopOnFail()
-          ->exec('./vendor/bin/run toolkit:build-dev --root=web')
+          ->exec('/__w/toolkit/toolkit/run toolkit:build-dev --root=web')
 
 - command: 'toolkit:build-assets'
   configuration: []

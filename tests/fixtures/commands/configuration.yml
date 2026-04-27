@@ -387,8 +387,8 @@
               from: test-behat.yml.dist
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
-        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run toolkit:install-dependencies')
+        [Simulator] Running /__w/toolkit/toolkit/run toolkit:install-dependencies
         [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('test-behat.yml.dist', 'behat.yml')
         [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
         [Simulator] Simulating Exec('./vendor/bin/behat')
@@ -411,8 +411,8 @@
                 from: test-behat.yml.dist
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run toolkit:install-dependencies')
-        [Simulator] Running ./vendor/bin/run toolkit:install-dependencies
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run toolkit:install-dependencies')
+        [Simulator] Running /__w/toolkit/toolkit/run toolkit:install-dependencies
         [Simulator] Simulating EcEuropa\Toolkit\Task\File\Process('test-behat.yml.dist', 'behat.yml')
         [Simulator] Running ./vendor/bin/behat --profile=default --strict --dry-run
         [Simulator] Simulating Exec('./vendor/bin/behat')

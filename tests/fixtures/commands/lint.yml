@@ -62,9 +62,9 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:setup-eslint')
-        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
           ->options(array ( ... ))
           ->arg('.')
@@ -75,9 +75,9 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:setup-eslint')
-        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
           ->options(array ( ... ))
           ->arg('.')
@@ -88,9 +88,9 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:setup-eslint')
-        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
           ->options(array ( ... ))
           ->arg('.')
@@ -101,9 +101,9 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:setup-eslint')
-        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:setup-eslint'
         [Simulator] Simulating Exec('./node_modules/.bin/eslint')
           ->options(array (
             'config' => '.eslintrc.json',
@@ -168,9 +168,9 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:setup-eslint')
-        [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:setup-eslint'
         [Simulator] Simulating ExecStack()
           ->exec('npm -v || npm i npm')
           ->exec('[ -f package.json ] || npm init -y --scope')

@@ -15,9 +15,9 @@
   expectations:
     - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('drupal:site-install')
-        [Simulator] Running ./vendor/bin/run 'drupal:site-install'
+        [Simulator] Running /__w/toolkit/toolkit/run 'drupal:site-install'
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
@@ -31,10 +31,10 @@
       to: 'core.extensions.yml'
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('drupal:site-install')
           ->option('existing-config')
-        [Simulator] Running ./vendor/bin/run 'drupal:site-install' --existing-config
+        [Simulator] Running /__w/toolkit/toolkit/run 'drupal:site-install' --existing-config
 
 - command: 'toolkit:install-clean --config-file=core.extensions.yml'
   configuration:
@@ -46,9 +46,9 @@
   expectations:
     - contains: |
         Using 'drupal.site.existing_config' but no config-file was found, skipping
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('drupal:site-install')
-        [Simulator] Running ./vendor/bin/run 'drupal:site-install'
+        [Simulator] Running /__w/toolkit/toolkit/run 'drupal:site-install'
 
 - command: 'toolkit:install-clone'
   configuration:
@@ -67,13 +67,13 @@
   expectations:
     - contains: |
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:install-dump')
           ->option('dumpfile', 'mysql.gz', '=')
-        [Simulator] Running ./vendor/bin/run 'toolkit:install-dump' --dumpfile=mysql.gz
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:install-dump' --dumpfile=mysql.gz
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:run-deploy')
-        [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:run-deploy'
         [Simulator] Simulating EcEuropa\Toolkit\Task\Command\ConfigurationCommand(array ( ... ))
 
 - command: 'toolkit:install-clone --dumpfile=dump.sql'
@@ -84,13 +84,13 @@
     to: dump.sql
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:install-dump')
           ->option('dumpfile', 'dump.sql', '=')
-        [Simulator] Running ./vendor/bin/run 'toolkit:install-dump' --dumpfile=dump.sql
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:install-dump' --dumpfile=dump.sql
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
         ->arg('toolkit:run-deploy')
-        [Simulator] Running ./vendor/bin/run 'toolkit:run-deploy'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:run-deploy'
 
 - command: 'toolkit:run-deploy'
   configuration: []

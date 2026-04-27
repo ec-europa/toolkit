@@ -117,24 +117,24 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->args(array (
             0 => 'toolkit:version-write',
             1 => '9.6.0',
           ))
-        [Simulator] Running ./vendor/bin/run 'toolkit:version-write' 9.6.0
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:version-write' 9.6.0
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->args(array (
             0 => 'toolkit:changelog-write',
             1 => '9.6.0',
           ))
-        [Simulator] Running ./vendor/bin/run 'toolkit:changelog-write' 9.6.0
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:changelog-write' 9.6.0
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:generate-commands-list')
-        [Simulator] Running ./vendor/bin/run 'toolkit:generate-commands-list'
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:generate-commands-list'
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:generate-documentation')
-        [Simulator] Running ./vendor/bin/run 'toolkit:generate-documentation'
-        [Simulator] Simulating Exec('./vendor/bin/run')
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:generate-documentation'
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run')
           ->arg('toolkit:update-mock-default-tag')
-        [Simulator] Running ./vendor/bin/run 'toolkit:update-mock-default-tag'
+        [Simulator] Running /__w/toolkit/toolkit/run 'toolkit:update-mock-default-tag'

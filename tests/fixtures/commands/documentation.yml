@@ -111,8 +111,8 @@
       to: docs/guide/commands.rst
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('./vendor/bin/run --no-ansi')
+        [Simulator] Simulating Exec('/__w/toolkit/toolkit/run --no-ansi')
           ->silent(1)
-        [Simulator] Running ./vendor/bin/run --no-ansi
+        [Simulator] Running /__w/toolkit/toolkit/run --no-ansi
 
         [ERROR] Fail to load existing commands.
