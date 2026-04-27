@@ -23,7 +23,6 @@
     <exclude-pattern>tests/fixtures/</exclude-pattern>
     <exclude-pattern>tests/sandbox/</exclude-pattern>
 
-    <rule ref="MySource.Debug.DebugCode"/>
 
     <!-- Generic. -->
     <rule ref="Generic">
@@ -240,26 +239,6 @@
     <rule ref="Squiz.ControlStructures.SwitchDeclaration.SpacingBeforeBreak">
         <severity>0</severity>
     </rule>
-
-    <rule ref="Squiz.CSS.ClassDefinitionClosingBraceSpace"/>
-    <rule ref="Squiz.CSS.ClassDefinitionClosingBraceSpace.SpacingAfterClose">
-        <severity>0</severity>
-    </rule>
-    <rule ref="Squiz.CSS.ClassDefinitionOpeningBraceSpace"/>
-    <rule ref="Squiz.CSS.ClassDefinitionOpeningBraceSpace.AfterNesting">
-        <severity>0</severity>
-    </rule>
-    <rule ref="Squiz.CSS.ColonSpacing"/>
-    <rule ref="Squiz.CSS.DisallowMultipleStyleDefinitions"/>
-    <rule ref="Squiz.CSS.EmptyClassDefinition"/>
-    <rule ref="Squiz.CSS.EmptyStyleDefinition"/>
-    <rule ref="Squiz.CSS.Indentation">
-        <properties>
-            <property name="indent" value="2"/>
-        </properties>
-    </rule>
-    <rule ref="Squiz.CSS.MissingColon"/>
-    <rule ref="Squiz.CSS.SemicolonSpacing"/>
 
     <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
         <properties>
