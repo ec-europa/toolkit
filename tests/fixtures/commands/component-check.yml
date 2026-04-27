@@ -520,7 +520,7 @@
           forbidden:
             autoload:
               psr-4:
-                - 'MyForbiddenVendor\MyProject\'
+                - "MyForbiddenVendor\\MyProject\\"
   tokens: ''
   resources:
     - from: sample-composer.lock
