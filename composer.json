@@ -10,7 +10,7 @@
         "email": "DIGIT-NEXTEUROPA-QA@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
     },
-    "bin": ["run"],
+
     "require": {
         "php": ">=8.1",
         "ext-curl": "*",
