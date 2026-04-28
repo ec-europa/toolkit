@@ -308,8 +308,8 @@
         ignore_annotations: false
         show_sniffs: false
         standards:
-          - ./vendor/drupal/coder/coder_sniffer/Drupal
-          - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+          - Drupal
+          - DrupalPractice
         ignore_patterns:
           - dist/
           - .cache/
@@ -350,8 +350,8 @@
         ignore_annotations: false
         show_sniffs: false
         standards:
-          - ./vendor/drupal/coder/coder_sniffer/Drupal
-          - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+          - Drupal
+          - DrupalPractice
         ignore_patterns:
           - dist/
           - .cache/

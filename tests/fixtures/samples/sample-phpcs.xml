@@ -3,8 +3,8 @@
     <description>The coding standard for phpcs.</description>
 
     <!-- Standards. -->
-    <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal"/>
-    <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice"/>
+    <rule ref="Drupal"/>
+    <rule ref="DrupalPractice"/>
 
     <!-- Arguments. -->
     <arg name="extensions" value="php,inc,yml"/>

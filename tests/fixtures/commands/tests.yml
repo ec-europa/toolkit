@@ -140,8 +140,8 @@
   expectations:
     - contains: |
         [error]  The following standards are missing, please add them to the configuration file 'phpcs.xml'.
-        ./vendor/drupal/coder/coder_sniffer/Drupal
-        ./vendor/drupal/coder/coder_sniffer/DrupalPractice
+        Drupal
+        DrupalPractice
 
 - command: 'toolkit:check-phpcs-requirements'
   configuration: []
