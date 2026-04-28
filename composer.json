@@ -10,7 +10,8 @@
         "email": "DIGIT-NEXTEUROPA-QA@ec.europa.eu",
         "source": "https://github.com/ec-europa/toolkit"
     },
-
+    "comment": "Having the line below Composer should create vendor/bin/run for project that uses this package.",
+    "bin": ["run"],
     "require": {
         "php": ">=8.1",
         "ext-curl": "*",
