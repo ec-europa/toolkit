@@ -66,13 +66,13 @@
         }
     },
     "scripts": {
-        "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility'",
+        "toolkit-update-phpcs-config": "$(pwd)/vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,../../ec-europa/toolkit/phpcs'",
         "post-install-cmd": [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'",
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/toolkit/phpcs'",
             "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
         ],
         "post-update-cmd": [
-            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs'",
+            "./vendor/bin/phpcs --config-set installed_paths '../../drupal/coder/coder_sniffer,../../phpcompatibility/php-compatibility,phpcs,../../ec-europa/toolkit/phpcs'",
             "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
         ]
     }
