@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- PHP_CodeSniffer standard for Drupal projects. -->
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<!-- This file is used to test whether projects can include and override the Drupal coding standard in their projects. -->
+<ruleset name="Drupal">
+    <description>Drupal coding standard</description>
+    <rule ref=".." />
+</ruleset>
