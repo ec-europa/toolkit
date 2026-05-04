@@ -23,8 +23,6 @@
     <exclude-pattern>tests/fixtures/</exclude-pattern>
     <exclude-pattern>tests/sandbox/</exclude-pattern>
 
-    <rule ref="MySource.Debug.DebugCode"/>
-
     <!-- Generic. -->
     <rule ref="Generic">
         <exclude name="Generic.Arrays.ArrayIndent.CloseBraceNotNewLine"/>
