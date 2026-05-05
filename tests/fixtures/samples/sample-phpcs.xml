@@ -5,7 +5,7 @@
     <!-- Standards. -->
     <rule ref="./vendor/drupal/coder/coder_sniffer/Drupal"/>
     <rule ref="./vendor/drupal/coder/coder_sniffer/DrupalPractice"/>
-    <rule ref="./vendor/ec-europa/qa-automation/phpcs/QualityAssurance"/>
+    <rule ref="./vendor/ec-europa/toolkit/phpcs/QualityAssurance"/>
 
     <!-- Arguments. -->
     <arg name="extensions" value="php,inc,yml"/>
