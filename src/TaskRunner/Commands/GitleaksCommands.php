@@ -38,6 +38,7 @@ class GitleaksCommands extends AbstractCommands
      * @command toolkit:run-gitleaks
      *
      * @option tag     The release tag of Gitleaks.
+     * @option sha256  SHA-256 checksum of the release archive.
      * @option os      The current OS version.
      * @option options The options to use when executing gitleaks command.
      *
@@ -48,12 +49,13 @@ class GitleaksCommands extends AbstractCommands
      */
     public function toolkitRunGitleaks(ConsoleIO $io, array $options = [
         'tag' => InputOption::VALUE_REQUIRED,
+        'sha256' => InputOption::VALUE_REQUIRED,
         'os' => InputOption::VALUE_REQUIRED,
         'options' => InputOption::VALUE_REQUIRED,
     ])
     {
         $repo = $this->getConfig()->get('gitleaks.repo');
-        if (!$this->download($repo, $options['tag'], $options['os'])) {
+        if (!$this->download($repo, $options['tag'], $options['os'], $options['sha256'])) {
             $io->error('Fail to download Gitleaks binary.');
             return ResultData::EXITCODE_ERROR;
         }
@@ -85,8 +87,10 @@ class GitleaksCommands extends AbstractCommands
      *   The release tag to download.
      * @param string $os
      *   The Operating system to use to download.
+     * @param string $sha256
+     *   Expected SHA-256 checksum of the downloaded archive.
      */
-    private function download(string $repo, string $tag, string $os): bool
+    private function download(string $repo, string $tag, string $os, string $sha256): bool
     {
         $link = "$repo/releases/download/v$tag/gitleaks_{$tag}_$os.tar.gz";
         $this->writeln("Downloading from $link");
@@ -95,6 +99,10 @@ class GitleaksCommands extends AbstractCommands
         }
         $tmp = 'gitleaks_tmp';
         if ($file = file_get_contents($link)) {
+            if (!$this->isChecksumValid($file, $sha256)) {
+                $this->writeln('Invalid SHA-256 checksum for downloaded Gitleaks archive.');
+                return false;
+            }
             if (!file_exists($tmp)) {
                 $this->_mkdir($tmp);
             }
@@ -110,6 +118,19 @@ class GitleaksCommands extends AbstractCommands
             }
         }
         return false;
+    }
+
+    /**
+     * Validate the archive SHA-256 checksum.
+     *
+     * @param string $file
+     *   Archive contents.
+     * @param string $sha256
+     *   Expected SHA-256 checksum.
+     */
+    private function isChecksumValid(string $file, string $sha256): bool
+    {
+        return hash_equals(strtolower($sha256), strtolower(hash('sha256', $file)));
     }
 
 }
