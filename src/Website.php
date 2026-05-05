@@ -138,7 +138,6 @@ class Website
         if ($result === false) {
             throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
         }
-        curl_close($curl);
 
         return $content;
     }
@@ -168,7 +167,6 @@ class Website
         $ch = curl_init(self::url() . '/session/token');
         curl_setopt_array($ch, $options);
         $token = (string) curl_exec($ch);
-        curl_close($ch);
         $GLOBALS['session_token'] = $token;
         return $token;
     }
@@ -206,7 +204,6 @@ class Website
         ]);
         curl_exec($ch);
         $code = (string) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
         return $code;
     }
 
