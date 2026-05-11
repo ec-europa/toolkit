@@ -304,6 +304,9 @@ class DumpCommands extends AbstractCommands
      *
      * @return int
      *   The file download from custom server status.
+     
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function customDownloadDump(ConsoleIO $io, array $options)
     {
