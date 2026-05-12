@@ -31,6 +31,7 @@
           mydumper: /scripts/backupdb.sh
           type: cloud
           show_progress: false
+          download_retries: 3
           nextcloud:
             services: mysql
             url: nextcloud.url/files
