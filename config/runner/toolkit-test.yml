@@ -126,3 +126,14 @@ toolkit:
     allow-list: axe-scan-allowlist.csv
     run-summary: true
     summary-result-file: axe-scan-summary.csv
+  run-tests:
+    type: clone
+    phpunit:
+      clone: false
+      clean: false
+    behat:
+      clone: true
+      clean: true
+    blackfire:
+      clone: false
+      clean: false
