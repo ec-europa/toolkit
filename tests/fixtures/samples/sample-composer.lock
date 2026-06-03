@@ -3283,7 +3283,7 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.5.1",
+            "version": "10.5.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -8415,88 +8415,6 @@
                 "source": "https://github.com/openeuropa/oe_authentication/tree/1.9.0"
             },
             "time": "2022-09-16T12:52:18+00:00"
-        },
-        {
-            "name": "openeuropa/oe_dashboard_agent",
-            "version": "0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/openeuropa/oe_dashboard_agent.git",
-                "reference": "cb54ee2b0c5dc53c8e201a8bcd1e3fbf1c30e8dd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/openeuropa/oe_dashboard_agent/zipball/cb54ee2b0c5dc53c8e201a8bcd1e3fbf1c30e8dd",
-                "reference": "cb54ee2b0c5dc53c8e201a8bcd1e3fbf1c30e8dd",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/core": "^8.9 || ^9.1",
-                "php": ">=7.3"
-            },
-            "require-dev": {
-                "composer/installers": "~1.5",
-                "drupal/config_devel": "~1.2",
-                "drupal/core-composer-scaffold": "^8.9 || ^9.1",
-                "drupal/datetime_testing": "1.x-dev",
-                "drupal/drupal-extension": "^4.0",
-                "drush/drush": "^10.3",
-                "openeuropa/code-review": "^1.6",
-                "openeuropa/drupal-core-require-dev": "^8.9 || ^9.1",
-                "openeuropa/task-runner-drupal-project-symlink": "^1.0",
-                "phpspec/prophecy-phpunit": "^1 || ^2"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "composer-exit-on-patch-failure": true,
-                "enable-patching": true,
-                "installer-paths": {
-                    "build/core": [
-                        "type:drupal-core"
-                    ],
-                    "build/profiles/contrib/{$name}": [
-                        "type:drupal-profile"
-                    ],
-                    "build/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "build/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
-                },
-                "drupal-scaffold": {
-                    "locations": {
-                        "web-root": "./build"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Drupal\\oe_dashboard_agent\\": "./src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Drupal\\Tests\\oe_dashboard_agent\\": "./tests/src/"
-                }
-            },
-            "scripts": {
-                "post-install-cmd": [
-                    "./vendor/bin/run drupal:site-setup"
-                ],
-                "post-update-cmd": [
-                    "./vendor/bin/run drupal:site-setup"
-                ]
-            },
-            "license": [
-                "EUPL-1.2"
-            ],
-            "description": "OpenEuropa Dashboard Agent.",
-            "support": {
-                "source": "https://github.com/openeuropa/oe_dashboard_agent/tree/0.3.0",
-                "issues": "https://github.com/openeuropa/oe_dashboard_agent/issues"
-            },
-            "time": "2021-08-16T08:11:50+00:00"
         },
         {
             "name": "pear/archive_tar",

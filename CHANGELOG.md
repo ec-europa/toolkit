@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 10.28.0
+  - DQA-13950: Remove dependency on ec-europa/qa-automation and add support to coder 9.
+  - DQA-13914: Validate SHA256 of gitleaks binary after download.
+  - DQA-13914: Verify SHA1 after dump is downloaded and retry in case of issues during download.
+  - DQA-14171: Improvements run-tests commands.
+
 ## Version 10.27.0
   - DQA-13733: Set new gitlab & nextcloud urls.
   - DQA-13747: Support Coder 9.0.
