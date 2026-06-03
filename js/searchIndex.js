@@ -1196,6 +1196,16 @@ Search.appendIndex(
             "summary": "Helper\u0020to\u0020download\u0020and\u0020process\u0020a\u0020Nextcloud\u0020dump\u0020file.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_asdaProcessFile"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AparseLatestShaData\u0028\u0029",
+            "name": "parseLatestShaData",
+            "summary": "Parse\u0020Nextcloud\u0020checksum\u0020file\u0020content.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_parseLatestShaData"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AverifyDownloadedFileSha\u0028\u0029",
+            "name": "verifyDownloadedFileSha",
+            "summary": "Verify\u0020checksum\u0020for\u0020a\u0020downloaded\u0020dump\u0020file.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-DumpCommands.html#method_verifyDownloadedFileSha"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\DumpCommands\u003A\u003AdownloadShaFile\u0028\u0029",
             "name": "downloadShaFile",
             "summary": "Download\u0020the\u0020.sha\u0020file.",
@@ -1350,6 +1360,11 @@ Search.appendIndex(
             "name": "download",
             "summary": "Download\u0020the\u0020Gitleaks\u0020binary\u0020from\u0020the\u0020GitHub\u0020releases\u0020page.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_download"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AisChecksumValid\u0028\u0029",
+            "name": "isChecksumValid",
+            "summary": "Validate\u0020the\u0020archive\u0020SHA\u002D256\u0020checksum.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_isChecksumValid"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003A\u0024repo",
             "name": "repo",
