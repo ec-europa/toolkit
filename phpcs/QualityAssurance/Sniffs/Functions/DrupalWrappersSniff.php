@@ -54,6 +54,7 @@ class DrupalWrappersSniff extends ForbiddenFunctionsSniff
         'strtolower'                 => 'mb_strtolower',
         'strtoupper'                 => 'mb_strtoupper',
         'date'                       => 'Drupal::service("date.formatter")->format',
+        'xdebug_break'               => null,
     ];
 
     /**
