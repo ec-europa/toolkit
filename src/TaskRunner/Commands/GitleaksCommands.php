@@ -32,15 +32,20 @@ class GitleaksCommands extends AbstractCommands
     /**
      * Executes the Gitleaks.
      *
+     * When used with --update, builds a distribution package (if not already
+     * present) and scans only production code (excluding require-dev
+     * dependencies). Without --update, scans the current directory as-is.
+     *
      * @param array<mixed> $options
      *   Command options.
      *
      * @command toolkit:run-gitleaks
      *
-     * @option tag     The release tag of Gitleaks.
+     * @option tag      The release tag of Gitleaks.
      * @option sha256  SHA-256 checksum of the release archive.
-     * @option os      The current OS version.
-     * @option options The options to use when executing gitleaks command.
+     * @option os       The current OS version.
+     * @option options  The options to use when executing gitleaks command.
+     * @option update   Regenerate the leaksignore file scanning dist/.
      *
      * @return int|\Robo\Collection\CollectionBuilder
      *   The object collection builder or integer if failed.
@@ -52,6 +57,7 @@ class GitleaksCommands extends AbstractCommands
         'sha256' => InputOption::VALUE_REQUIRED,
         'os' => InputOption::VALUE_REQUIRED,
         'options' => InputOption::VALUE_REQUIRED,
+        'update' => false,
     ])
     {
         $repo = $this->getConfig()->get('gitleaks.repo');
@@ -75,7 +81,137 @@ class GitleaksCommands extends AbstractCommands
         }
 
         $options['options'] = implode(' ', $optionsExploded);
-        return $this->taskExec($this->getBin('gitleaks') . ' ' . $command . ' ' . $options['options']);
+
+        // Without --update, run gitleaks normally and return.
+        if (empty($options['update'])) {
+            return $this->taskExec($this->getBin('gitleaks') . ' ' . $command . ' ' . $options['options']);
+        }
+
+        // With --update, scan the dist directory for production code only.
+        $distRoot = $this->getConfig()->get('toolkit.build.dist.root');
+        if (!is_dir($distRoot) || (new \FilesystemIterator($distRoot))->valid() === false) {
+            $io->error(sprintf(
+                'The dist directory "%s" is empty or does not exist. Run "toolkit:build-dist" first.',
+                $distRoot
+            ));
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        // Point gitleaks at the dist directory.
+        if ($command === 'directory') {
+            $command .= ' ' . $distRoot;
+        } else {
+            $options['options'] .= ' --source=' . $distRoot;
+        }
+
+        // Regenerate the leaksignore file.
+        return $this->updateLeaksignore($io, $command, $options, $distRoot);
+    }
+
+    /**
+     * Regenerate the leaksignore file from gitleaks findings.
+     *
+     * @param \Robo\Symfony\ConsoleIO $io
+     *   The console IO.
+     * @param string $command
+     *   The gitleaks command (detect or directory).
+     * @param array<mixed> $options
+     *   The command options.
+     * @param string $distRoot
+     *   The distribution root directory.
+     *
+     * @return int
+     *   The exit code.
+     */
+    private function updateLeaksignore(ConsoleIO $io, string $command, array $options, string $distRoot): int
+    {
+        $reportPath = sys_get_temp_dir() . '/gitleaks-report.json';
+        $leaksignorePath = $this->getConfig()->get('gitleaks.leaksignore');
+        $containerRoot = rtrim($this->getConfig()->get('gitleaks.container_root'), '/') . '/';
+        $distPrefix = rtrim($distRoot, '/') . '/';
+
+        // Clear leaksignore before scan to avoid stale entries.
+        file_put_contents($leaksignorePath, '');
+
+        // Run gitleaks with JSON report output.
+        $fullCommand = sprintf(
+            '%s %s %s --report-format json --report-path %s',
+            $this->getBinPath('gitleaks'),
+            $command,
+            $options['options'],
+            $reportPath
+        );
+        $io->writeln("Executing: $fullCommand");
+        $this->taskExec($fullCommand)->run();
+
+        // Extract fingerprints from report.
+        $entries = [];
+        if (file_exists($reportPath)) {
+            $findings = json_decode(file_get_contents($reportPath), true);
+            @unlink($reportPath);
+            if (!empty($findings)) {
+                foreach ($findings as $finding) {
+                    if (!empty($finding['Fingerprint'])) {
+                        $entries[] = $finding['Fingerprint'];
+                    }
+                }
+            }
+        }
+
+        // Strip dist root prefix from fingerprints so paths match the
+        // deployed structure (e.g. dist/vendor/... becomes vendor/...).
+        $entries = array_map(static function (string $entry) use ($distPrefix): string {
+            if (str_starts_with($entry, $distPrefix)) {
+                return substr($entry, strlen($distPrefix));
+            }
+            return $entry;
+        }, $entries);
+
+        // Normalize paths: prefix relative paths with container root.
+        $entries = array_map(static function (string $entry) use ($containerRoot): string {
+            if (!str_starts_with($entry, '/')) {
+                return $containerRoot . $entry;
+            }
+            return $entry;
+        }, $entries);
+
+        // Deduplicate.
+        $entries = array_unique($entries);
+
+        // Group entries by rule ID (fingerprint format: filepath:ruleID:line).
+        $groups = [];
+        foreach ($entries as $entry) {
+            $parts = explode(':', $entry);
+            $ruleId = count($parts) >= 3 ? $parts[count($parts) - 2] : 'unknown';
+            $groups[$ruleId][] = $entry;
+        }
+
+        // Sort groups by rule name, entries by natural order within each group.
+        ksort($groups, SORT_STRING);
+        $lines = [];
+        foreach ($groups as $ruleId => $groupEntries) {
+            sort($groupEntries, SORT_NATURAL);
+            if (!empty($lines)) {
+                $lines[] = '';
+            }
+            $separator = str_repeat('#', strlen($ruleId) + 4);
+            $lines[] = $separator;
+            $lines[] = "# $ruleId";
+            $lines[] = $separator;
+            array_push($lines, ...$groupEntries);
+        }
+
+        // Write leaksignore.
+        file_put_contents($leaksignorePath, implode("\n", $lines) . "\n");
+
+        $io->success(sprintf(
+            'Generated %s: %d entries in %d groups.',
+            $leaksignorePath,
+            count($entries),
+            count($groups)
+        ));
+
+        return ResultData::EXITCODE_OK;
     }
 
     /**

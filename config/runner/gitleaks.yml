@@ -4,3 +4,5 @@ gitleaks:
   sha256: 141c3b2dede46d8b3a53b47116da756bd223decc0374797559a6b50ecba5590c
   os: linux_x64
   options: '--no-banner -v --no-git --follow-symlinks'
+  container_root: '/var/www/html'
+  leaksignore: '.leaksignore'
