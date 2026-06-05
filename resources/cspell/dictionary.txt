@@ -38,6 +38,7 @@ grasmash
 grumphp
 gulpfile
 issuetype
+leaksignore
 localdomain
 mailhog
 metapackage
