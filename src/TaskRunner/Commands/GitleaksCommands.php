@@ -48,10 +48,12 @@ class GitleaksCommands extends AbstractCommands
      * @option ignore-file     Path to .leaksignore file (default ".leaksignore").
      * @option report-to-file  Save the findings to a file.
      *
+     * @aliases tk-gitleaks
+     *
+     * @usage --skip-dist --report-to-file
+     *
      * @return int
      *   Return 1 if there're findings, 0 if no issues detected.
-     *
-     * @aliases tk-gitleaks
      */
     public function toolkitRunGitleaks(ConsoleIO $io, array $options = [
         'tag' => InputOption::VALUE_REQUIRED,
@@ -95,9 +97,7 @@ class GitleaksCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $findings = json_decode($reportFileContent, true);
-
-        if (empty($findings)) {
+        if (empty($findings = json_decode($reportFileContent, true))) {
             $this->printReport(['found' => 0, 'ignored' => 0]);
             return ResultData::EXITCODE_OK;
         }
