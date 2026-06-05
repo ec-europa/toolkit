@@ -1,20 +1,115 @@
 - command: 'toolkit:run-gitleaks'
+  configuration: []
+  resources:
+    - file: gitleaks-report.json
+      content: '[]'
   expectations:
     - contains: |
-        Downloading from https://github.com/gitleaks/gitleaks/releases/download/v8.27.2/gitleaks_8.27.2_linux_x64.tar.gz
-        [Simulator] Simulating Exec('./vendor/bin/gitleaks directory --no-banner -v --follow-symlinks')
-        [Simulator] Running ./vendor/bin/gitleaks directory --no-banner -v --follow-symlinks
+        Skip download, binary was found.
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:build-dist')
+        [Simulator] Running ./vendor/bin/run toolkit:build-dist
+        >  ./vendor/bin/gitleaks directory dist --no-banner -v --follow-symlinks --report-path=gitleaks-report.json
+        [Simulator] Running ./vendor/bin/gitleaks directory dist --no-banner -v --follow-symlinks --report-path=gitleaks-report.json
+        ------------------ ---
+         Findings Found     0
+         Findings Ignored   0
+         Findings Active    0
+        ------------------ ---
 
 - command: 'toolkit:run-gitleaks --options="--no-banner --redact"'
+  configuration: []
+  resources:
+    - file: gitleaks-report.json
+      content: '[]'
   expectations:
     - contains: |
-        Downloading from https://github.com/gitleaks/gitleaks/releases/download/v8.27.2/gitleaks_8.27.2_linux_x64.tar.gz
-        [Simulator] Simulating Exec('./vendor/bin/gitleaks directory --no-banner --redact')
-        [Simulator] Running ./vendor/bin/gitleaks directory --no-banner --redact
+        Skip download, binary was found.
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:build-dist')
+        [Simulator] Running ./vendor/bin/run toolkit:build-dist
+        >  ./vendor/bin/gitleaks directory dist --no-banner --redact --report-path=gitleaks-report.json
+        [Simulator] Running ./vendor/bin/gitleaks directory dist --no-banner --redact --report-path=gitleaks-report.json
+        ------------------ ---
+         Findings Found     0
+         Findings Ignored   0
+         Findings Active    0
+        ------------------ ---
 
 - command: 'toolkit:run-gitleaks --tag=1.0.2 --os=linux_x32 --sha256=deadbeef'
+  configuration: []
+  resources:
+    - file: gitleaks-report.json
+      content: '[]'
   expectations:
     - contains: |
-        Downloading from https://github.com/gitleaks/gitleaks/releases/download/v1.0.2/gitleaks_1.0.2_linux_x32.tar.gz
-        [Simulator] Simulating Exec('./vendor/bin/gitleaks detect --no-banner -v --no-git --follow-symlinks')
-        [Simulator] Running ./vendor/bin/gitleaks detect --no-banner -v --no-git --follow-symlinks
+        Skip download, binary was found.
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:build-dist')
+        [Simulator] Running ./vendor/bin/run toolkit:build-dist
+        >  ./vendor/bin/gitleaks detect --source=dist --no-banner -v --no-git --follow-symlinks --report-path=gitleaks-report.json
+        [Simulator] Running ./vendor/bin/gitleaks detect --source=dist --no-banner -v --no-git --follow-symlinks --report-path=gitleaks-report.json
+        ------------------ ---
+         Findings Found     0
+         Findings Ignored   0
+         Findings Active    0
+        ------------------ ---
+
+- command: 'toolkit:run-gitleaks'
+  configuration: []
+  resources:
+    - from: sample-gitleaks-report.json
+      to: gitleaks-report.json
+    - file: .toolkit-mock/0.0.103/api/v1/gitleaks-ignores.json
+      content: |
+        empty
+  expectations:
+    - contains: |
+        Skip download, binary was found.
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:build-dist')
+        [Simulator] Running ./vendor/bin/run toolkit:build-dist
+        >  ./vendor/bin/gitleaks directory dist --no-banner -v --follow-symlinks --report-path=gitleaks-report.json
+        [Simulator] Running ./vendor/bin/gitleaks directory dist --no-banner -v --follow-symlinks --report-path=gitleaks-report.json
+        Findings:
+        =========
+        Detected a Generic API Key, potentially exposing access to various services and sensitive operations.
+        =====================================================================================================
+        File:                 web/core/assets/vendor/ckeditor5/find-and-replace/find-and-replace.js
+        Fingerprint:          web/core/assets/vendor/ckeditor5/find-and-replace/find-and-replace.js:generic-api-key:5
+        ToolkitFingerprint:   387a4077adcc1fc60f0135e79c0450ca91ca90b2a89c968b13bcb0771f04c29f
+
+        Detected a Generic API Key, potentially exposing access to various services and sensitive operations.
+        =====================================================================================================
+        File:                 web/core/assets/vendor/ckeditor5/special-characters/special-characters.js
+        Fingerprint:          web/core/assets/vendor/ckeditor5/special-characters/special-characters.js:generic-api-key:5
+        ToolkitFingerprint:   f3b0bd000a796a123ef1f58368f5847bc7322bac8f2b2014b254eaa890a877b2
+
+        ------------------ ---
+         Findings Found     2
+         Findings Ignored   0
+         Findings Active    2
+        ------------------ ---
+
+- command: 'toolkit:run-gitleaks'
+  configuration: []
+  resources:
+    - from: sample-gitleaks-report.json
+      to: gitleaks-report.json
+    - file: .toolkit-mock/0.0.103/api/v1/gitleaks-ignores.json
+      content: |
+        {"gitleaks_ignores":[
+        "f3b0bd000a796a123ef1f58368f5847bc7322bac8f2b2014b254eaa890a877b2"
+        ]}
+    - file: .leaksignore
+      content: |
+        web/core/assets/vendor/ckeditor5/find-and-replace/find-and-replace.js:generic-api-key:5
+  expectations:
+    - contains: |
+        Skip download, binary was found.
+        [Simulator] Simulating Exec('./vendor/bin/run toolkit:build-dist')
+        [Simulator] Running ./vendor/bin/run toolkit:build-dist
+        >  ./vendor/bin/gitleaks directory dist --no-banner -v --follow-symlinks --report-path=gitleaks-report.json
+        [Simulator] Running ./vendor/bin/gitleaks directory dist --no-banner -v --follow-symlinks --report-path=gitleaks-report.json
+
+        ------------------ ---
+         Findings Found     2
+         Findings Ignored   2
+         Findings Active    0
+        ------------------ ---
