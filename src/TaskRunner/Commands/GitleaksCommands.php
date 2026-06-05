@@ -215,8 +215,6 @@ class GitleaksCommands extends AbstractCommands
      *   The report to print.
      * @param array<mixed> $findings
      *   The gitleaks findings to print.
-     *
-     * @return void
      */
     private function printReport(array $report, array $findings = []): void
     {
