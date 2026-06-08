@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.29.1
+  - DQA-0000: Add xdebug_break() to the list of forbidden functions.
+  - DQA-14193: Gitleaks improvements
+
 ## Version 10.28.0
   - DQA-13950: Remove dependency on ec-europa/qa-automation and add support to coder 9.
   - DQA-13914: Validate SHA256 of gitleaks binary after download.
