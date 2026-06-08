@@ -107,8 +107,8 @@ class GitleaksCommands extends AbstractCommands
             'ignored' => $this->processFindings($findings, $options),
         ];
 
-        // Delete the report file if report-to-file is not used.
-        if (empty($options['report-to-file'])) {
+        // Delete the report file if report-to-file is not used or if in CI.
+        if (Toolkit::isCiCd() || empty($options['report-to-file'])) {
             unlink($reportFile);
         } else {
             file_put_contents($reportFile, json_encode($findings, JSON_PRETTY_PRINT));
@@ -147,6 +147,11 @@ class GitleaksCommands extends AbstractCommands
             $command = "directory $dist";
         }
 
+        // Make sure that redact option is not used, we will hide the secrets later on.
+        if (($index = array_search('--redact', $optionsExploded)) !== false) {
+            unset($optionsExploded[$index]);
+        }
+
         // Report to a file.
         $optionsExploded[] = "--report-path=$reportFile";
 
@@ -164,7 +169,12 @@ class GitleaksCommands extends AbstractCommands
      */
     private function getIgnores(array $options): array
     {
-        $ignores = Website::gitleaksIgnores() ?: [];
+        $ignores = [];
+        try {
+            $ignores = Website::gitleaksIgnores() ?: [];
+        } catch (\Exception) {
+            $this->io->writeln('Endpoint not available, skipping global ignores.');
+        }
         // Add the project ignores.
         if (file_exists($options['ignore-file'])) {
             $projectIgnores = file($options['ignore-file'], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -196,13 +206,18 @@ class GitleaksCommands extends AbstractCommands
             // Build the fingerprint using the relative path to the file,
             // the secret found and the rule id.
             $finding['ToolkitFingerprint'] = hash('sha256', "{$finding['File']}:{$finding['Secret']}:{$finding['RuleID']}");
-            if (empty($ignores)) {
-                continue;
+
+            if (!empty($ignores)) {
+                if (in_array($finding['ToolkitFingerprint'], $ignores) || in_array($finding['Fingerprint'], $ignores)) {
+                    unset($findings[$index]);
+                    $ignored++;
+                    continue;
+                }
             }
-            if (in_array($finding['ToolkitFingerprint'], $ignores) || in_array($finding['Fingerprint'], $ignores)) {
-                unset($findings[$index]);
-                $ignored++;
-            }
+
+            // Make sure that the Secret is redacted.
+            $finding['Match'] = str_replace($finding['Secret'], 'REDACTED', $finding['Match']);
+            $finding['Secret'] = 'REDACTED';
         }
 
         return $ignored;
