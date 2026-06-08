@@ -1,0 +1,42 @@
+[
+    {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "StartLine": 5,
+        "EndLine": 5,
+        "StartColumn": 14499,
+        "EndColumn": 14538,
+        "Match": "r.KeystrokeHandler,this._focusables=new ",
+        "Secret": "this._focusables=new",
+        "File": "web\/core\/assets\/vendor\/ckeditor5\/find-and-replace\/find-and-replace.js",
+        "SymlinkFile": "",
+        "Commit": "",
+        "Entropy": 3.9841838,
+        "Author": "",
+        "Email": "",
+        "Date": "",
+        "Message": "",
+        "Tags": [],
+        "Fingerprint": "web\/core\/assets\/vendor\/ckeditor5\/find-and-replace\/find-and-replace.js:generic-api-key:5"
+    },
+    {
+        "RuleID": "generic-api-key",
+        "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+        "StartLine": 5,
+        "EndLine": 5,
+        "StartColumn": 12180,
+        "EndColumn": 12220,
+        "Match": "c.KeystrokeHandler,this._focusCycler=new ",
+        "Secret": "this._focusCycler=new",
+        "File": "web\/core\/assets\/vendor\/ckeditor5\/special-characters\/special-characters.js",
+        "SymlinkFile": "",
+        "Commit": "",
+        "Entropy": 4.106603,
+        "Author": "",
+        "Email": "",
+        "Date": "",
+        "Message": "",
+        "Tags": [],
+        "Fingerprint": "web\/core\/assets\/vendor\/ckeditor5\/special-characters\/special-characters.js:generic-api-key:5"
+    }
+]

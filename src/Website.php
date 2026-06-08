@@ -319,6 +319,25 @@ class Website
     }
 
     /**
+     * Returns the gitleaks ignores from the endpoint.
+     *
+     * @return false|array<mixed>
+     *   The gitleaks ignores from the endpoint.
+     */
+    public static function gitleaksIgnores()
+    {
+        if (empty($auth = self::apiAuth())) {
+            return false;
+        }
+        $url = self::url() . '/api/v1/gitleaks-ignores';
+        if (!empty($projectId = getenv('TOOLKIT_PROJECT_ID'))) {
+            $url .= '?project=' . $projectId;
+        }
+        $data = self::getWithMockFallback($url, $auth);
+        return empty($data) ? [] : $data['gitleaks_ignores'];
+    }
+
+    /**
      * Returns the notifications from the endpoint.
      *
      * @return false|array<mixed>
