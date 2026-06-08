@@ -1356,6 +1356,26 @@ Search.appendIndex(
             "summary": "Executes\u0020the\u0020Gitleaks.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_toolkitRunGitleaks"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AprepareCommand\u0028\u0029",
+            "name": "prepareCommand",
+            "summary": "Prepares\u0020the\u0020full\u0020gitleaks\u0020command\u0020including\u0020the\u0020options.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_prepareCommand"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AgetIgnores\u0028\u0029",
+            "name": "getIgnores",
+            "summary": "Returns\u0020the\u0020ignores\u0020to\u0020use\u0020from\u0020website\u0020and\u0020project.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_getIgnores"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AprocessFindings\u0028\u0029",
+            "name": "processFindings",
+            "summary": "Process\u0020the\u0020findings\u0020and\u0020returns\u0020the\u0020number\u0020of\u0020ignored.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_processFindings"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AprintReport\u0028\u0029",
+            "name": "printReport",
+            "summary": "Prints\u0020the\u0020report\u0020information.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_printReport"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003Adownload\u0028\u0029",
             "name": "download",
             "summary": "Download\u0020the\u0020Gitleaks\u0020binary\u0020from\u0020the\u0020GitHub\u0020releases\u0020page.",
@@ -1380,6 +1400,11 @@ Search.appendIndex(
             "name": "os",
             "summary": "",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_os"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003A\u0024io",
+            "name": "io",
+            "summary": "",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_io"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\InstallCommands",
             "name": "InstallCommands",
@@ -2030,6 +2055,11 @@ Search.appendIndex(
             "name": "packages",
             "summary": "Returns\u0020the\u0020packages\u0020reviews\u0020from\u0020the\u0020endpoint.",
             "url": "classes/EcEuropa-Toolkit-Website.html#method_packages"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003AgitleaksIgnores\u0028\u0029",
+            "name": "gitleaksIgnores",
+            "summary": "Returns\u0020the\u0020gitleaks\u0020ignores\u0020from\u0020the\u0020endpoint.",
+            "url": "classes/EcEuropa-Toolkit-Website.html#method_gitleaksIgnores"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\Website\u003A\u003Anotifications\u0028\u0029",
             "name": "notifications",

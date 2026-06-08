@@ -177,7 +177,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
@@ -209,6 +209,12 @@
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_io">$io</a>
+    <span>
+                        &nbsp;: mixed            </span>
+</dt>
+
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_os">$os</a>
     <span>
@@ -266,7 +272,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_toolkitRunGitleaks">toolkitRunGitleaks()</a>
     <span>
-                                &nbsp;: int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr>    </span>
+                                &nbsp;: int    </span>
 </dt>
 <dd>Executes the Gitleaks.</dd>
 
@@ -348,11 +354,39 @@
 <dd>Download the Gitleaks binary from the GitHub releases page.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_getIgnores">getIgnores()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, string&gt;    </span>
+</dt>
+<dd>Returns the ignores to use from website and project.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_isChecksumValid">isChecksumValid()</a>
     <span>
                                 &nbsp;: bool    </span>
 </dt>
 <dd>Validate the archive SHA-256 checksum.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_prepareCommand">prepareCommand()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Prepares the full gitleaks command including the options.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_printReport">printReport()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Prints the report information.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -private">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_processFindings">processFindings()</a>
+    <span>
+                                &nbsp;: int    </span>
+</dt>
+<dd>Process the findings and returns the number of ignored.</dd>
 
     </dl>
 
@@ -374,6 +408,43 @@
             -protected
                                                                     "
 >
+    <h4 class="phpdocumentor-element__name" id="property_io">
+        $io
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_io" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">25</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">protected</span>
+            <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">$io</span>
+    </code>
+
+    
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                                    "
+>
     <h4 class="phpdocumentor-element__name" id="property_os">
         $os
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_os" class="headerlink"><i class="fas fa-link"></i></a>
@@ -384,7 +455,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">24</span>
 
     </aside>
 
@@ -421,7 +492,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">20</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
@@ -458,7 +529,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">21</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
@@ -500,7 +571,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">27</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -687,7 +758,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">50</span>
+    <span class="phpdocumentor-element-found-in__line">58</span>
 
     </aside>
 
@@ -695,7 +766,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toolkitRunGitleaks</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">['tag' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'sha256' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'os' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'options' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">toolkitRunGitleaks</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type"><abbr title="\Robo\Symfony\ConsoleIO">ConsoleIO</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$io</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">['tag' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'sha256' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'os' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'options' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'skip-dist' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_NONE">InputOption::VALUE_NONE</abbr>, 'ignore-file' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'report-to-file' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_NONE">InputOption::VALUE_NONE</abbr>]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -713,7 +784,7 @@
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-argument-list__argument__name">$options</span>
                 : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
-                 = <span class="phpdocumentor-argument-list__argument__default-value">['tag' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'sha256' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'os' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'options' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>]</span>            </dt>
+                 = <span class="phpdocumentor-argument-list__argument__default-value">['tag' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'sha256' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'os' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'options' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'skip-dist' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_NONE">InputOption::VALUE_NONE</abbr>, 'ignore-file' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'report-to-file' => <abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_NONE">InputOption::VALUE_NONE</abbr>]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                     <section class="phpdocumentor-description"><p>Command options.</p>
 </section>
@@ -740,22 +811,37 @@
                 <span class="phpdocumentor-tag__name">option</span>
             </dt>
                             <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>tag     The release tag of Gitleaks.</p>
+                                                                                                            <section class="phpdocumentor-description"><p>tag             The release tag of Gitleaks.</p>
 </section>
 
                                     </dd>
                             <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>sha256  SHA-256 checksum of the release archive.</p>
+                                                                                                            <section class="phpdocumentor-description"><p>sha256          SHA-256 checksum of the release archive.</p>
 </section>
 
                                     </dd>
                             <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>os      The current OS version.</p>
+                                                                                                            <section class="phpdocumentor-description"><p>os              The current OS version.</p>
 </section>
 
                                     </dd>
                             <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>options The options to use when executing gitleaks command.</p>
+                                                                                                            <section class="phpdocumentor-description"><p>options         The options to use when executing gitleaks command.</p>
+</section>
+
+                                    </dd>
+                            <dd class="phpdocumentor-tag-list__definition">
+                                                                                                            <section class="phpdocumentor-description"><p>skip-dist       Skip the creation of distribution.</p>
+</section>
+
+                                    </dd>
+                            <dd class="phpdocumentor-tag-list__definition">
+                                                                                                            <section class="phpdocumentor-description"><p>ignore-file     Path to .leaksignore file (default &quot;.leaksignore&quot;).</p>
+</section>
+
+                                    </dd>
+                            <dd class="phpdocumentor-tag-list__definition">
+                                                                                                            <section class="phpdocumentor-description"><p>report-to-file  Save the findings to a file.</p>
 </section>
 
                                     </dd>
@@ -767,15 +853,23 @@
 </section>
 
                                     </dd>
+                                <dt class="phpdocumentor-tag-list__entry">
+                <span class="phpdocumentor-tag__name">usage</span>
+            </dt>
+                            <dd class="phpdocumentor-tag-list__definition">
+                                                                                                            <section class="phpdocumentor-description"><p>--skip-dist --report-to-file</p>
+</section>
+
+                                    </dd>
                         </dl>
 
         
     
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type">int|<abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span>
+        <span class="phpdocumentor-signature__response_type">int</span>
                     &mdash;
-                <section class="phpdocumentor-description"><p>The object collection builder or integer if failed.</p>
+                <section class="phpdocumentor-description"><p>Return 1 if there're findings, 0 if no issues detected.</p>
 </section>
 
             </section>
@@ -1359,7 +1453,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">270</span>
 
     </aside>
 
@@ -1429,6 +1523,61 @@
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getIgnores">
+        getIgnores()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_getIgnores" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">170</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the ignores to use from website and project.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">getIgnores</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$options</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The command options.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        
+    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The ignores to use.</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_isChecksumValid">
         isChecksumValid()
         <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_isChecksumValid" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1437,7 +1586,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">131</span>
+    <span class="phpdocumentor-element-found-in__line">309</span>
 
     </aside>
 
@@ -1483,6 +1632,181 @@
             </section>
 
 </article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_prepareCommand">
+        prepareCommand()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_prepareCommand" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">130</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Prepares the full gitleaks command including the options.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">prepareCommand</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$options</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The command options.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        
+    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The final command to execute.</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_printReport">
+        printReport()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_printReport" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">234</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Prints the report information.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">printReport</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$report</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$findings</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$report</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The report to print.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$findings</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-argument-list__argument__default-value">[]</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The gitleaks findings to print.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        
+    
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_processFindings">
+        processFindings()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_processFindings" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/GitleaksCommands.php"><a href="files/src-taskrunner-commands-gitleakscommands.html"><abbr title="src/TaskRunner/Commands/GitleaksCommands.php">GitleaksCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">197</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Process the findings and returns the number of ignored.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+                    <span class="phpdocumentor-signature__name">processFindings</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$findings</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$findings</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The gitleaks findings.</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$options</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The command options.</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        
+    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>The number of ignored findings.</p>
+</section>
+
+            </section>
+
+</article>
             </section>
 
         
@@ -1505,6 +1829,7 @@
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
+                                                    <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_io">$io</a></li>
                                                     <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_os">$os</a></li>
                                                     <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_repo">$repo</a></li>
                                                     <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#property_tag">$tag</a></li>
@@ -1530,7 +1855,11 @@
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskProcess">taskProcess()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-Task-File-Tasks.html#method_taskReplaceBlock">taskReplaceBlock()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_download">download()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_getIgnores">getIgnores()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_isChecksumValid">isChecksumValid()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_prepareCommand">prepareCommand()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_printReport">printReport()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_processFindings">processFindings()</a></li>
                                     </ul>
             </li>
                     </ul>
