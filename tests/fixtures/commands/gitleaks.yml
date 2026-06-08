@@ -26,8 +26,8 @@
         Skip download, binary was found.
         [Simulator] Simulating Exec('./vendor/bin/run toolkit:build-dist')
         [Simulator] Running ./vendor/bin/run toolkit:build-dist
-        >  ./vendor/bin/gitleaks directory dist --no-banner --redact --report-path=gitleaks-report.json
-        [Simulator] Running ./vendor/bin/gitleaks directory dist --no-banner --redact --report-path=gitleaks-report.json
+        >  ./vendor/bin/gitleaks directory dist --no-banner --report-path=gitleaks-report.json
+        [Simulator] Running ./vendor/bin/gitleaks directory dist --no-banner --report-path=gitleaks-report.json
         ------------------ ---
          Findings Found     0
          Findings Ignored   0
