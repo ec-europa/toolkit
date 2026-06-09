@@ -1,0 +1,64 @@
+<?php
+
+namespace QualityAssurance\Sniffs\Generic;
+
+use QualityAssurance\Test\CoderSniffUnitTest;
+
+class HardcodedPathUnitTest extends CoderSniffUnitTest
+{
+
+
+    /**
+     * Returns the lines where errors should occur.
+     *
+     * The key of the array should represent the line number and the value
+     * should represent the number of errors that should occur on that line.
+     *
+     * @return array(int => int)
+     */
+    public function getErrorList()
+    {
+        return [
+            55 => 1,
+            56 => 1,
+            57 => 1,
+            58 => 1,
+            59 => 1,
+            60 => 1,
+        ];
+
+    }//end getErrorList()
+
+
+    /**
+     * Returns the lines where warnings should occur.
+     *
+     * The key of the array should represent the line number and the value
+     * should represent the number of warnings that should occur on that line.
+     *
+     * @return array(int => int)
+     */
+    public function getWarningList()
+    {
+        return [];
+
+    }//end getWarningList()
+
+
+    /**
+     * Returns a list of test files that should be checked.
+     *
+     * @param string $testFileBase The base path that the unit tests files will have.
+     *
+     * @return array The list of test files.
+     */
+    protected function getTestFiles($testFileBase)
+    {
+        return [
+            __DIR__.'/HardcodedPath.tpl.php',
+        ];
+
+    }//end getTestFiles()
+
+
+}//end class

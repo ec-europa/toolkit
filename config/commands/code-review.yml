@@ -16,7 +16,4 @@ command:
         requirements: false
     run-tests:
       options:
-        phpunit: false
-        behat: false
-        blackfire: false
-        components: false
+        type: ${toolkit.run-tests.type}

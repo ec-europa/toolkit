@@ -31,6 +31,7 @@
           mydumper: /scripts/backupdb.sh
           type: cloud
           show_progress: false
+          download_retries: 3
           nextcloud:
             services: mysql
             url: nextcloud.url/files
@@ -310,7 +311,7 @@
         standards:
           - ./vendor/drupal/coder/coder_sniffer/Drupal
           - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-          - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+          - ./vendor/ec-europa/toolkit/phpcs/QualityAssurance
         ignore_patterns:
           - dist/
           - .cache/
@@ -353,7 +354,7 @@
         standards:
           - ./vendor/drupal/coder/coder_sniffer/Drupal
           - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-          - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+          - ./vendor/ec-europa/toolkit/phpcs/QualityAssurance
         ignore_patterns:
           - dist/
           - .cache/

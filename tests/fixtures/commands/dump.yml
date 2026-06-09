@@ -419,6 +419,24 @@
           ->option('--server-response 2>&1')
           ->printMetadata()
         [Simulator] Running wget -i ./tmp.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
+        >  Retrying download (attempt 2 of 3)...
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './tmp.txt')
+          ->option('-O', './mysql.gz')
+          ->option('-A', '.sql.gz,.tar.gz,.tar')
+          ->option('-P', './')
+          ->option('--server-response 2>&1')
+          ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
+        >  Retrying download (attempt 3 of 3)...
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './tmp.txt')
+          ->option('-O', './mysql.gz')
+          ->option('-A', '.sql.gz,.tar.gz,.tar')
+          ->option('-P', './')
+          ->option('--server-response 2>&1')
+          ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./mysql.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
         [Simulator] Running rm ./tmp.txt
 
         [ERROR] Custom : Could not fetch the file example.com/mysql.gz
@@ -448,6 +466,24 @@
           ->option('--server-response 2>&1')
           ->printMetadata()
         [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
+        >  Retrying download (attempt 2 of 3)...
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './tmp.txt')
+          ->option('-O', './dump.gz')
+          ->option('-A', '.sql.gz,.tar.gz,.tar')
+          ->option('-P', './')
+          ->option('--server-response 2>&1')
+          ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
+        >  Retrying download (attempt 3 of 3)...
+        [Simulator] Simulating Exec('wget')
+          ->option('-i', './tmp.txt')
+          ->option('-O', './dump.gz')
+          ->option('-A', '.sql.gz,.tar.gz,.tar')
+          ->option('-P', './')
+          ->option('--server-response 2>&1')
+          ->printMetadata()
+        [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
         [Simulator] Running rm ./tmp.txt
 
         [ERROR] Custom : Could not fetch the file example.com/dump.gz
@@ -469,6 +505,10 @@
     - string_contains: |
         [Simulator] Simulating Filesystem\FilesystemStack()
         >  Starting download
+        [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
+        >  Retrying download (attempt 2 of 3)...
+        [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
+        >  Retrying download (attempt 3 of 3)...
         [Simulator] Running wget -i ./tmp.txt -O ./dump.gz -A '.sql.gz,.tar.gz,.tar' -P ./ --server-response 2>&1
         [Simulator] Running rm ./tmp.txt
 

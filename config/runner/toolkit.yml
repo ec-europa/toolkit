@@ -9,6 +9,7 @@ toolkit:
     mydumper: '/scripts/backupdb.sh'
     type: 'nextcloud'
     show_progress: false
+    download_retries: 3
     nextcloud:
       # Nextcloud supports the following services: mysql, virtuoso, solr.
       services: 'mysql'

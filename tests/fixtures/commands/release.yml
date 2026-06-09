@@ -93,7 +93,6 @@
           ->version('9.6.0')
           ->setBody('## Version 9.6.0
 
-
           ')
 
 - command: 'toolkit:changelog-write 9.6.0 --show-pr --show-name --full-link'

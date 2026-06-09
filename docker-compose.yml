@@ -1,6 +1,6 @@
 services:
   web:
-    image: registry.fpfis.eu/digit/devsecops/httpd-php:8.3-ci
+    image: registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:8.3-ci
     working_dir: /__w/toolkit/toolkit
     ports:
       # Use port "8080:8080" to access the mock in the browser OR to use xdebug.
