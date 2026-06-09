@@ -1,5 +1,24 @@
 # Toolkit change log
 
+## Version 10.29.1
+  - DQA-0000: Add xdebug_break() to the list of forbidden functions.
+  - DQA-14193: Gitleaks improvements
+
+## Version 10.28.0
+  - DQA-13950: Remove dependency on ec-europa/qa-automation and add support to coder 9.
+  - DQA-13914: Validate SHA256 of gitleaks binary after download.
+  - DQA-13914: Verify SHA1 after dump is downloaded and retry in case of issues during download.
+  - DQA-14171: Improvements run-tests commands.
+
+## Version 10.27.0
+  - DQA-13733: Set new gitlab & nextcloud urls.
+  - DQA-13747: Support Coder 9.0.
+  - DQA-13741: PHP 8.5 compatibility.
+  - DQA-13613: Check composer-patches v2.
+  - DQA-13523: Adapt DQA for new gitlab instance.
+  - DQA-13626: Improve database default values.
+  - DQA-13253: Prevent usage of eslint >=9, to align with drupal/core.
+
 ## Version 10.26.2
   - DROPSEC-16324: Fix opts.yml loader default.
   - DQA-13173: Added dependency required by Drupal 11.3.x.
