@@ -145,7 +145,7 @@ class DumpCommands extends AbstractCommands
      *   clone:
      *     type: 'nextcloud'
      *     nextcloud:
-     *       url: 'files.fpfis.tech.ec.europa.eu/remote.php/dav/files'
+     *       url: 'files.dhs.tech.ec.europa.eu/remote.php/dav/files'
      *       services:
      *         - mysql
      *         - solr
