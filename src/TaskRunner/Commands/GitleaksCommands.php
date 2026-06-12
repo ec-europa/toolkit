@@ -115,7 +115,7 @@ class GitleaksCommands extends AbstractCommands
         }
 
         $this->printReport($report, $findings);
-        return ResultData::EXITCODE_OK;
+        return $report['found'] <= $report['ignored'] ? ResultData::EXITCODE_OK : ResultData::EXITCODE_ERROR;
     }
 
     /**
