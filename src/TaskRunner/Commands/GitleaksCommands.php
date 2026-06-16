@@ -44,13 +44,16 @@ class GitleaksCommands extends AbstractCommands
      * @option sha256          SHA-256 checksum of the release archive.
      * @option os              The current OS version.
      * @option options         The options to use when executing gitleaks command.
+     * @option dist            The distribution directory to scan.
      * @option skip-dist       Skip the creation of distribution.
      * @option ignore-file     Path to .leaksignore file (default ".leaksignore").
-     * @option report-to-file  Save the findings to a file.
+     * @option report-file     The report filename (default "gitleaks-report.json").
+     * @option report-to-file  Save the findings to a file (default false).
      *
      * @aliases tk-gitleaks
      *
      * @usage --skip-dist --report-to-file
+     * @usage --skip-dist --dist src
      *
      * @return int
      *   Return 1 if there're findings, 0 if no issues detected.
@@ -60,8 +63,10 @@ class GitleaksCommands extends AbstractCommands
         'sha256' => InputOption::VALUE_REQUIRED,
         'os' => InputOption::VALUE_REQUIRED,
         'options' => InputOption::VALUE_REQUIRED,
+        'dist' => InputOption::VALUE_REQUIRED,
         'skip-dist' => InputOption::VALUE_NONE,
         'ignore-file' => InputOption::VALUE_REQUIRED,
+        'report-file' => InputOption::VALUE_REQUIRED,
         'report-to-file' => InputOption::VALUE_NONE,
     ])
     {
@@ -72,50 +77,29 @@ class GitleaksCommands extends AbstractCommands
             return ResultData::EXITCODE_ERROR;
         }
 
-        $command = $this->prepareCommand($options);
-
-        $reportFile = 'gitleaks-report.json';
-        $dist = $this->getConfigValue('toolkit.build.dist.root');
-
-        // Prepare the distribution and scan it.
-        if ($options['skip-dist'] === true) {
-            if (!is_dir($dist)) {
-                $io->error("Attempt to use --skip-dist while '$dist' is not found.");
-                // Consider to force build-dist instead of fail.
-                return ResultData::EXITCODE_ERROR;
-            }
-            $io->writeln('Skip create distribution.');
-        } else {
-            $this->_exec($this->getBin('run') . ' toolkit:build-dist');
+        if (!$this->prepareDist($options)) {
+            // Consider to force build-dist instead of fail.
+            return ResultData::EXITCODE_ERROR;
         }
 
+        $command = $this->prepareCommand($options);
         $io->say($command);
         $this->taskExec($command)->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)->run();
 
-        if (!file_exists($reportFile) || empty($reportFileContent = file_get_contents($reportFile))) {
+        if (!file_exists($options['report-file']) || empty($reportFileContent = file_get_contents($options['report-file']))) {
             $io->error('Could not generate the report file.');
             return ResultData::EXITCODE_ERROR;
         }
 
-        if (empty($findings = json_decode($reportFileContent, true))) {
-            $this->printReport(['found' => 0, 'ignored' => 0]);
-            return ResultData::EXITCODE_OK;
-        }
-
+        $findings = json_decode($reportFileContent, true) ?? [];
         $report = [
             'found' => count($findings),
             'ignored' => $this->processFindings($findings, $options),
         ];
 
-        // Delete the report file if report-to-file is not used or if in CI.
-        if (Toolkit::isCiCd() || empty($options['report-to-file'])) {
-            unlink($reportFile);
-        } else {
-            file_put_contents($reportFile, json_encode($findings, JSON_PRETTY_PRINT));
-        }
-
+        $this->closeReportFile($options, $findings);
         $this->printReport($report, $findings);
-        return ResultData::EXITCODE_OK;
+        return !empty($findings) ? ResultData::EXITCODE_ERROR : ResultData::EXITCODE_OK;
     }
 
     /**
@@ -129,11 +113,9 @@ class GitleaksCommands extends AbstractCommands
      */
     private function prepareCommand(array $options): string
     {
-        $reportFile = 'gitleaks-report.json';
-        $dist = $this->getConfigValue('toolkit.build.dist.root');
         $optionsExploded = array_filter(explode(' ', $options['options'] ?? []));
 
-        $command = "detect --source=$dist";
+        $command = 'detect --source=' . $options['dist'];
 
         // Detect newer versions of gitleaks and adapt command and options.
         // @see https://github.com/gitleaks/gitleaks?tab=readme-ov-file#commands
@@ -144,7 +126,7 @@ class GitleaksCommands extends AbstractCommands
             }
             // Change the command from 'detect' to 'directory' and remove
             // --source option.
-            $command = "directory $dist";
+            $command = 'directory ' . $options['dist'];
         }
 
         // Make sure that redact option is not used, we will hide the secrets later on.
@@ -153,7 +135,7 @@ class GitleaksCommands extends AbstractCommands
         }
 
         // Report to a file.
-        $optionsExploded[] = "--report-path=$reportFile";
+        $optionsExploded[] = '--report-path=' . $options['report-file'];
 
         return $this->getBin('gitleaks') . ' ' . $command . ' ' . implode(' ', $optionsExploded);
     }
@@ -198,11 +180,10 @@ class GitleaksCommands extends AbstractCommands
     {
         $ignored = 0;
         $ignores = $this->getIgnores($options);
-        $dist = $this->getConfigValue('toolkit.build.dist.root');
         foreach ($findings as $index => &$finding) {
             // Remove dist part from the paths.
-            $finding['File'] = ltrim(str_replace("$dist/", '', $finding['File']), '/');
-            $finding['Fingerprint'] = ltrim(str_replace("$dist/", '', $finding['Fingerprint']), '/');
+            $finding['File'] = ltrim(str_replace($options['dist'] . '/', '', $finding['File']), '/');
+            $finding['Fingerprint'] = ltrim(str_replace($options['dist'] . '/', '', $finding['Fingerprint']), '/');
             // Build the fingerprint using the relative path to the file,
             // the secret found and the rule id.
             $finding['ToolkitFingerprint'] = hash('sha256', "{$finding['File']}:{$finding['Secret']}:{$finding['RuleID']}");
@@ -309,6 +290,43 @@ class GitleaksCommands extends AbstractCommands
     private function isChecksumValid(string $file, string $sha256): bool
     {
         return hash_equals(strtolower($sha256), strtolower(hash('sha256', $file)));
+    }
+
+    /**
+     * Prepares the distribution directory.
+     *
+     * @param array<mixed> $options
+     *   The command options.
+     */
+    private function prepareDist(array $options): bool
+    {
+        if ($options['skip-dist'] === true) {
+            if (!is_dir($options['dist'])) {
+                $this->io->error("Attempt to use --skip-dist while '{$options['dist']}' is not found.");
+                return false;
+            }
+            $this->io->writeln('Skip create distribution.');
+        } else {
+            $this->_exec($this->getBin('run') . ' toolkit:build-dist');
+        }
+        return true;
+    }
+
+    /**
+     * Delete the report file if report-to-file is not used or if in CI.
+     *
+     * @param array<mixed> $options
+     *   The command options.
+     * @param array<mixed> $findings
+     *   The gitleaks findings to print.
+     */
+    private function closeReportFile(array $options, array $findings): void
+    {
+        if (Toolkit::isCiCd() || empty($options['report-to-file'])) {
+            unlink($options['report-file']);
+        } else {
+            file_put_contents($options['report-file'], json_encode($findings, JSON_PRETTY_PRINT));
+        }
     }
 
 }
