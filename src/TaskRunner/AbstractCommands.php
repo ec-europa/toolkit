@@ -62,7 +62,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      */
     protected function getBinPath(string $name): string
     {
-        // If looking for run binany, check in the root for it
+        // If looking for run binary, check in the root for it
         // so toolkit don't have to copy it into vendor/bin.
         if ($name === 'run' && file_exists($name)) {
             return "./$name";
