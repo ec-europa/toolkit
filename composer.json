@@ -65,13 +65,5 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "ec-europa/toolkit-composer-plugin": true
         }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
-        ],
-        "post-update-cmd": [
-            "php -r \"file_exists('vendor/bin/run') || (copy('run', 'vendor/bin/run') && chmod('vendor/bin/run', fileperms('run')));\""
-        ]
     }
 }
