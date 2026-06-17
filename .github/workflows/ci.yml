@@ -58,3 +58,12 @@ jobs:
       - name: PHPUnit
         shell: bash
         run: ./run toolkit:test-phpunit --execution=parallel
+
+      - name: Gitleaks
+        shell: bash
+        run: |
+          mkdir dist
+          git archive HEAD | tar -x -C dist
+          composer install --working-dir dist --optimize-autoloader --no-dev --ansi
+          find dist -maxdepth 5 \( -name phpstan.phar -o -name examples -o -name tests \) -exec rm -rf {} +
+          ./run toolkit:run-gitleaks --skip-dist
