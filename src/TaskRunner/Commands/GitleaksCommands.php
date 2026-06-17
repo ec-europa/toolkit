@@ -180,10 +180,11 @@ class GitleaksCommands extends AbstractCommands
     {
         $ignored = 0;
         $ignores = $this->getIgnores($options);
+        $pattern = '#' . preg_quote($options['dist'] . '/', '#') . '#';
         foreach ($findings as $index => &$finding) {
             // Remove dist part from the paths.
-            $finding['File'] = ltrim(str_replace($options['dist'] . '/', '', $finding['File']), '/');
-            $finding['Fingerprint'] = ltrim(str_replace($options['dist'] . '/', '', $finding['Fingerprint']), '/');
+            $finding['File'] = ltrim(preg_replace($pattern, '', $finding['File'], 1), '/');
+            $finding['Fingerprint'] = ltrim(preg_replace($pattern, '', $finding['Fingerprint'], 1), '/');
             // Build the fingerprint using the relative path to the file,
             // the secret found and the rule id.
             $finding['ToolkitFingerprint'] = hash('sha256', "{$finding['File']}:{$finding['Secret']}:{$finding['RuleID']}");
