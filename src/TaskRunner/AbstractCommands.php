@@ -65,7 +65,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
         // If looking for run binany, check in the root for it
         // so toolkit don't have to copy it into vendor/bin.
         if ($name === 'run' && file_exists($name)) {
-            return $name;
+            return "./$name";
         }
         return $this->getConfigValue('runner.bin_dir') . '/' . $name;
     }
