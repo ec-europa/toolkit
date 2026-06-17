@@ -201,8 +201,8 @@ class GitleaksCommands extends AbstractCommands
         $dist = $this->getConfigValue('toolkit.build.dist.root');
         foreach ($findings as $index => &$finding) {
             // Remove dist part from the paths.
-            $finding['File'] = ltrim(str_replace("$dist/", '', $finding['File']), '/');
-            $finding['Fingerprint'] = ltrim(str_replace("$dist/", '', $finding['Fingerprint']), '/');
+            $finding['File'] = ltrim(preg_replace('#' . preg_quote("$dist/", '#') . '#', '', $finding['File'], 1), '/');
+            $finding['Fingerprint'] = ltrim(preg_replace('#' . preg_quote("$dist/", '#') . '#', '', $finding['Fingerprint'], 1), '/');
             // Build the fingerprint using the relative path to the file,
             // the secret found and the rule id.
             $finding['ToolkitFingerprint'] = hash('sha256', "{$finding['File']}:{$finding['Secret']}:{$finding['RuleID']}");
