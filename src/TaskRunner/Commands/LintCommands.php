@@ -61,9 +61,16 @@ class LintCommands extends AbstractCommands
         }
 
         // Create a package.json if it doesn't exist.
-        if (!file_exists('package.json') || !file_exists($this->getNodeBinPath('eslint'))) {
+        $packageJson = 'package.json';
+        if (!file_exists($packageJson) || !file_exists($this->getNodeBinPath('eslint'))) {
             $actions = true;
             $this->taskExec('npm ini -y')->run();
+            $overrides = $this->getConfigValue('toolkit.lint.eslint.overrides', []);
+            if (file_exists($packageJson) && !empty($overrides)) {
+                $packageData = json_decode(file_get_contents($packageJson), true);
+                $packageData['overrides'] = $overrides;
+                file_put_contents($packageJson, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            }
             $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
         }
 
