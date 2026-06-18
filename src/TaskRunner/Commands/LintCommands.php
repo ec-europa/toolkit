@@ -42,6 +42,9 @@ class LintCommands extends AbstractCommands
      *
      * @return int
      *   The setup eslint configuration status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitSetupEslint(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
