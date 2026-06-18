@@ -1438,7 +1438,7 @@ class ComponentCheckCommands extends AbstractCommands
     /**
      * Returns the project patches.
      *
-     * @return array
+     * @return array<mixed>
      *   The existing patches in the form of package => patches.
      */
     private function getPatches(): array
