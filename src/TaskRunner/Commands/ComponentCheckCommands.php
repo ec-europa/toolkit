@@ -702,42 +702,40 @@ class ComponentCheckCommands extends AbstractCommands
         }
 
         $composerPatchesVersion = ToolCommands::getPackagePropertyFromComposer('cweagans/composer-patches');
-
-        // For composer-patches v1, we should enforce the correct settings and validate patches.
-        if ($composerPatchesVersion && str_starts_with($composerPatchesVersion, '1.')) {
-            // Do not allow setting enable-patching.
-            if (!empty($composerJson['extra']['enable-patching'])) {
-                $this->composerFailed = true;
-                $message = "The composer property 'extra.enable-patching' cannot be set to true.";
-                $this->writeln($message);
-                $this->addJunitResult('Composer components', $message);
-            }
-
-            // Enforce setting composer-exit-on-patch-failure.
-            if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
-                $this->composerFailed = true;
-                $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
-                $this->writeln($message);
-                $this->addJunitResult('Composer components', $message);
-            }
-        }
-
-        // For composer-patches v2, check for deprecated settings and validate patches.
-        if ($composerPatchesVersion && str_starts_with($composerPatchesVersion, '2.')) {
-            $deprecated = ['enable-patching', 'composer-exit-on-patch-failure'];
-            foreach ($deprecated as $item) {
-                if (isset($composerJson['extra'][$item])) {
+        // If composer-patches is used validate the patches and settings.
+        if ($composerPatchesVersion) {
+            // For composer-patches v1, enforce the correct settings.
+            if (str_starts_with($composerPatchesVersion, '1.')) {
+                // Do not allow setting enable-patching.
+                if (!empty($composerJson['extra']['enable-patching'])) {
                     $this->composerFailed = true;
-                    $message = "The composer property 'extra.$item' is deprecated in version 2 of cweagans/composer-patches.";
+                    $message = "The composer property 'extra.enable-patching' cannot be set to true.";
+                    $this->writeln($message);
+                    $this->addJunitResult('Composer components', $message);
+                }
+                // Enforce setting composer-exit-on-patch-failure.
+                if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
+                    $this->composerFailed = true;
+                    $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
                     $this->writeln($message);
                     $this->addJunitResult('Composer components', $message);
                 }
             }
-        }
 
+            // For composer-patches v2, check for deprecated settings.
+            if (str_starts_with($composerPatchesVersion, '2.')) {
+                $deprecated = ['enable-patching', 'composer-exit-on-patch-failure'];
+                foreach ($deprecated as $item) {
+                    if (isset($composerJson['extra'][$item])) {
+                        $this->composerFailed = true;
+                        $message = "The composer property 'extra.$item' is deprecated in version 2 of cweagans/composer-patches.";
+                        $this->writeln($message);
+                        $this->addJunitResult('Composer components', $message);
+                    }
+                }
+            }
 
-        // Do not allow remote patches. Check if patches from drupal.org are allowed.
-        if ($composerPatchesVersion) {
+            // Do not allow remote patches. Check if patches from drupal.org are allowed.
             if (!empty($patches = $this->getPatches())) {
                 $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
                 foreach ($patches as $packagePatches) {
