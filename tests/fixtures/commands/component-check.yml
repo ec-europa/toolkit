@@ -343,6 +343,27 @@
     - string_contains: The composer property 'extra.composer-exit-on-patch-failure' is deprecated in version 2
     - not_string_contains: Composer validation check passed
 
+# if composer-patches is used, then we expect at least one patch.
+- command: 'check:composer'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        {
+        "extra": { "composer-exit-on-patch-failure": false },
+        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
+        ] }
+  expectations:
+    - string_contains: Using package cweagans/composer-patches but no patches were found
+    - not_string_contains: Composer validation check passed
+
 - command: 'check:composer'
   configuration:
     toolkit:
