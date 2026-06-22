@@ -24,4 +24,4 @@ jobs:
           composer install --prefer-dist --no-ansi --no-progress --no-interaction
 
       - name: Generate documentation
-        run: ./vendor/bin/run toolkit:generate-documentation --token=${{ secrets.API_TOKEN }} --push || echo "skip"
+        run: ./run toolkit:generate-documentation --token=${{ secrets.API_TOKEN }} --push || echo "skip"

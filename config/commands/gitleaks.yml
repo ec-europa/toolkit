@@ -6,5 +6,7 @@ command:
         sha256: ${gitleaks.sha256}
         os: ${gitleaks.os}
         options: ${gitleaks.options}
+        dist: ${toolkit.build.dist.root}
         ignore-file: ${gitleaks.ignore-file}
+        report-file: ${gitleaks.report-file}
         report-to-file: ${gitleaks.report-to-file}

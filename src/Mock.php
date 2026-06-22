@@ -17,7 +17,7 @@ final class Mock
      *
      * @var string
      */
-    private static string $defaultTag = '0.0.103';
+    private static string $defaultTag = '0.0.106';
 
     /**
      * The directory to download the mock to.

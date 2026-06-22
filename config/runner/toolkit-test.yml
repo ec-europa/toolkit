@@ -93,12 +93,25 @@ toolkit:
   lint:
     eslint:
       config: .eslintrc.json
-      packages: 'eslint@^8.57.1 eslint-config-airbnb-base eslint-config-drupal eslint-plugin-yml@^1 stylelint stylelint-config-drupal eslint-junit eslint-plugin-jsdoc'
+      packages: >-
+        eslint@^8.57.1
+        eslint-config-airbnb-base@^15.0.0
+        eslint-config-drupal@^1.0.0
+        eslint-config-prettier
+        eslint-plugin-yml@^1.14.0
+        eslint-junit
+        eslint-plugin-jsdoc@^48.2.0
+        eslint-plugin-prettier
+        stylelint@^16.2.0
+        stylelint-config-drupal@^1.0.0
       ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: 'no-error-on-unmatched-pattern'
       extensions_js: [ '.js' ]
       options_js: 'no-error-on-unmatched-pattern'
+      overrides:
+        glob: ^10.3.10
+        rimraf: ^5.0.5
     php:
       extensions: [ 'php', 'module', 'inc', 'theme', 'install' ]
       exclude: [ '${toolkit.build.dist.root}/', '.cache/', 'vendor/', '${drupal.root}/' ]

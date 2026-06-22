@@ -54,7 +54,7 @@ class Website
     /**
      * Return the API Authorization instance.
      *
-     * @return AuthorizationInterface|null
+     * @return \EcEuropa\Toolkit\AuthorizationInterface|null
      *   The API authorization instance or empty string if fails.
      */
     public static function apiAuth(): AuthorizationInterface|null
@@ -84,7 +84,7 @@ class Website
      *
      * @param string $url
      *   The QA endpoint url.
-     * @param AuthorizationInterface|null $auth
+     * @param \EcEuropa\Toolkit\AuthorizationInterface|null $auth
      *   The authorization instance or null.
      *
      * @return string
@@ -176,7 +176,7 @@ class Website
      *
      * @param array<mixed> $fields
      *   Data to send.
-     * @param AuthorizationInterface $auth
+     * @param \EcEuropa\Toolkit\AuthorizationInterface $auth
      *   The authorization instance.
      *
      * @return string
@@ -356,7 +356,7 @@ class Website
      *
      * @param string $url
      *   The QA endpoint url.
-     * @param AuthorizationInterface|null $auth
+     * @param \EcEuropa\Toolkit\AuthorizationInterface|null $auth
      *   The authorization instance or null.
      *
      * @return false|array<mixed>
