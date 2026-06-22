@@ -35,47 +35,33 @@
         <exclude name="Generic.Commenting.DocComment.ContentAfterOpen"/>
         <exclude name="Generic.Commenting.DocComment.MissingShort"/>
         <exclude name="Generic.Commenting.DocComment.SpacingBetween"/>
-        <exclude name="Generic.Commenting.DocComment.TagsNotGrouped"/>
         <exclude name="Generic.Files.EndFileNoNewline.Found"/>
         <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
         <exclude name="Generic.Files.LineLength.TooLong"/>
-        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine"/>
-        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/>
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning"/>
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
         <exclude name="Generic.Formatting.NoSpaceAfterCast.SpaceFound"/>
         <exclude name="Generic.Formatting.SpaceBeforeCast.NoSpace"/>
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceOnSameLine"/>
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine"/>
+        <exclude name="Generic.Metrics"/>
         <exclude name="Generic.PHP.ClosingPHPTag.NotFound"/>
         <exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
         <exclude name="Generic.PHP.UpperCaseConstant.Found"/>
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsedHeredocCloser"/>
-        <exclude name="Generic.Metrics"/>
     </rule>
-
     <rule ref="Generic.Formatting.SpaceAfterNot">
         <properties>
             <property name="spacing" value="0"/>
         </properties>
     </rule>
-
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
             <property name="indent" value="4"/>
             <property name="tabIndent" value="false"/>
         </properties>
     </rule>
-
-    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
-    <rule ref="Generic.Files.EndFileNewline.Found"/>
-    <rule ref="Generic.Formatting.SpaceAfterCast.SpaceFound"/>
-
-    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
-    <rule ref="Generic.Files.ByteOrderMark"/>
-    <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
-    <rule ref="Generic.Formatting.SpaceAfterCast"/>
-
-    <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
     <rule ref="Generic.Functions.FunctionCallArgumentSpacing.NoSpaceAfterComma">
         <severity>0</severity>
     </rule>
@@ -84,18 +70,14 @@
             <property name="checkClosures" value="true"/>
         </properties>
     </rule>
-
-    <rule ref="Generic.NamingConventions.ConstructorName"/>
-    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
-    <rule ref="Generic.PHP.DeprecatedFunctions"/>
-    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
-    <rule ref="Generic.PHP.LowerCaseKeyword"/>
-    <rule ref="Generic.PHP.UpperCaseConstant"/>
-    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
-
     <rule ref="Generic.Files.LineEndings">
         <properties>
             <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.Strings.UnnecessaryStringConcat">
+        <properties>
+            <property name="allowMultiline" value="true"/>
         </properties>
     </rule>
 
@@ -290,6 +272,7 @@
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
     <!-- Drupal. -->
+    <rule ref="Drupal.Arrays.Array.CommaLastItem"/>
     <rule ref="Drupal.Classes.FullyQualifiedNamespace"/>
     <rule ref="Drupal.Commenting.DocComment"/>
     <rule ref="Drupal.Commenting.DocCommentAlignment.SpaceAfterStar"/>
@@ -303,11 +286,10 @@
     <rule ref="Drupal.Commenting.FunctionComment.ParamCommentNotCapital"/>
     <rule ref="Drupal.Commenting.FunctionComment.ReturnCommentIndentation"/>
     <rule ref="Drupal.Files.EndFileNewline"/>
-    <rule ref="Drupal.Arrays.Array.CommaLastItem"/>
     <rule ref="Drupal.Formatting"/>
     <rule ref="Drupal.NamingConventions"/>
-    <rule ref="Drupal.Scope"/>
     <rule ref="Drupal.Semantics"/>
+    <rule ref="Drupal.Scope"/>
 
     <rule ref="DrupalPractice.Commenting"/>
     <rule ref="DrupalPractice.Constants"/>
@@ -331,4 +313,13 @@
             </property>
         </properties>
     </rule>
+
+    <!-- SlevomatCodingStandard. -->
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+
+    <!-- Sirbrillig. -->
+    <rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis"/>
 </ruleset>

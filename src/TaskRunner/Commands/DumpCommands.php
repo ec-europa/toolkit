@@ -134,7 +134,7 @@ class DumpCommands extends AbstractCommands
      * @param array<mixed> $options
      *   Command options.
      *
-     * @codingStandardsIgnoreStart Generic.Commenting.DocComment.TagsNotGrouped
+     * phpcs:disable Generic.Commenting.DocComment.TagsNotGrouped,Drupal.Commenting.FunctionComment.ParamCommentIndentation
      *
      * Configuration for database snapshot in NEXTCLOUD.
      * - Environment variables: NEXTCLOUD_USER, NEXTCLOUD_PASS (EU Login).
@@ -166,7 +166,7 @@ class DumpCommands extends AbstractCommands
      *       pass: secret-password
      * @endcode
      *
-     * @codingStandardsIgnoreEnd
+     * phpcs:enable
      *
      * @command toolkit:download-dump
      *

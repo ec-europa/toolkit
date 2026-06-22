@@ -5,6 +5,7 @@ gitleaks:
   os: linux_x64
   options: '--no-banner -v --no-git --follow-symlinks'
   ignore-file: '.leaksignore'
+  report-file: 'gitleaks-report.json'
   report-to-file: false
   fields:
     - File
