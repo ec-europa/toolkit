@@ -8,7 +8,10 @@
       content: |
         {
           "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches": { "fake/package": [ "./resources/local.patch" ] }
+          },
           "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
         }
   expectations:
@@ -179,7 +182,10 @@
       content: |
         {
           "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches": { "fake/package": [ "./resources/local.patch" ] }
+          },
           "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
         }
     - from: sample-composer.lock
@@ -234,10 +240,17 @@
   resources:
     - file: composer.json
       content: |
-        { "extra": { "enable-patching": true } }
+        { "extra": {
+          "enable-patching": true,
+          "patches": { "test/package": [ "./resources/local.patch" ] }
+        } }
     - file: composer.lock
       content: |
-        { "packages": [ { "name": "test/package", "type": "library", "version": "1.0.0" } ] }
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+
   expectations:
     - string_contains: The composer property 'extra.enable-patching' cannot be set to true.
     - not_string_contains: Composer validation check passed
@@ -250,7 +263,11 @@
       content: |
         {
           "name": "ec-europa/toolkit",
-          "extra": { "enable-patching": false, "composer-exit-on-patch-failure": true },
+          "extra": {
+            "enable-patching": false,
+            "composer-exit-on-patch-failure": true,
+            "patches": { "fake/package": [ "./resources/local.patch" ] }
+          },
           "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
         }
     - file: composer.lock
@@ -268,7 +285,10 @@
     - file: composer.json
       content: |
         {
-        "extra": { "composer-exit-on-patch-failure": true },
+        "extra": {
+          "composer-exit-on-patch-failure": true,
+          "patches": { "fake/package": [ "./resources/local.patch" ] }
+        },
         "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
         }
     - file: composer.lock
@@ -299,7 +319,31 @@
     - not_string_contains: composer-exit-on-patch-failure
     - string_contains: Composer validation check passed
 
-# test composer-exit-on-patch-failure should only report in version 1.
+# test that composer-exit-on-patch-failure is not allowed in version 2.
+- command: 'check:composer'
+  configuration: [ ]
+  tokens: ''
+  resources:
+    - file: composer.json
+      content: |
+        {
+        "extra": {
+          "composer-exit-on-patch-failure": false,
+          "patches": { "fake/package": [ "./resources/local.patch" ] }
+        },
+        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
+        }
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "test/package", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
+        ] }
+  expectations:
+    - string_contains: The composer property 'extra.composer-exit-on-patch-failure' is deprecated in version 2
+    - not_string_contains: Composer validation check passed
+
+# if composer-patches is used, then we expect at least one patch.
 - command: 'check:composer'
   configuration: [ ]
   tokens: ''
@@ -317,8 +361,8 @@
           { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
         ] }
   expectations:
-    - not_string_contains: composer-exit-on-patch-failure
-    - string_contains: Composer validation check passed
+    - string_contains: Using package cweagans/composer-patches but no patches were found
+    - not_string_contains: Composer validation check passed
 
 - command: 'check:composer'
   configuration:
@@ -365,7 +409,10 @@
   resources:
     - file: composer.lock
       content: |
-        { "packages": [ { "name": "test/dummy", "type": "library", "version": "1.0.0" } ] }
+        { "packages": [
+          { "name": "test/dummy", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
     - file: composer.json
       content: |
         {
@@ -920,7 +967,10 @@
       content: |
         {
           "name": "ec-europa/toolkit",
-          "extra": { "composer-exit-on-patch-failure": true },
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches": { "fake/package": [ "./resources/local.patch" ] }
+          },
           "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
         }
   expectations:

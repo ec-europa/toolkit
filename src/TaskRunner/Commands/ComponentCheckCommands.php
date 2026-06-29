@@ -149,7 +149,7 @@ class ComponentCheckCommands extends AbstractCommands
                 JunitXmlGenerator::addTestCase('Component check', "$label components");
             }
             $this->{$function}($io);
-            $io->newLine();
+            $io->newLine(2);
         }
 
         $this->printComponentResults($io);
@@ -701,38 +701,60 @@ class ComponentCheckCommands extends AbstractCommands
             }
         }
 
-        // Do not allow setting enable-patching.
-        if (!empty($composerJson['extra']['enable-patching'])) {
-            $this->composerFailed = true;
-            $message = "The composer property 'extra.enable-patching' cannot be set to true.";
-            $this->writeln($message);
-            $this->addJunitResult('Composer components', $message);
-        }
+        $composerPatchesVersion = ToolCommands::getPackagePropertyFromComposer('cweagans/composer-patches');
+        // If composer-patches is used validate the patches and settings.
+        if ($composerPatchesVersion) {
+            // For composer-patches v1, enforce the correct settings.
+            if (str_starts_with($composerPatchesVersion, '1.')) {
+                // Do not allow setting enable-patching.
+                if (!empty($composerJson['extra']['enable-patching'])) {
+                    $this->composerFailed = true;
+                    $message = "The composer property 'extra.enable-patching' cannot be set to true.";
+                    $this->writeln($message);
+                    $this->addJunitResult('Composer components', $message);
+                }
+                // Enforce setting composer-exit-on-patch-failure.
+                if (empty($composerJson['extra']['composer-exit-on-patch-failure'])) {
+                    $this->composerFailed = true;
+                    $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
+                    $this->writeln($message);
+                    $this->addJunitResult('Composer components', $message);
+                }
+            }
 
-        // Enforce setting composer-exit-on-patch-failure if using cweagans/composer-patches version 1.
-        $exitOnPatchFail = !empty($composerJson['extra']['composer-exit-on-patch-failure']);
-        $composerPatchesVersion = ToolCommands::getPackagePropertyFromComposer('cweagans/composer-patches', 'version');
-        if ($composerPatchesVersion && str_starts_with($composerPatchesVersion, '1.') && !$exitOnPatchFail) {
-            $this->composerFailed = true;
-            $message = "The composer property 'extra.composer-exit-on-patch-failure' must be set to true.";
-            $this->writeln($message);
-            $this->addJunitResult('Composer components', $message);
-        }
-
-        // Do not allow remote patches. Check if patches from drupal.org are allowed.
-        if (!empty($composerJson['extra']['patches'])) {
-            $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
-            foreach ($composerJson['extra']['patches'] as $packagePatches) {
-                foreach ($packagePatches as $patch) {
-                    $hostname = parse_url($patch, PHP_URL_HOST);
-                    $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
-                    if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
-                        $message = "The patch '$patch' is not valid.";
-                        $this->writeln($message);
+            // For composer-patches v2, check for deprecated settings.
+            if (str_starts_with($composerPatchesVersion, '2.')) {
+                $deprecated = ['enable-patching', 'composer-exit-on-patch-failure'];
+                foreach ($deprecated as $item) {
+                    if (isset($composerJson['extra'][$item])) {
                         $this->composerFailed = true;
+                        $message = "The composer property 'extra.$item' is deprecated in version 2 of cweagans/composer-patches.";
+                        $this->writeln($message);
                         $this->addJunitResult('Composer components', $message);
                     }
                 }
+            }
+
+            // Do not allow remote patches. Check if patches from drupal.org are allowed.
+            if (!empty($patches = $this->getPatches())) {
+                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+                foreach ($patches as $packagePatches) {
+                    foreach ($packagePatches as $patch) {
+                        $hostname = parse_url($patch, PHP_URL_HOST);
+                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
+                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                            $message = "The patch '$patch' is not valid.";
+                            $this->writeln($message);
+                            $this->composerFailed = true;
+                            $this->addJunitResult('Composer components', $message);
+                        }
+                    }
+                }
+            } else {
+                $message = 'Using package cweagans/composer-patches but no patches were found.';
+                $this->writeln($message);
+                $this->composerFailed = true;
+                $this->addJunitResult('Composer components', $message);
             }
         }
 
@@ -1409,6 +1431,31 @@ class ComponentCheckCommands extends AbstractCommands
             return;
         }
         JunitXmlGenerator::addResult('Component check', $testCase, $message, $type);
+    }
+
+    /**
+     * Returns the project patches.
+     *
+     * @return array<mixed>
+     *   The existing patches in the form of package => patches.
+     */
+    private function getPatches(): array
+    {
+        // For v2, after running composer install the file patches.lock.json exists.
+        if (file_exists('patches.lock.json')) {
+            $patchesFile = $this->getJson('patches.lock.json')['patches'] ?? [];
+            return array_map(function ($patches) {
+                return array_column($patches, 'url');
+            }, $patchesFile);
+        }
+
+        $composerJson = $this->getJson('composer.json');
+        // Both v1 and v2 of composer-patches allow to define patches under extra.patches.
+        if (!empty($composerJson['extra']['patches'])) {
+            return $composerJson['extra']['patches'];
+        }
+
+        return [];
     }
 
 }
