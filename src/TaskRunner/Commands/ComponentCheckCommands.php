@@ -1441,19 +1441,18 @@ class ComponentCheckCommands extends AbstractCommands
      */
     private function getPatches(): array
     {
-        $composerJson = $this->getJson('composer.json');
-
-        // Both v1 and v2 of composer-patches allow to define patches under extra.patches.
-        if (!empty($composerJson['extra']['patches'])) {
-            return $composerJson['extra']['patches'];
-        }
-
         // For v2, after running composer install the file patches.lock.json exists.
         if (file_exists('patches.lock.json')) {
             $patchesFile = $this->getJson('patches.lock.json')['patches'] ?? [];
             return array_map(function ($patches) {
                 return array_column($patches, 'url');
             }, $patchesFile);
+        }
+
+        $composerJson = $this->getJson('composer.json');
+        // Both v1 and v2 of composer-patches allow to define patches under extra.patches.
+        if (!empty($composerJson['extra']['patches'])) {
+            return $composerJson['extra']['patches'];
         }
 
         return [];
