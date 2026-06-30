@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.29.2
+  - DQA-13957: Toolkit improvements.
+  - DQA-14297: Adapt composer check to cweagans/composer-patches v2.
+
 ## Version 10.29.1
   - DQA-0000: Add xdebug_break() to the list of forbidden functions.
   - DQA-14193: Gitleaks improvements
