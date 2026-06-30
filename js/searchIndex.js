@@ -676,6 +676,11 @@ Search.appendIndex(
             "summary": "Add\u0020a\u0020result\u0020to\u0020junit\u0020if\u0020it\u0020is\u0020enabled.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_addJunitResult"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetPatches\u0028\u0029",
+            "name": "getPatches",
+            "summary": "Returns\u0020the\u0020project\u0020patches.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getPatches"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
             "name": "evaluationFailed",
             "summary": "",
@@ -1385,6 +1390,16 @@ Search.appendIndex(
             "name": "isChecksumValid",
             "summary": "Validate\u0020the\u0020archive\u0020SHA\u002D256\u0020checksum.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_isChecksumValid"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AprepareDist\u0028\u0029",
+            "name": "prepareDist",
+            "summary": "Prepares\u0020the\u0020distribution\u0020directory.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_prepareDist"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003AcloseReportFile\u0028\u0029",
+            "name": "closeReportFile",
+            "summary": "Delete\u0020the\u0020report\u0020file\u0020if\u0020report\u002Dto\u002Dfile\u0020is\u0020not\u0020used\u0020or\u0020if\u0020in\u0020CI.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-GitleaksCommands.html#method_closeReportFile"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\GitleaksCommands\u003A\u003A\u0024repo",
             "name": "repo",
