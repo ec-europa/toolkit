@@ -750,11 +750,6 @@ class ComponentCheckCommands extends AbstractCommands
                         }
                     }
                 }
-            } else {
-                $message = 'Using package cweagans/composer-patches but no patches were found.';
-                $this->writeln($message);
-                $this->composerFailed = true;
-                $this->addJunitResult('Composer components', $message);
             }
         }
 
