@@ -343,27 +343,6 @@
     - string_contains: The composer property 'extra.composer-exit-on-patch-failure' is deprecated in version 2
     - not_string_contains: Composer validation check passed
 
-# if composer-patches is used, then we expect at least one patch.
-- command: 'check:composer'
-  configuration: [ ]
-  tokens: ''
-  resources:
-    - file: composer.json
-      content: |
-        {
-        "extra": { "composer-exit-on-patch-failure": false },
-        "config": { "allow-plugins": { "ec-europa/toolkit-composer-plugin": true } }
-        }
-    - file: composer.lock
-      content: |
-        { "packages": [
-          { "name": "test/package", "type": "library", "version": "1.0.0" },
-          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "2.0.0" }
-        ] }
-  expectations:
-    - string_contains: Using package cweagans/composer-patches but no patches were found
-    - not_string_contains: Composer validation check passed
-
 - command: 'check:composer'
   configuration:
     toolkit:
@@ -436,6 +415,44 @@
     - string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
     - string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
     - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
+    - not_string_contains: Composer validation check passed
+
+# Using a different patch file.
+- command: 'check:composer'
+  configuration: []
+  tokens: ''
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "test/dummy", "type": "library", "version": "1.0.0" },
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches-file": "patches-file.json"
+          }
+        }
+    - file: patches-file.json
+      content: |
+        {
+          "patches": {
+            "local/package": [ "./resources/local.patch" ],
+            "web/package": [ "http://example.com/test-package.patch" ],
+            "drupal/package": [
+              "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+              "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+              "http://drupal.org/files/issues/2023-01-01/12345-3.patch"
+            ]
+          }
+        }
+  expectations:
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
     - not_string_contains: Composer validation check passed
 
 - command: 'check:evaluation'
