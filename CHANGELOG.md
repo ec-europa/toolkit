@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 10.29.3
+  - DQA-14491: Allow cweagans/composer-patches when no patches are used.
+  - DQA-14463: Composer check not working with patches in external file.
+  - DQA-14493: Allow max-depth for dist removal to be configurable.
+
 ## Version 10.29.2
   - DQA-13957: Toolkit improvements.
   - DQA-14297: Adapt composer check to cweagans/composer-patches v2.
