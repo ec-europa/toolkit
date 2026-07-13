@@ -1455,6 +1455,15 @@ class ComponentCheckCommands extends AbstractCommands
             return $composerJson['extra']['patches'];
         }
 
+        // Patches can be defined in a separated file, this should only be needed when using
+        // v1 because on v2 the patches.lock.json is always generated after installation.
+        if (!empty($composerJson['extra']['patches-file']) && file_exists($composerJson['extra']['patches-file'])) {
+            $patchesFile = $this->getJson($composerJson['extra']['patches-file'])['patches'] ?? [];
+            return array_map(function ($patches) {
+                return isset($patches[0]['url']) ? array_column($patches, 'url') : array_values($patches);
+            }, $patchesFile);
+        }
+
         return [];
     }
 
