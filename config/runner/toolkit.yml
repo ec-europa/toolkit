@@ -80,6 +80,7 @@ toolkit:
   build:
     dist:
       root: 'dist'
+      remove_maxdepth: 5
       keep:
         - ${drupal.root}
         - config

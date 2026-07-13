@@ -153,8 +153,9 @@ class BuildCommands extends AbstractCommands
         }
 
         // Remove 'unwanted' resources from distribution.
+        $maxdepth = $this->getConfigValue('toolkit.build.dist.remove_maxdepth', 5);
         $remove = '-name "' . implode('" -o -name "', explode(',', $options['remove'])) . '"';
-        $tasks[] = $this->taskExec("find {$options['dist-root']} -maxdepth 5 \( $remove \) -exec rm -rf {} +");
+        $tasks[] = $this->taskExec("find {$options['dist-root']} -maxdepth $maxdepth \( $remove \) -exec rm -rf {} +");
 
         // Add custom block to .htaccess file.
         $tasks[] = $this->getHtaccessTask("{$options['dist-root']}/{$options['root']}");
