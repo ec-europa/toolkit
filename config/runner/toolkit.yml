@@ -90,20 +90,34 @@ toolkit:
         - .leaksignore
         - .snyk
       remove:
-        - CHANGELOG.md
-        - CHANGELOG.txt
-        - COPYRIGHT.txt
-        - INSTALL.mysql.txt
-        - INSTALL.pgsql.txt
-        - install.php
-        - INSTALL.sqlite.txt
-        - INSTALL.txt
-        - LICENSE.txt
-        - MAINTAINERS.txt
-        - UPDATE.txt
-        - README.txt
-        - node_modules
-        - .sass-cache
+        - "CHANGELOG.*"
+        - "COPYRIGHT.txt"
+        - "INSTALL.*"
+        - "install.php"
+        - "LICENSE.txt"
+        - "MAINTAINERS.txt"
+        - "UPDATE.txt"
+        - "USAGE.txt"
+        - "README.*"
+        - "node_modules"
+        - "update.php"
+        - ".sass-cache"
+        - "tests"
+        - "examples"
+        - ".eslint*"
+        - ".csslintrc"
+        - ".cspell.json"
+        - ".prettier*"
+        - ".stylelintrc.json"
+        - ".yarnrc.yml"
+        - "yarn.lock"
+        - "phpstan*"
+        - ".phpstan-*"
+        - "phpunit.xml*"
+        - "phpcs.xml*"
+        - ".deprecation-ignore.txt"
+        - "example.gitignore"
+        - ".env.example"
       commands: [ ]
     dev:
       commands: [ ]
