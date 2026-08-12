@@ -67,14 +67,14 @@ class LintCommands extends AbstractCommands
         $packageJson = 'package.json';
         if (!file_exists($packageJson) || !file_exists($this->getNodeBinPath('eslint'))) {
             $actions = true;
-            $this->taskExec('npm ini -y')->run();
+            $this->_exec('pnpm init && pnpm pkg set name="@scope/`basename $PWD`"');
             $overrides = $this->getConfigValue('toolkit.lint.eslint.overrides', []);
             if (file_exists($packageJson) && !empty($overrides)) {
                 $packageData = json_decode(file_get_contents($packageJson), true);
                 $packageData['overrides'] = $overrides;
                 file_put_contents($packageJson, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
             }
-            $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
+            $this->_exec("pnpm add --save-dev {$options['packages']}");
         }
 
         // Check if the binary exists.
@@ -82,7 +82,7 @@ class LintCommands extends AbstractCommands
             $this->getNodeBin('eslint');
         } catch (TaskException $e) {
             $actions = true;
-            $this->taskExec('npm install')->run();
+            $this->taskExec('pnpm install')->run();
         }
 
         if (!file_exists($config)) {
@@ -356,11 +356,8 @@ class LintCommands extends AbstractCommands
         $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
 
         // Make sure the stylelint-config-drupal and stylelint are installed.
-        $this->taskExecStack()
-            ->exec('npm -v || npm i npm')
-            ->exec('[ -f package.json ] || npm init -y --scope')
-            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y')
-            ->run();
+        $this->_exec('[ -f package.json ] || (pnpm init && pnpm pkg set name="@scope/`basename $PWD`")');
+        $this->_exec('pnpm list stylelint-config-drupal >/dev/null 2>&1 && pnpm update stylelint-config-drupal || pnpm add stylelint-config-drupal');
 
         // Generate the config file if missing.
         if (!file_exists($options['config'])) {
@@ -438,11 +435,8 @@ class LintCommands extends AbstractCommands
 
         // Install dependencies if the bin is not present.
         if (!file_exists($bin)) {
-            $this->taskExecStack()
-                ->exec('npm -v || npm i npm')
-                ->exec('[ -f package.json ] || npm init -y --scope')
-                ->exec('npm list cspell && npm update cspell || npm install cspell -y')
-                ->run();
+            $this->_exec('[ -f package.json ] || (pnpm init && pnpm pkg set name="@scope/`basename $PWD`")');
+            $this->_exec('pnpm list cspell >/dev/null 2>&1 && pnpm update cspell || pnpm add cspell');
         }
 
         // Ensure the config file exists.

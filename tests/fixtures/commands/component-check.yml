@@ -819,7 +819,7 @@
       content: |
         { "npm_install": "True" }
   expectations:
-    - string_contains: NPM Outdated check passed
+    - string_contains: PNPM Outdated check passed
 
 - command: 'toolkit:component-check'
   configuration:
@@ -843,7 +843,7 @@
       content: |
         { "npm_install": "True" }
   expectations:
-    - string_contains: NPM Outdated check            passed (Skipping)
+    - string_contains: PNPM Outdated check           passed (Skipping)
 
 - command: 'toolkit:component-check'
   configuration: []
@@ -863,7 +863,7 @@
       content: |
         { "npm_install": "True"  }
   expectations:
-    - string_contains: NPM Insecure check            passed (Skipping)
+    - string_contains: PNPM Insecure check           passed (Skipping)
 
 - command: 'check:mandatory'
   configuration: []

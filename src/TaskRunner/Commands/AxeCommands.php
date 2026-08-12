@@ -121,10 +121,8 @@ class AxeCommands extends AbstractCommands
 
         // Install dependencies if the bin is not present.
         if (!file_exists($this->getNodeBinPath('axe-scan'))) {
-            $tasks[] = $this->taskExecStack()
-                ->exec('npm -v || npm i npm')
-                ->exec('[ -f package.json ] || npm init -y --scope')
-                ->exec('npm list axe-scan && npm update axe-scan || npm install axe-scan -y');
+            $tasks[] = $this->taskExec('[ -f package.json ] || (pnpm init && pnpm pkg set name="@scope/`basename $PWD`")');
+            $tasks[] = $this->taskExec('pnpm list axe-scan >/dev/null 2>&1 && pnpm update axe-scan || pnpm add axe-scan');
         }
 
         // Install linux dependencies.

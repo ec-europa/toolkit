@@ -3,10 +3,11 @@
   resources: []
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('npm ini -y')
-        [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint@^8.57.1 eslint-config-ai ... ig-drupal@^1.0.0 -y')
-        [Simulator] Running npm install --save-dev eslint@^8.57.1 eslint-config-airbnb-base@^15.0.0 eslint-config-drupal@^1.0.0 eslint-config-prettier eslint-plugin-yml@^1.14.0 eslint-junit eslint-plugin-jsdoc@^48.2.0 eslint-plugin-prettier stylelint@^16.2.0 stylelint-config-drupal@^1.0.0 -y
+        [Simulator] Simulating Exec('pnpm init && pnpm pkg set name="@scope/`basename $PWD`"')
+        [Simulator] Running pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`"
+        [Simulator] Simulating Exec('pnpm add --save-dev eslint@^8.57.1 eslint-config-airbn ... onfig-drupal@^1.0.0')
+        [Simulator] Running pnpm add --save-dev eslint@^8.57.1 eslint-config-airbnb-base@^15.0.0 eslint-config-drupal@^1.0.0 eslint-config-prettier eslint-plugin-yml@^1.14.0 eslint-junit eslint-plugin-jsdoc@^48.2.0 eslint-plugin-prettier stylelint@^16.2.0 stylelint-config-drupal@^1.0.0
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
@@ -18,10 +19,11 @@
       to: package.json
   expectations:
     - contains: |
-        [Simulator] Simulating Exec('npm ini -y')
-        [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint@^8.57.1 eslint-config-ai ... ig-drupal@^1.0.0 -y')
-        [Simulator] Running npm install --save-dev eslint@^8.57.1 eslint-config-airbnb-base@^15.0.0 eslint-config-drupal@^1.0.0 eslint-config-prettier eslint-plugin-yml@^1.14.0 eslint-junit eslint-plugin-jsdoc@^48.2.0 eslint-plugin-prettier stylelint@^16.2.0 stylelint-config-drupal@^1.0.0 -y
+        [Simulator] Simulating Exec('pnpm init && pnpm pkg set name="@scope/`basename $PWD`"')
+        [Simulator] Running pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`"
+        [Simulator] Simulating Exec('pnpm add --save-dev eslint@^8.57.1 eslint-config-airbn ... onfig-drupal@^1.0.0')
+        [Simulator] Running pnpm add --save-dev eslint@^8.57.1 eslint-config-airbnb-base@^15.0.0 eslint-config-drupal@^1.0.0 eslint-config-prettier eslint-plugin-yml@^1.14.0 eslint-junit eslint-plugin-jsdoc@^48.2.0 eslint-plugin-prettier stylelint@^16.2.0 stylelint-config-drupal@^1.0.0
         [File\Write] Writing to .eslintrc.json.
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
@@ -36,10 +38,11 @@
         [Simulator] Simulating Exec('rm')
           ->arg('.eslintrc.json')
         [Simulator] Running rm .eslintrc.json
-        [Simulator] Simulating Exec('npm ini -y')
-        [Simulator] Running npm ini -y
-        [Simulator] Simulating Exec('npm install --save-dev eslint@^8.57.1 eslint-config-ai ... ig-drupal@^1.0.0 -y')
-        [Simulator] Running npm install --save-dev eslint@^8.57.1 eslint-config-airbnb-base@^15.0.0 eslint-config-drupal@^1.0.0 eslint-config-prettier eslint-plugin-yml@^1.14.0 eslint-junit eslint-plugin-jsdoc@^48.2.0 eslint-plugin-prettier stylelint@^16.2.0 stylelint-config-drupal@^1.0.0 -y
+        [Simulator] Simulating Exec('pnpm init && pnpm pkg set name="@scope/`basename $PWD`"')
+        [Simulator] Running pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`"
+        [Simulator] Simulating Exec('pnpm add --save-dev eslint@^8.57.1 eslint-config-airbn ... onfig-drupal@^1.0.0')
+        [Simulator] Running pnpm add --save-dev eslint@^8.57.1 eslint-config-airbnb-base@^15.0.0 eslint-config-drupal@^1.0.0 eslint-config-prettier eslint-plugin-yml@^1.14.0 eslint-junit eslint-plugin-jsdoc@^48.2.0 eslint-plugin-prettier stylelint@^16.2.0 stylelint-config-drupal@^1.0.0
         [Simulator] Simulating File\Write('.prettierignore')
           ->text('*.yml')
 
@@ -171,10 +174,14 @@
         [Simulator] Simulating Exec('./vendor/bin/run')
           ->arg('toolkit:setup-eslint')
         [Simulator] Running ./vendor/bin/run 'toolkit:setup-eslint'
-        [Simulator] Simulating ExecStack()
-          ->exec('npm -v || npm i npm')
-          ->exec('[ -f package.json ] || npm init -y --scope')
-          ->exec('npm list stylelint-config-drupal && npm update styleli ... nt-config-drupal -y')
+        [Simulator] Simulating Exec('[ -f package.json ] || (pnpm init && pnpm pkg set name ... e/`basename $PWD`")')
+        [Simulator] Running [ -f package.json ] ||
+        (pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`")
+        [Simulator] Simulating Exec('pnpm list stylelint-config-drupal >/dev/null 2>&1 && p ... elint-config-drupal')
+        [Simulator] Running pnpm list stylelint-config-drupal >/dev/null 2>&1 &&
+        pnpm update stylelint-config-drupal ||
+        pnpm add stylelint-config-drupal
         [Simulator] Simulating File\Write('.stylelintrc.json')
           ->text('{
             "extends": "stylelint-config-drupal"

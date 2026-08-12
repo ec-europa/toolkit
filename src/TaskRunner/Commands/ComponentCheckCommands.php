@@ -139,8 +139,8 @@ class ComponentCheckCommands extends AbstractCommands
         // Check if npm_install property enabled adding the NPM checks if so.
         if (!empty($parseOptsFile['npm_install'])) {
             $checks += [
-                'componentNpmInsecure' => 'Npm Insecure',
-                'componentNpmOutdated' => 'Npm Outdated',
+                'componentNpmInsecure' => 'PNPM Insecure',
+                'componentNpmOutdated' => 'PNPM Outdated',
             ];
         }
         foreach ($checks as $function => $label) {
@@ -876,7 +876,7 @@ class ComponentCheckCommands extends AbstractCommands
                 ->run()->getMessage();
         }
 
-        $result = $this->taskExec('npm audit --json --audit-level=low --ignore-scripts=true --production --package-lock-only')
+        $result = $this->taskExec('pnpm audit --json --audit-level=low --prod')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $auditModules = json_decode($result, true);
@@ -885,12 +885,12 @@ class ComponentCheckCommands extends AbstractCommands
             foreach ($auditModules['vulnerabilities'] as $vulnerability) {
                 $message = "Package {$vulnerability['name']} has a vulnerability with severity {$vulnerability['severity']}.";
                 $io->writeln($message);
-                $this->addJunitResult('NPM Insecure', $message, $this->skipInsecureNpm ? 'warning' : 'error');
+                $this->addJunitResult('PNPM Insecure', $message, $this->skipInsecureNpm ? 'warning' : 'error');
             }
         }
 
         if (!$this->insecureNpmFailed) {
-            $io->say('NPM Insecure check passed.');
+            $io->say('PNPM Insecure check passed.');
         }
     }
 
@@ -921,24 +921,24 @@ class ComponentCheckCommands extends AbstractCommands
                 ->run()->getMessage();
         }
 
-        $result = $this->taskExec('npm outdated --json --long')
+        $result = $this->taskExec('pnpm outdated --format json --long')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $outdatedModules = json_decode($result, true);
         if (empty($outdatedModules)) {
-            $io->say('NPM Outdated check passed.');
+            $io->say('PNPM Outdated check passed.');
         } else {
             foreach ($outdatedModules as $packageName => $package) {
                 if ($package['current'] !== $package['latest']) {
                     $message = "Package {$packageName} with version installed {$package['current']} is outdated, please update to the {$package['latest']} version.";
                     $io->writeln($message);
                     $this->outdatedNpmFailed = true;
-                    $this->addJunitResult('NPM Outdated', $message, $this->skipOutdatedNpm ? 'warning' : 'error');
+                    $this->addJunitResult('PNPM Outdated', $message, $this->skipOutdatedNpm ? 'warning' : 'error');
                 }
             }
             if (!$this->outdatedNpmFailed) {
                 // Check is passed if modules reported have same current-latest version.
-                $io->say('NPM Outdated check passed.');
+                $io->say('PNPM Outdated check passed.');
             }
         }
     }
@@ -1075,8 +1075,8 @@ class ComponentCheckCommands extends AbstractCommands
 
         // Check if npm_install property is enabled and add the NPM results.
         if (!empty($parseOptsFile['npm_install'])) {
-            $headers[] = 'NPM Insecure check';
-            $headers[] = 'NPM Outdated check';
+            $headers[] = 'PNPM Insecure check';
+            $headers[] = 'PNPM Outdated check';
             $rows[] = $this->getFailedOrPassed($this->insecureNpmFailed) . ($this->skipInsecureNpm ? ' (Skipping)' : '');
             $rows[] = $this->getFailedOrPassed($this->outdatedNpmFailed) . ($this->skipOutdatedNpm ? ' (Skipping)' : '');
         }
