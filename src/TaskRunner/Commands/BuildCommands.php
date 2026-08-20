@@ -374,8 +374,9 @@ class BuildCommands extends AbstractCommands
     private function buildAssetsInstall(string $themeDir, array $allowedTaskRunners, array $taskRunners, array $files, array $options)
     {
         $tasks = [];
-        $tasks[] = $this->taskExec('[ -f package.json ] || (pnpm init && pnpm pkg set name="@scope/`basename $PWD`")')->dir($themeDir);
-        $tasks[] = $this->taskExec('pnpm list sass >/dev/null 2>&1 && pnpm update sass || pnpm add sass')->dir($themeDir);
+        $pnpmBin = $this->getPnpmBin();
+        $tasks[] = $this->taskExec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")')->dir($themeDir);
+        $tasks[] = $this->taskExec("$pnpmBin list sass >/dev/null 2>&1 && $pnpmBin update sass || $pnpmBin add sass")->dir($themeDir);
 
         // Check if 'theme-task-runner' file exists and create it if missing.
         foreach ($allowedTaskRunners as $allowedTaskRunner => $configFile) {
@@ -386,7 +387,7 @@ class BuildCommands extends AbstractCommands
         }
         foreach (explode(' ', $options['build-npm-packages']) as $package) {
             // Install package if are not installed.
-            $tasks[] = $this->taskExec("pnpm list $package && pnpm update $package || pnpm add $package --save-dev")->dir($themeDir);
+            $tasks[] = $this->taskExec("$pnpmBin list $package && $pnpmBin update $package || $pnpmBin add $package --save-dev")->dir($themeDir);
         }
 
         $this->collectionBuilder()->addTaskList($tasks)->run();

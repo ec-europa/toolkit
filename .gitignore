@@ -21,6 +21,7 @@ package-lock.json
 /.toolkit-mock
 /gherkinlint.json
 /.stylelintrc.json
+/.pnpm-store/
 
 # Documentation folder exclusions.
 docs/**

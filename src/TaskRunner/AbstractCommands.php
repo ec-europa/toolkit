@@ -71,6 +71,19 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
     }
 
     /**
+     * Return the path to pnpm.
+     *
+     * The path is not part of the $PATH variable and cannot be used globally.
+     *
+     * @return string
+     *   The path to given pnpm.
+     */
+    protected function getPnpmBin(): string
+    {
+        return '/opt/pnpm/bin/pnpm';
+    }
+
+    /**
      * Validate and return the path to given bin from node packages.
      *
      * @param string $name

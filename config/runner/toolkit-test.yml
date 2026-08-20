@@ -102,8 +102,9 @@ toolkit:
         eslint-junit
         eslint-plugin-jsdoc@^48.2.0
         eslint-plugin-prettier
-        stylelint@^16.2.0
-        stylelint-config-drupal@^1.0.0
+        eslint-plugin-import@latest
+        stylelint@^14.16.1
+        stylelint-config-drupal@^3.1.0
       ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: 'no-error-on-unmatched-pattern'

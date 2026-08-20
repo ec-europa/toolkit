@@ -870,13 +870,14 @@ class ComponentCheckCommands extends AbstractCommands
         $this->skipInsecureNpm = false;
         $this->prepareSkips();
         // Generate the package files needed in case not exists.
-        if (!file_exists('package-lock.json')) {
+        if (!file_exists('pnpm-lock.yaml')) {
             $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')
                 ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
                 ->run()->getMessage();
         }
 
-        $result = $this->taskExec('pnpm audit --json --audit-level=low --prod')
+        $pnpmBin = $this->getPnpmBin();
+        $result = $this->taskExec("$pnpmBin audit --json --audit-level=low --prod")
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $auditModules = json_decode($result, true);
@@ -921,7 +922,7 @@ class ComponentCheckCommands extends AbstractCommands
                 ->run()->getMessage();
         }
 
-        $result = $this->taskExec('pnpm outdated --format json --long')
+        $result = $this->taskExec($this->getPnpmBin() . ' outdated --format json --long')
             ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_DEBUG)
             ->run()->getMessage();
         $outdatedModules = json_decode($result, true);
