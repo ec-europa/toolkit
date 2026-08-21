@@ -123,7 +123,7 @@ class AxeCommands extends AbstractCommands
         if (!file_exists($this->getNodeBinPath('axe-scan'))) {
             $pnpmBin = $this->getPnpmBin();
             $tasks[] = $this->taskExec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")');
-            $tasks[] = $this->taskExec("$pnpmBin list axe-scan >/dev/null 2>&1 && $pnpmBin update axe-scan || $pnpmBin add axe-scan");
+            $tasks[] = $this->taskExec("$pnpmBin add axe-scan --save-dev");
         }
 
         // Install linux dependencies.

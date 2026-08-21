@@ -376,7 +376,7 @@ class BuildCommands extends AbstractCommands
         $tasks = [];
         $pnpmBin = $this->getPnpmBin();
         $tasks[] = $this->taskExec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")')->dir($themeDir);
-        $tasks[] = $this->taskExec("$pnpmBin list sass >/dev/null 2>&1 && $pnpmBin update sass || $pnpmBin add sass")->dir($themeDir);
+        $tasks[] = $this->taskExec("$pnpmBin add sass --save-dev")->dir($themeDir);
 
         // Check if 'theme-task-runner' file exists and create it if missing.
         foreach ($allowedTaskRunners as $allowedTaskRunner => $configFile) {
@@ -387,7 +387,7 @@ class BuildCommands extends AbstractCommands
         }
         foreach (explode(' ', $options['build-npm-packages']) as $package) {
             // Install package if are not installed.
-            $tasks[] = $this->taskExec("$pnpmBin list $package && $pnpmBin update $package || $pnpmBin add $package --save-dev")->dir($themeDir);
+            $tasks[] = $this->taskExec("$pnpmBin add $package --save-dev")->dir($themeDir);
         }
 
         $this->collectionBuilder()->addTaskList($tasks)->run();

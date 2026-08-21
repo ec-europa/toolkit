@@ -376,7 +376,7 @@ class LintCommands extends AbstractCommands
         // Make sure the stylelint-config-drupal and stylelint are installed.
         $pnpmBin = $this->getPnpmBin();
         $this->_exec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")');
-        $this->_exec("$pnpmBin list stylelint-config-drupal >/dev/null 2>&1 && $pnpmBin update stylelint-config-drupal || $pnpmBin add stylelint-config-drupal");
+        $this->_exec("$pnpmBin add stylelint-config-drupal --save-dev");
 
         // Generate the config file if missing.
         if (!file_exists($options['config'])) {
@@ -456,7 +456,7 @@ class LintCommands extends AbstractCommands
         if (!file_exists($bin)) {
             $pnpmBin = $this->getPnpmBin();
             $this->_exec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")');
-            $this->_exec("$pnpmBin list cspell >/dev/null 2>&1 && $pnpmBin update cspell || $pnpmBin add cspell");
+            $this->_exec("$pnpmBin add cspell --save-dev");
         }
 
         // Ensure the config file exists.

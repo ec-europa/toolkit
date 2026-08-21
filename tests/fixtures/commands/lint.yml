@@ -174,10 +174,8 @@
         [Simulator] Running [ -f package.json ] ||
         (pnpm init &&
         pnpm pkg set name="@scope/`basename $PWD`")
-        [Simulator] Simulating Exec('pnpm list stylelint-config-drupal >/dev/null 2>&1 && p ... elint-config-drupal')
-        [Simulator] Running pnpm list stylelint-config-drupal >/dev/null 2>&1 &&
-        pnpm update stylelint-config-drupal ||
-        pnpm add stylelint-config-drupal
+        [Simulator] Simulating Exec('pnpm add stylelint-config-drupal --save-dev')
+        [Simulator] Running pnpm add stylelint-config-drupal --save-dev
         [Simulator] Simulating File\Write('.stylelintrc.json')
           ->text('{
             "extends": "stylelint-config-drupal"

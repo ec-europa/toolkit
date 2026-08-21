@@ -189,18 +189,14 @@
         [Simulator] Running [ -f package.json ] ||
         (pnpm init &&
         pnpm pkg set name="@scope/`basename $PWD`") in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('pnpm list sass >/dev/null 2>&1 && pnpm update sass || pnpm add sass')
+        [Simulator] Simulating Exec('pnpm add sass --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list sass >/dev/null 2>&1 &&
-        pnpm update sass ||
-        pnpm add sass in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Running pnpm add sass --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('cp /__w/toolkit/toolkit/resources/assets/gulpfile.js / ... e/theme/gulpfile.js')
         [Simulator] Running cp /__w/toolkit/toolkit/resources/assets/gulpfile.js /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme/gulpfile.js
-        [Simulator] Simulating Exec('pnpm list gulp-cli && pnpm update gulp-cli || pnpm add gulp-cli --save-dev')
+        [Simulator] Simulating Exec('pnpm add gulp-cli --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list gulp-cli &&
-        pnpm update gulp-cli ||
-        pnpm add gulp-cli --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Running pnpm add gulp-cli --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('./node_modules/.bin/gulp')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/gulp in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
@@ -217,33 +213,23 @@
         [Simulator] Running [ -f package.json ] ||
         (pnpm init &&
         pnpm pkg set name="@scope/`basename $PWD`") in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('pnpm list sass >/dev/null 2>&1 && pnpm update sass || pnpm add sass')
+        [Simulator] Simulating Exec('pnpm add sass --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list sass >/dev/null 2>&1 &&
-        pnpm update sass ||
-        pnpm add sass in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Running pnpm add sass --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('cp /__w/toolkit/toolkit/resources/assets/ecl-builder.c ... l-builder.config.js')
         [Simulator] Running cp /__w/toolkit/toolkit/resources/assets/ecl-builder.config.js /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme/ecl-builder.config.js
-        [Simulator] Simulating Exec('pnpm list @ecl/builder && pnpm update @ecl/builder ||  ... /builder --save-dev')
+        [Simulator] Simulating Exec('pnpm add @ecl/builder --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list @ecl/builder &&
-        pnpm update @ecl/builder ||
-        pnpm add @ecl/builder --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('pnpm list @ecl/preset-ec && pnpm update @ecl/preset-ec ... reset-ec --save-dev')
+        [Simulator] Running pnpm add @ecl/builder --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-ec --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list @ecl/preset-ec &&
-        pnpm update @ecl/preset-ec ||
-        pnpm add @ecl/preset-ec --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('pnpm list @ecl/preset-eu && pnpm update @ecl/preset-eu ... reset-eu --save-dev')
+        [Simulator] Running pnpm add @ecl/preset-ec --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-eu --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list @ecl/preset-eu &&
-        pnpm update @ecl/preset-eu ||
-        pnpm add @ecl/preset-eu --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
-        [Simulator] Simulating Exec('pnpm list @ecl/preset-reset && pnpm update @ecl/preset ... et-reset --save-dev')
+        [Simulator] Running pnpm add @ecl/preset-eu --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-reset --save-dev')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-        [Simulator] Running pnpm list @ecl/preset-reset &&
-        pnpm update @ecl/preset-reset ||
-        pnpm add @ecl/preset-reset --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Running pnpm add @ecl/preset-reset --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder styles')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder styles in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
