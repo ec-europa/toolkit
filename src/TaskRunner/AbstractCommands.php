@@ -80,7 +80,7 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      */
     protected function getPnpmBin(): string
     {
-        return '/opt/pnpm/bin/pnpm';
+        return 'pnpm';
     }
 
     /**

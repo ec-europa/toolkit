@@ -58,16 +58,6 @@ class LintCommands extends AbstractCommands
         Toolkit::ensureArray($options['ignores']);
 
         $pnpmBin = $this->getPnpmBin();
-
-        // Check if pnpm is available.
-        $exec = $this->taskExec("$pnpmBin --version")->printOutput(false)->printMetadata(false)->run();
-        $pnpmVersion = rtrim($exec->getMessage());
-        if (empty($pnpmVersion)) {
-            $io->error('Could not find the pnpm binary.');
-            return ResultData::EXITCODE_ERROR;
-        }
-        $this->say("Pnpm version $pnpmVersion");
-
         $actions = false;
         $packageJson = 'package.json';
         $packageLock = 'pnpm-lock.yaml';
@@ -84,7 +74,7 @@ class LintCommands extends AbstractCommands
 
         // Add overrides.
         $overrides = $this->getConfigValue('toolkit.lint.eslint.overrides', []);
-        if (!empty($overrides)) {
+        if (!empty($overrides) && !$this->isSimulating()) {
             $packageData = $this->getJson($packageJson);
             $packageData['overrides'] = array_merge($packageData['overrides'] ?? [], $overrides);
             file_put_contents($packageJson, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
@@ -368,6 +358,8 @@ class LintCommands extends AbstractCommands
      *
      * @return int
      *   The toolkit lint css command status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitLintCss(array $options = [
         'config' => InputOption::VALUE_REQUIRED,

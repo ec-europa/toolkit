@@ -22,6 +22,7 @@ package-lock.json
 /gherkinlint.json
 /.stylelintrc.json
 /.pnpm-store/
+pnpm-lock.yaml
 
 # Documentation folder exclusions.
 docs/**
