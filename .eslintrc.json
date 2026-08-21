@@ -41,7 +41,9 @@
         "vendor/*",
         "config/*",
         "resources/docker",
-        "tests/fixtures/samples/sample-docker*.yml"
+        "tests/fixtures/samples/sample-docker*.yml",
+        "pnpm-lock.yaml",
+        "tests/fixtures/samples/sample-pnpm-lock.yaml"
     ],
     "overrides": [
         {
