@@ -361,6 +361,11 @@ Search.appendIndex(
             "summary": "Return\u0020the\u0020path\u0020to\u0020given\u0020bin.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBinPath"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetPnpmBin\u0028\u0029",
+            "name": "getPnpmBin",
+            "summary": "Return\u0020the\u0020path\u0020to\u0020pnpm.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getPnpmBin"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\AbstractCommands\u003A\u003AgetNodeBin\u0028\u0029",
             "name": "getNodeBin",
             "summary": "Validate\u0020and\u0020return\u0020the\u0020path\u0020to\u0020given\u0020bin\u0020from\u0020node\u0020packages.",
