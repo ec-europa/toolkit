@@ -184,17 +184,22 @@
       to: code/theme/package.json
   expectations:
     - contains: |
-        [Simulator] Simulating ExecStack()
+        [Simulator] Simulating Exec('[ -f package.json ] || (pnpm init && pnpm pkg set name ... e/`basename $PWD`")')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->stopOnFail()
-          ->exec('npm -v || npm i npm')
-          ->exec('[ -f package.json ] || npm init -y --scope')
-          ->exec('npm list sass || npm install sass -y')
-          ->exec('cp /__w/toolkit/toolkit/resources/assets/gulpfile.js / ... e/theme/gulpfile.js')
-          ->exec('npm list gulp-cli || npm install gulp-cli --save-dev')
-          [Simulator] Simulating Exec('./node_modules/.bin/gulp')
-            ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          [Simulator] Running ./node_modules/.bin/gulp in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Running [ -f package.json ] ||
+        (pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`") in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add sass --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add sass --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('cp /__w/toolkit/toolkit/resources/assets/gulpfile.js / ... e/theme/gulpfile.js')
+        [Simulator] Running cp /__w/toolkit/toolkit/resources/assets/gulpfile.js /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme/gulpfile.js
+        [Simulator] Simulating Exec('pnpm add gulp-cli --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add gulp-cli --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('./node_modules/.bin/gulp')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running ./node_modules/.bin/gulp in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
 
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
   configuration: []
@@ -203,17 +208,28 @@
       to: code/theme/package.json
   expectations:
     - contains: |
-        [Simulator] Simulating ExecStack()
+        [Simulator] Simulating Exec('[ -f package.json ] || (pnpm init && pnpm pkg set name ... e/`basename $PWD`")')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->stopOnFail()
-          ->exec('npm -v || npm i npm')
-          ->exec('[ -f package.json ] || npm init -y --scope')
-          ->exec('npm list sass || npm install sass -y')
-          ->exec('cp /__w/toolkit/toolkit/resources/assets/ecl-builder.c ... l-builder.config.js')
-          ->exec('npm list @ecl/builder || npm install @ecl/builder --save-dev')
-          ->exec('npm list @ecl/preset-ec || npm install @ecl/preset-ec --save-dev')
-          ->exec('npm list @ecl/preset-eu || npm install @ecl/preset-eu --save-dev')
-          ->exec('npm list @ecl/preset-reset || npm install @ecl/preset-reset --save-dev')
+        [Simulator] Running [ -f package.json ] ||
+        (pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`") in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add sass --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add sass --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('cp /__w/toolkit/toolkit/resources/assets/ecl-builder.c ... l-builder.config.js')
+        [Simulator] Running cp /__w/toolkit/toolkit/resources/assets/ecl-builder.config.js /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme/ecl-builder.config.js
+        [Simulator] Simulating Exec('pnpm add @ecl/builder --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/builder --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-ec --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/preset-ec --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-eu --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/preset-eu --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-reset --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/preset-reset --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder styles')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder styles in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme

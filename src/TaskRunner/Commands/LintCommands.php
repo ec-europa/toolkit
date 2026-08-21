@@ -10,6 +10,7 @@ use EcEuropa\Toolkit\Toolkit;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\Exception\TaskException;
 use Robo\ResultData;
+use Robo\Symfony\ConsoleIO;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -46,7 +47,7 @@ class LintCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function toolkitSetupEslint(array $options = [
+    public function toolkitSetupEslint(ConsoleIO $io, array $options = [
         'config' => InputOption::VALUE_REQUIRED,
         'ignores' => InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
         'drupal-root' => InputOption::VALUE_REQUIRED,
@@ -56,25 +57,36 @@ class LintCommands extends AbstractCommands
     {
         Toolkit::ensureArray($options['ignores']);
 
+        $pnpmBin = $this->getPnpmBin();
         $actions = false;
+        $packageJson = 'package.json';
+        $packageLock = 'pnpm-lock.yaml';
+        if (file_exists($packageJson) && !file_exists($packageLock)) {
+            $io->error("The file $packageLock is required when having a $packageJson file.");
+            return ResultData::EXITCODE_ERROR;
+        }
+
+        // Create a package.json if it doesn't exist.
+        if (!file_exists($packageJson)) {
+            $actions = true;
+            $this->_exec("$pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`"');
+        }
+
+        // Add overrides.
+        $overrides = $this->getConfigValue('toolkit.lint.eslint.overrides', []);
+        if (!empty($overrides) && !$this->isSimulating()) {
+            $packageData = $this->getJson($packageJson);
+            $packageData['overrides'] = array_merge($packageData['overrides'] ?? [], $overrides);
+            file_put_contents($packageJson, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
+
+        // Ensure required packages are installed.
+        $this->_exec("$pnpmBin add --save-dev {$options['packages']}");
+
         $config = $options['config'];
         if ($options['force'] && file_exists($config)) {
             $actions = true;
             $this->taskExec('rm')->arg($config)->run();
-        }
-
-        // Create a package.json if it doesn't exist.
-        $packageJson = 'package.json';
-        if (!file_exists($packageJson) || !file_exists($this->getNodeBinPath('eslint'))) {
-            $actions = true;
-            $this->taskExec('npm ini -y')->run();
-            $overrides = $this->getConfigValue('toolkit.lint.eslint.overrides', []);
-            if (file_exists($packageJson) && !empty($overrides)) {
-                $packageData = json_decode(file_get_contents($packageJson), true);
-                $packageData['overrides'] = $overrides;
-                file_put_contents($packageJson, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-            }
-            $this->taskExec("npm install --save-dev {$options['packages']} -y")->run();
         }
 
         // Check if the binary exists.
@@ -82,12 +94,12 @@ class LintCommands extends AbstractCommands
             $this->getNodeBin('eslint');
         } catch (TaskException $e) {
             $actions = true;
-            $this->taskExec('npm install')->run();
+            $this->taskExec("$pnpmBin install")->run();
         }
 
-        if (!file_exists($config)) {
+        if (!file_exists($options['config'])) {
             $actions = true;
-            $this->generateEslintConfigurations($config, $options);
+            $this->generateEslintConfigurations($options['config'], $options);
         }
 
         // Ignore all yaml files for prettier.
@@ -168,7 +180,7 @@ class LintCommands extends AbstractCommands
      *
      * @aliases tk-yaml, tly
      *
-     * @return \Robo\Collection\CollectionBuilder
+     * @return int
      *   The Toolkit lint yaml command status.
      *
      * @usage --extensions='.yml' --options='fix no-eslintrc'
@@ -201,7 +213,7 @@ class LintCommands extends AbstractCommands
      *
      * @usage --extensions='.js' --options='fix no-eslintrc'
      *
-     * @return \Robo\Collection\CollectionBuilder
+     * @return int
      *   The toolkit lint js status.
      */
     public function toolkitLintJs(array $options = [
@@ -225,7 +237,7 @@ class LintCommands extends AbstractCommands
      * @param string $options
      *   Extra options for the command.
      *
-     * @return \Robo\Collection\CollectionBuilder
+     * @return int
      *   The toolkit run eslint status.
      *
      * @see toolkitLintYaml()
@@ -233,9 +245,10 @@ class LintCommands extends AbstractCommands
      */
     private function toolkitRunEsLint(string $config, array $extensions, string $options)
     {
-        $tasks = [];
-
-        $tasks[] = $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint');
+        $command = $this->getBin('run') . ' toolkit:setup-eslint';
+        if (!$this->_exec($command)->wasSuccessful()) {
+            return ResultData::EXITCODE_ERROR;
+        }
 
         $opts = [
             'config' => $config,
@@ -253,9 +266,9 @@ class LintCommands extends AbstractCommands
             $opts['output-file'] = JunitXmlGenerator::$dir . "/junit-lint-$type.xml";
         }
 
-        $tasks[] = $this->taskExec($this->getNodeBinPath('eslint'))->options($opts)->arg('.');
+        $result = $this->taskExec($this->getNodeBinPath('eslint'))->options($opts)->arg('.')->run();
 
-        return $this->collectionBuilder()->addTaskList($tasks);
+        return $result->getExitCode();
     }
 
     /**
@@ -345,6 +358,8 @@ class LintCommands extends AbstractCommands
      *
      * @return int
      *   The toolkit lint css command status.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function toolkitLintCss(array $options = [
         'config' => InputOption::VALUE_REQUIRED,
@@ -353,14 +368,15 @@ class LintCommands extends AbstractCommands
     ])
     {
         // Make sure eslint is properly installed.
-        $this->taskExec($this->getBin('run'))->arg('toolkit:setup-eslint')->run();
+        $command = $this->getBin('run') . ' toolkit:setup-eslint';
+        if (!$this->_exec($command)->wasSuccessful()) {
+            return ResultData::EXITCODE_ERROR;
+        }
 
         // Make sure the stylelint-config-drupal and stylelint are installed.
-        $this->taskExecStack()
-            ->exec('npm -v || npm i npm')
-            ->exec('[ -f package.json ] || npm init -y --scope')
-            ->exec('npm list stylelint-config-drupal && npm update stylelint-config-drupal || npm install stylelint-config-drupal -y')
-            ->run();
+        $pnpmBin = $this->getPnpmBin();
+        $this->_exec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")');
+        $this->_exec("$pnpmBin add stylelint-config-drupal --save-dev");
 
         // Generate the config file if missing.
         if (!file_exists($options['config'])) {
@@ -438,11 +454,9 @@ class LintCommands extends AbstractCommands
 
         // Install dependencies if the bin is not present.
         if (!file_exists($bin)) {
-            $this->taskExecStack()
-                ->exec('npm -v || npm i npm')
-                ->exec('[ -f package.json ] || npm init -y --scope')
-                ->exec('npm list cspell && npm update cspell || npm install cspell -y')
-                ->run();
+            $pnpmBin = $this->getPnpmBin();
+            $this->_exec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")');
+            $this->_exec("$pnpmBin add cspell --save-dev");
         }
 
         // Ensure the config file exists.

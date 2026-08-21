@@ -373,27 +373,24 @@ class BuildCommands extends AbstractCommands
      */
     private function buildAssetsInstall(string $themeDir, array $allowedTaskRunners, array $taskRunners, array $files, array $options)
     {
-        $collection = $this->collectionBuilder();
-        $stack = $collection->taskExecStack()->dir($themeDir)->stopOnFail();
+        $tasks = [];
+        $pnpmBin = $this->getPnpmBin();
+        $tasks[] = $this->taskExec("[ -f package.json ] || ($pnpmBin init && $pnpmBin pkg set" . ' name="@scope/`basename $PWD`")')->dir($themeDir);
+        $tasks[] = $this->taskExec("$pnpmBin add sass --save-dev")->dir($themeDir);
 
-        $stack->exec('npm -v || npm i npm')
-            ->exec('[ -f package.json ] || npm init -y --scope')
-            ->exec('npm list sass || npm install sass -y');
-
-        // Check if 'theme-task-runner' file exists.
-        // Create a new one from source if doesn't exist.
+        // Check if 'theme-task-runner' file exists and create it if missing.
         foreach ($allowedTaskRunners as $allowedTaskRunner => $configFile) {
             if (in_array($allowedTaskRunner, $taskRunners) && !in_array($configFile, $files)) {
                 $dir = Toolkit::getToolkitRoot() . '/resources/assets';
-                $stack->exec("cp $dir/$configFile $themeDir/$configFile");
+                $tasks[] = $this->taskExec("cp $dir/$configFile $themeDir/$configFile");
             }
         }
         foreach (explode(' ', $options['build-npm-packages']) as $package) {
-            // Install npm package if are not installed.
-            $stack->exec("npm list $package || npm install $package --save-dev");
+            // Install package if are not installed.
+            $tasks[] = $this->taskExec("$pnpmBin add $package --save-dev")->dir($themeDir);
         }
 
-        $stack->run();
+        $this->collectionBuilder()->addTaskList($tasks)->run();
     }
 
     /**
