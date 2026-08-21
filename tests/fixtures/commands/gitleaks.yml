@@ -57,7 +57,7 @@
   resources:
     - from: sample-gitleaks-report.json
       to: gitleaks-report.json
-    - file: .toolkit-mock/0.0.110/api/v1/gitleaks-ignores.json
+    - file: .toolkit-mock/0.0.116/api/v1/gitleaks-ignores.json
       content: |
         empty
   expectations:
@@ -92,7 +92,7 @@
   resources:
     - from: sample-gitleaks-report.json
       to: gitleaks-report.json
-    - file: .toolkit-mock/0.0.110/api/v1/gitleaks-ignores.json
+    - file: .toolkit-mock/0.0.116/api/v1/gitleaks-ignores.json
       content: |
         {"gitleaks_ignores":[
         "f3b0bd000a796a123ef1f58368f5847bc7322bac8f2b2014b254eaa890a877b2"

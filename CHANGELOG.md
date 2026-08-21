@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 10.30.0
+  - DQA-14496: Improve remove regex with wildcards.
+  - DQA-14495: Support PHP 8.5.
+  - DQA-14701: Change npm by pnpm & enforce project package lock.
+
 ## Version 10.29.3
   - DQA-14491: Allow cweagans/composer-patches when no patches are used.
   - DQA-14463: Composer check not working with patches in external file.
