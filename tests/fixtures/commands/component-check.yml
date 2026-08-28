@@ -477,13 +477,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.116/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.117/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.116/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.117/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.116/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.117/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -518,13 +518,13 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "drupal/pipeline", "type": "drupal-module", "version": "1.0.0" } ] }
-    - file: .toolkit-mock/0.0.116/api/v1/project/ec-europa/toolkit/information.json
+    - file: .toolkit-mock/0.0.117/api/v1/project/ec-europa/toolkit/information.json
       content: |
         [{ "name": "toolkit", "type": "Openeuropa", "environments": [{ "profile": "minimal", "type": "Production" }] }]
-    - file: .toolkit-mock/0.0.116/api/v1/toolkit-requirements.json
+    - file: .toolkit-mock/0.0.117/api/v1/toolkit-requirements.json
       content: |
         { "php_version": "8.1", "toolkit": "^3.7.2|^9.14|^10.4", "drupal": "^7.96|^10.1.4|^10.0.11", "vendor_list": [ "drupal" ] }
-    - file: .toolkit-mock/0.0.116/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.117/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
@@ -558,7 +558,7 @@
     - file: composer.lock
       content: |
         { "packages": [ { "name": "ec-europa/toolkit", "type": "library", "version": "11.26.2" } ] }
-    - file: .toolkit-mock/0.0.116/api/v1/package-reviews.json
+    - file: .toolkit-mock/0.0.117/api/v1/package-reviews.json
       content: |
         [ {
           "type": "drupal-module",
