@@ -105,7 +105,7 @@ toolkit:
         eslint-plugin-import@latest
         stylelint@^14.16.1
         stylelint-config-drupal@^3.1.0
-      ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*' ]
+      ignores: [ '${toolkit.build.dist.root}/*', '.cache/*', 'vendor/*', '${drupal.root}/*', 'pnpm-lock.yaml' ]
       extensions_yaml: [ '.yml', '.yaml' ]
       options_yaml: 'no-error-on-unmatched-pattern'
       extensions_js: [ '.js' ]

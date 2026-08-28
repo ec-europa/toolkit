@@ -1,5 +1,8 @@
 # Toolkit change log
 
+## Version 10.30.1
+  - DQA-14807: Ignore pnpm-lock.yaml for eslint.
+
 ## Version 10.30.0
   - DQA-14496: Improve remove regex with wildcards.
   - DQA-14495: Support PHP 8.5.
