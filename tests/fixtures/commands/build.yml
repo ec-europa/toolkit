@@ -87,7 +87,7 @@
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('')
         [Simulator] Simulating Exec('find dist -maxdepth 5 \( -name "CHANGELOG.*" -o -name  ... ) -exec rm -rf {} +')
-        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.*" -o -name "COPYRIGHT.txt" -o -name "INSTALL.*" -o -name "install.php" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "USAGE.txt" -o -name "README.*" -o -name "node_modules" -o -name "update.php" -o -name ".sass-cache" -o -name "tests" -o -name "examples" -o -name ".eslint*" -o -name ".csslintrc" -o -name ".cspell.json" -o -name ".prettier*" -o -name ".stylelintrc.json" -o -name ".yarnrc.yml" -o -name "yarn.lock" -o -name "phpstan*" -o -name ".phpstan-*" -o -name "phpunit.xml*" -o -name "phpcs.xml*" -o -name ".deprecation-ignore.txt" -o -name "example.gitignore" -o -name ".env.example" \) -exec rm -rf {} +
+        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.*" -o -name "COPYRIGHT.txt" -o -name "INSTALL.*" -o -name "install.php" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "USAGE.txt" -o -name "README.*" -o -name "node_modules" -o -name "update.php" -o -name ".sass-cache" -o -name "tests" -o -name "examples" -o -name ".eslint*" -o -name ".csslintrc" -o -name ".cspell.json" -o -name ".prettier*" -o -name ".stylelintrc.json" -o -name ".yarnrc.yml" -o -name "yarn.lock" -o -name "phpstan?*" -o -name ".phpstan-*" -o -name "phpunit.xml*" -o -name "phpcs.xml*" -o -name ".deprecation-ignore.txt" -o -name "example.gitignore" -o -name ".env.example" \) -exec rm -rf {} +
 
 - command: 'toolkit:build-dist'
   configuration:
@@ -120,7 +120,7 @@
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('')
         [Simulator] Simulating Exec('find dist -maxdepth 10 \( -name "CHANGELOG.*" -o -name ... ) -exec rm -rf {} +')
-        [Simulator] Running find dist -maxdepth 10 \( -name "CHANGELOG.*" -o -name "COPYRIGHT.txt" -o -name "INSTALL.*" -o -name "install.php" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "USAGE.txt" -o -name "README.*" -o -name "node_modules" -o -name "update.php" -o -name ".sass-cache" -o -name "tests" -o -name "examples" -o -name ".eslint*" -o -name ".csslintrc" -o -name ".cspell.json" -o -name ".prettier*" -o -name ".stylelintrc.json" -o -name ".yarnrc.yml" -o -name "yarn.lock" -o -name "phpstan*" -o -name ".phpstan-*" -o -name "phpunit.xml*" -o -name "phpcs.xml*" -o -name ".deprecation-ignore.txt" -o -name "example.gitignore" -o -name ".env.example" \) -exec rm -rf {} +
+        [Simulator] Running find dist -maxdepth 10 \( -name "CHANGELOG.*" -o -name "COPYRIGHT.txt" -o -name "INSTALL.*" -o -name "install.php" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "USAGE.txt" -o -name "README.*" -o -name "node_modules" -o -name "update.php" -o -name ".sass-cache" -o -name "tests" -o -name "examples" -o -name ".eslint*" -o -name ".csslintrc" -o -name ".cspell.json" -o -name ".prettier*" -o -name ".stylelintrc.json" -o -name ".yarnrc.yml" -o -name "yarn.lock" -o -name "phpstan?*" -o -name ".phpstan-*" -o -name "phpunit.xml*" -o -name "phpcs.xml*" -o -name ".deprecation-ignore.txt" -o -name "example.gitignore" -o -name ".env.example" \) -exec rm -rf {} +
 
 - command: 'toolkit:build-dev'
   configuration: []
