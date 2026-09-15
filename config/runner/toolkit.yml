@@ -111,7 +111,7 @@ toolkit:
         - ".stylelintrc.json"
         - ".yarnrc.yml"
         - "yarn.lock"
-        - "phpstan*"
+        - "phpstan?*"
         - ".phpstan-*"
         - "phpunit.xml*"
         - "phpcs.xml*"
