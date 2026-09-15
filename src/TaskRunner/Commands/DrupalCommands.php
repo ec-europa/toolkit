@@ -9,6 +9,7 @@ use Consolidation\AnnotatedCommand\CommandData;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
+use League\Uri\UriString;
 use Robo\Contract\VerbosityThresholdInterface;
 use Robo\ResultData;
 use Robo\Symfony\ConsoleIO;
@@ -322,16 +323,16 @@ class DrupalCommands extends AbstractCommands
             $execOptions['db-prefix'] = $options['database-prefix'];
         }
 
-        if (!empty($dbUrl = $this->getConfig()->get('drupal.site.generate_db_url'))) {
+        if (!empty($this->getConfig()->get('drupal.site.generate_db_url'))) {
             $dbArray = [
                 'scheme' => $options['database-scheme'],
                 'user' => $options['database-user'],
                 'pass' => $options['database-password'],
                 'host' => $options['database-host'],
                 'port' => $options['database-port'],
-                'path' => $options['database-name'],
+                'path' => '/' . ltrim($options['database-name'], '/'),
             ];
-            $execOptions['db-url'] = http_build_url($dbUrl, $dbArray);
+            $execOptions['db-url'] = UriString::build($dbArray);
         }
 
         if ($options['existing-config']) {
