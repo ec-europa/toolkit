@@ -1,5 +1,9 @@
 # Toolkit change log
 
+## Version 10.30.2
+  - DQA-14898: Toolkit cleanup rule removes phpstan/phpdoc-parser dependency.
+  - DQA-14924: Package jakeasmith/http_build_url is abandoned.
+
 ## Version 10.30.1
   - DQA-14807: Ignore pnpm-lock.yaml for eslint.
 
