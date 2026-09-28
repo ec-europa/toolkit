@@ -40,7 +40,7 @@
         // Dropsolid requires a value to be set for max-age.
         $config['system.performance']['cache']['page']['max_age'] = 21600;
 
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
+        $settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
         // Reverse proxy.
@@ -111,7 +111,7 @@
         $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
         $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
 
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
+        $settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
         // Reverse proxy.
@@ -178,7 +178,7 @@
         // Dropsolid requires a value to be set for max-age.
         $config['system.performance']['cache']['page']['max_age'] = 21600;
 
-        $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
+        $settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
         // Reverse proxy.
