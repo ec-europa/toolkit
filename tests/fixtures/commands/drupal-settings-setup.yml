@@ -36,6 +36,10 @@
         $settings['config_sync_directory'] = '../config/sync';
 
         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: 'YWJj';
+
+        // Dropsolid requires a value to be set for max-age.
+        $config['system.performance']['cache']['page']['max_age'] = 21600;
+
         $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
@@ -45,13 +49,15 @@
           $settings['reverse_proxy_addresses'] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
         }
 
-        // Dropsolid requires a value to be set for max-age.
-        $config['system.performance']['cache']['page']['max_age'] = 21600;
-
         // Load environment development override configuration, if available.
         // Keep this code block at the end of this file to take full effect.
         if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
           include $app_root . '/' . $site_path . '/settings.override.php';
+        }
+
+        // Load devsecops override configuration, if available.
+        if (file_exists($app_root . '/' . $site_path . '/settings.devsecops.php')) {
+          include $app_root . '/' . $site_path . '/settings.devsecops.php';
         }
 
         // End Toolkit settings block.
@@ -98,6 +104,13 @@
         $settings['config_sync_directory'] = '../config/sync';
 
         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: 'YWJj';
+
+        // Dropsolid requires a value to be set for max-age.
+        $config['system.performance']['cache']['page']['max_age'] = 21600;
+
+        $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
+        $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
+
         $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
@@ -107,16 +120,15 @@
           $settings['reverse_proxy_addresses'] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
         }
 
-        // Dropsolid requires a value to be set for max-age.
-        $config['system.performance']['cache']['page']['max_age'] = 21600;
-
-        $config['cas.settings']['server']['hostname'] = getenv('CAS_HOSTNAME');
-        $config['cas.settings']['server']['port'] = getenv('CAS_PORT');
-
         // Load environment development override configuration, if available.
         // Keep this code block at the end of this file to take full effect.
         if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
           include $app_root . '/' . $site_path . '/settings.override.php';
+        }
+
+        // Load devsecops override configuration, if available.
+        if (file_exists($app_root . '/' . $site_path . '/settings.devsecops.php')) {
+          include $app_root . '/' . $site_path . '/settings.devsecops.php';
         }
 
         // End Toolkit settings block.
@@ -162,6 +174,10 @@
         $settings['config_sync_directory'] = '../config/sync';
 
         $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: 'YWJj';
+
+        // Dropsolid requires a value to be set for max-age.
+        $config['system.performance']['cache']['page']['max_age'] = 21600;
+
         $settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
         $settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
@@ -171,13 +187,15 @@
           $settings['reverse_proxy_addresses'] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
         }
 
-        // Dropsolid requires a value to be set for max-age.
-        $config['system.performance']['cache']['page']['max_age'] = 21600;
-
         // Load environment development override configuration, if available.
         // Keep this code block at the end of this file to take full effect.
         if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
           include $app_root . '/' . $site_path . '/settings.override.php';
+        }
+
+        // Load devsecops override configuration, if available.
+        if (file_exists($app_root . '/' . $site_path . '/settings.devsecops.php')) {
+          include $app_root . '/' . $site_path . '/settings.devsecops.php';
         }
 
         // End Toolkit settings block.
