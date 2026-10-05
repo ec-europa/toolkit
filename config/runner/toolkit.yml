@@ -89,6 +89,7 @@ toolkit:
         - composer.json
         - .leaksignore
         - .snyk
+        - patches.lock.json
       remove:
         - "CHANGELOG.*"
         - "COPYRIGHT.txt"
