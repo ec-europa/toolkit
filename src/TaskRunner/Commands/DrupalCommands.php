@@ -651,7 +651,13 @@ class DrupalCommands extends AbstractCommands
 \$settings['config_sync_directory'] = '../config/sync';
 
 \$settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: '$hashSalt';
-\$settings['file_private_path'] =  getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
+
+// Dropsolid requires a value to be set for max-age.
+\$config['system.performance']['cache']['page']['max_age'] = 21600;
+
+{$additionalSettings}
+
+\$settings['file_private_path'] = getenv('DRUPAL_PRIVATE_FILE_SYSTEM') ?: 'sites/default/private_files';
 \$settings['file_temp_path'] = getenv('DRUPAL_FILE_TEMP_PATH') ?: '/tmp';
 
 // Reverse proxy.
@@ -660,15 +666,15 @@ if (filter_var(getenv('DRUPAL_REVERSE_PROXY_ENABLE'), FILTER_VALIDATE_BOOLEAN)) 
   \$settings['reverse_proxy_addresses'] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
 }
 
-// Dropsolid requires a value to be set for max-age.
-\$config['system.performance']['cache']['page']['max_age'] = 21600;
-
-{$additionalSettings}
-
 // Load environment development override configuration, if available.
 // Keep this code block at the end of this file to take full effect.
 if (file_exists(\$app_root . '/' . \$site_path . '/$settingsOverrideFile')) {
   include \$app_root . '/' . \$site_path . '/$settingsOverrideFile';
+}
+
+// Load devsecops override configuration, if available.
+if (file_exists(\$app_root . '/' . \$site_path . '/settings.devsecops.php')) {
+  include \$app_root . '/' . \$site_path . '/settings.devsecops.php';
 }
 
 {$this->blockEnd}
