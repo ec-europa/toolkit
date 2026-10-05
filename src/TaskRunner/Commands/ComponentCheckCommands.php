@@ -149,7 +149,7 @@ class ComponentCheckCommands extends AbstractCommands
                 JunitXmlGenerator::addTestCase('Component check', "$label components");
             }
             $this->{$function}($io);
-            $io->newLine(2);
+            $io->writeln(' ');
         }
 
         $this->printComponentResults($io);
