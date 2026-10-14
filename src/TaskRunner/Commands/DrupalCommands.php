@@ -666,6 +666,16 @@ if (filter_var(getenv('DRUPAL_REVERSE_PROXY_ENABLE'), FILTER_VALIDATE_BOOLEAN)) 
   \$settings['reverse_proxy_addresses'] = explode(',', getenv('DRUPAL_REVERSE_PROXY_ADDRESSES'));
 }
 
+// Trust only the legacy X-Forwarded-* reverse proxy headers. The load
+// balancer occasionally sends both the RFC 7239 "Forwarded" header and the
+// legacy "X-Forwarded-*" headers on the same request, which makes Symfony
+// throw a ConflictingHeadersException.
+\$settings['reverse_proxy_trusted_headers'] =
+  \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_FOR |
+  \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_HOST |
+  \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_PORT |
+  \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_PROTO;
+
 // Load environment development override configuration, if available.
 // Keep this code block at the end of this file to take full effect.
 if (file_exists(\$app_root . '/' . \$site_path . '/$settingsOverrideFile')) {
