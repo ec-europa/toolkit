@@ -1,5 +1,11 @@
 # Toolkit change log
 
+## Version 10.31.0
+  - DQA-13550: Improve readability of toolkit:component-check output.
+  - DQA-13396: Evaluate possibility to lock private_files location.
+  - DQA-14991: Add patches.lock.json to list of files to keep in dist.
+  - DQA-15111: Conflicting headers sent by the reverse proxy.
+
 ## Version 10.30.2
   - DQA-14898: Toolkit cleanup rule removes phpstan/phpdoc-parser dependency.
   - DQA-14924: Package jakeasmith/http_build_url is abandoned.
