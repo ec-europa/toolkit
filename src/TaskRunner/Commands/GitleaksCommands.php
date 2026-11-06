@@ -164,7 +164,7 @@ class GitleaksCommands extends AbstractCommands
         }
 
         // Remove the absolute path from the ignores.
-        $root = realpath(DRUPAL_ROOT . '/../');
+        $root = Toolkit::getProjectRoot();
         foreach ($ignores as &$ignore) {
             $ignore = ltrim(str_replace("$root/", '', $ignore), '/');
         }
