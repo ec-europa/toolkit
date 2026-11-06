@@ -162,6 +162,13 @@ class GitleaksCommands extends AbstractCommands
             $projectIgnores = file($options['ignore-file'], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             $ignores = array_merge($ignores, $projectIgnores);
         }
+
+        // Remove the absolute path from the ignores.
+        $root = realpath(DRUPAL_ROOT . '/../');
+        foreach ($ignores as &$ignore) {
+            $ignore = ltrim(str_replace("$root/", '', $ignore), '/');
+        }
+
         return $ignores;
     }
 
