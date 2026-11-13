@@ -7,6 +7,7 @@ namespace EcEuropa\Toolkit\TaskRunner;
 use Composer\Autoload\ClassLoader;
 use Dflydev\DotAccessData\Data;
 use EcEuropa\Toolkit\TaskRunner\Commands\ConfigurationCommands;
+use EcEuropa\Toolkit\TaskRunner\Hooks\ProtectedCommandGuard;
 use EcEuropa\Toolkit\TaskRunner\Inject\ConfigForCommand;
 use EcEuropa\Toolkit\Toolkit;
 use Grasmash\Expander\Expander;
@@ -124,6 +125,7 @@ class Runner
         $this->runner->registerCommandClasses($this->application, $this->commandClasses);
         $this->prepareConfigurations();
         $this->registerConfigurationCommands();
+        $this->registerProtectedCommandGuard($this->commandClasses);
         return $this->runner->run($this->input, $this->output, $this->application);
     }
 
@@ -383,6 +385,31 @@ class Runner
             return $paths;
         }
         return [];
+    }
+
+    /**
+     * Add validator for protected commands.
+     *
+     * @param string[] $commandClasses
+     *   The command classes.
+     */
+    private function registerProtectedCommandGuard(array $commandClasses): void
+    {
+        $protectedCommands = [];
+        foreach ($commandClasses as $commandClass) {
+            if (is_subclass_of($commandClass, ProtectedCommandsInterface::class)) {
+                $protectedCommands = array_merge($protectedCommands, $commandClass::getProtectedCommands());
+            }
+        }
+
+        if (empty($protectedCommands)) {
+            return;
+        }
+
+        /* @var \Consolidation\AnnotatedCommand\Hooks\HookManager $hookManager */
+        $hookManager = $this->runner->getContainer()->get('hookManager');
+        $guard = new ProtectedCommandGuard(array_unique($protectedCommands), $hookManager);
+        $hookManager->addValidator($guard);
     }
 
 }

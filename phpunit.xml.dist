@@ -20,9 +20,12 @@
     </php>
     <testsuites>
         <testsuite name="Unit">
-            <file>tests/Unit/GitHooksCommandsTest.php</file>
-            <file>tests/Unit/ReplaceBlockTest.php</file>
             <file>tests/Unit/DrupalCore11UpgradeTest.php</file>
+            <file>tests/Unit/DumpCommandsTest.php</file>
+            <file>tests/Unit/GitHooksCommandsTest.php</file>
+            <file>tests/Unit/GitleaksCommandsChecksumTest.php</file>
+            <file>tests/Unit/ProtectedCommandsTest.php</file>
+            <file>tests/Unit/ReplaceBlockTest.php</file>
         </testsuite>
         <testsuite name="Blackfire and Build">
             <file>tests/Features/Commands/BlackfireCommandsTest.php</file>

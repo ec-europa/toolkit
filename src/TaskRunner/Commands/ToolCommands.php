@@ -297,7 +297,7 @@ class ToolCommands extends AbstractCommands
         }
 
         // Handle Toolkit version.
-        if (!($toolkitVersion = self::getPackagePropertyFromComposer('ec-europa/toolkit', 'version', 'packages-dev'))) {
+        if (!($toolkitVersion = self::getPackagePropertyFromComposer(Toolkit::REPOSITORY, 'version', 'packages-dev'))) {
             $toolkitCheck = 'FAIL (not found)';
         } else {
             $toolkitCheck = Semver::satisfies($toolkitVersion, $data['toolkit']) ? 'OK' : 'FAIL';
@@ -460,7 +460,7 @@ class ToolCommands extends AbstractCommands
         $data = Website::requirements();
         $minVersion = '';
 
-        if (!(self::getPackagePropertyFromComposer('ec-europa/toolkit'))) {
+        if (!(self::getPackagePropertyFromComposer(Toolkit::REPOSITORY))) {
             $io->warning('Failed to get Toolkit version from composer.lock.');
         }
         if (!empty($data)) {
