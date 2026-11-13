@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EcEuropa\Toolkit\TaskRunner\Commands;
 
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\TaskRunner\ProtectedCommandsInterface;
 use EcEuropa\Toolkit\Toolkit;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
@@ -13,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Provides commands to build a site for development and a production artifact.
  */
-class BuildCommands extends AbstractCommands
+class BuildCommands extends AbstractCommands implements ProtectedCommandsInterface
 {
 
     /**
@@ -36,6 +37,14 @@ class BuildCommands extends AbstractCommands
     public function getConfigurationFile()
     {
         return Toolkit::getToolkitRoot() . '/config/commands/build.yml';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public static function getProtectedCommands(): array
+    {
+        return ['toolkit:build-dist'];
     }
 
     /**
@@ -73,7 +82,7 @@ class BuildCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function buildDist(array $options = [
+    final public function buildDist(array $options = [
         'root' => InputOption::VALUE_REQUIRED,
         'dist-root' => InputOption::VALUE_REQUIRED,
         'keep' => InputOption::VALUE_REQUIRED,
@@ -131,7 +140,7 @@ class BuildCommands extends AbstractCommands
                 'project_id' => $config->get('toolkit.project_id'),
                 'drupal_version' => ToolCommands::getPackagePropertyFromComposer('drupal/core'),
                 'php_version' => phpversion(),
-                'toolkit_version' => ToolCommands::getPackagePropertyFromComposer('ec-europa/toolkit'),
+                'toolkit_version' => ToolCommands::getPackagePropertyFromComposer(Toolkit::REPOSITORY),
                 'environment' => ToolCommands::getDeploymentEnvironment(),
                 'date' => date('Y-m-d H:i:s'),
                 'version' => $tag,
