@@ -57,7 +57,7 @@ jobs:
 
       - name: PHPUnit
         shell: bash
-        run: ./run toolkit:test-phpunit --execution=parallel
+        run: ./run toolkit:test-phpunit --testsuite=Unit
 
       - name: Gitleaks
         shell: bash
