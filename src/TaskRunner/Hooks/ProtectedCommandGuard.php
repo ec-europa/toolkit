@@ -17,6 +17,20 @@ final class ProtectedCommandGuard implements ValidatorInterface
 {
 
     /**
+     * The list of protected command names.
+     *
+     * @var string[]
+     */
+    private array $protectedCommands;
+
+    /**
+     * The hook manager.
+     *
+     * @var \Consolidation\AnnotatedCommand\Hooks\HookManager
+     */
+    private HookManager $hookManager;
+
+    /**
      * Constructs a new ProtectedCommandGuard.
      *
      * @param string[] $protectedCommands
@@ -24,10 +38,10 @@ final class ProtectedCommandGuard implements ValidatorInterface
      * @param \Consolidation\AnnotatedCommand\Hooks\HookManager $hookManager
      *   The Hook manager.
      */
-    public function __construct(
-        private readonly array $protectedCommands,
-        private readonly HookManager $hookManager,
-    ) {
+    public function __construct(array $protectedCommands, HookManager $hookManager)
+    {
+        $this->protectedCommands = $protectedCommands;
+        $this->hookManager = $hookManager;
     }
 
     /**
