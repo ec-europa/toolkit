@@ -97,7 +97,7 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
      *
      * @aliases tk-components
      *
-     * @return int|void
+     * @return int
      *   The component check status.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
