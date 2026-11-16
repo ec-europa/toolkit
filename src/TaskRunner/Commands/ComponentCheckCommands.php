@@ -9,6 +9,7 @@ use Dotenv\Dotenv;
 use EcEuropa\Toolkit\DrupalReleaseHistory;
 use EcEuropa\Toolkit\JunitXmlGenerator;
 use EcEuropa\Toolkit\TaskRunner\AbstractCommands;
+use EcEuropa\Toolkit\TaskRunner\ProtectedCommandsInterface;
 use EcEuropa\Toolkit\Toolkit;
 use EcEuropa\Toolkit\Website;
 use Robo\Contract\VerbosityThresholdInterface;
@@ -24,7 +25,7 @@ use Symfony\Component\Yaml\Yaml;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class ComponentCheckCommands extends AbstractCommands
+class ComponentCheckCommands extends AbstractCommands implements ProtectedCommandsInterface
 {
     protected bool $evaluationFailed = false;
     protected bool $mandatoryFailed = false;
@@ -75,6 +76,14 @@ class ComponentCheckCommands extends AbstractCommands
     protected array $optsYml;
 
     /**
+     * {@inheritdoc}
+     */
+    final public static function getProtectedCommands(): array
+    {
+        return ['toolkit:component-check'];
+    }
+
+    /**
      * Check composer for components that are not whitelisted/blacklisted.
      *
      * @param array<mixed> $options
@@ -95,7 +104,7 @@ class ComponentCheckCommands extends AbstractCommands
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function componentCheck(ConsoleIO $io, array $options = [
+    final public function componentCheck(ConsoleIO $io, array $options = [
         'endpoint' => InputOption::VALUE_REQUIRED,
         'test-command' => false,
     ])
