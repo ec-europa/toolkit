@@ -3,6 +3,9 @@
   resources:
     - file: gitleaks-report.json
       content: '[]'
+    - file: .toolkit-mock/0.0.119/api/v1/gitleaks-ignores.json
+      content: |
+        empty
   expectations:
     - contains: |
         Skip download, binary was found.
@@ -21,6 +24,9 @@
   resources:
     - file: gitleaks-report.json
       content: '[]'
+    - file: .toolkit-mock/0.0.119/api/v1/gitleaks-ignores.json
+      content: |
+        empty
   expectations:
     - contains: |
         Skip download, binary was found.
@@ -39,6 +45,9 @@
   resources:
     - file: gitleaks-report.json
       content: '[]'
+    - file: .toolkit-mock/0.0.119/api/v1/gitleaks-ignores.json
+      content: |
+        empty
   expectations:
     - contains: |
         Skip download, binary was found.
