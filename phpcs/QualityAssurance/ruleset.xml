@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- See http://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php -->
+<ruleset name="QualityAssurance">
+ <description>QualityAssurance coding standard</description>
+ <!-- All Drupal code files must be UTF-8 encoded and we treat them as such. -->
+ <arg name="encoding" value="utf-8"/>
+
+ <arg name="extensions" value="php,module,inc,install,test,profile,theme,css,info,txt,md,yml"/>
+
+ <autoload>autoload.php</autoload>
+
+ <rule ref="Internal.NoCodeFound">
+  <!-- Empty files are fine, might be used for testing. -->
+  <exclude-pattern>*</exclude-pattern>
+ </rule>
+</ruleset>

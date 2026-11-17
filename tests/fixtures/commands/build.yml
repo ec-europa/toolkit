@@ -86,8 +86,41 @@
           ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... rsion":"","sha":""}')
         [Simulator] Simulating File\Write('dist/web/VERSION.txt')
           ->text('')
-        [Simulator] Simulating Exec('find dist -maxdepth 5 \( -name "CHANGELOG.md" -o -name ... ) -exec rm -rf {} +')
-        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.md" -o -name "CHANGELOG.txt" -o -name "COPYRIGHT.txt" -o -name "INSTALL.mysql.txt" -o -name "INSTALL.pgsql.txt" -o -name "install.php" -o -name "INSTALL.sqlite.txt" -o -name "INSTALL.txt" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "README.txt" -o -name "node_modules" -o -name ".sass-cache" \) -exec rm -rf {} +
+        [Simulator] Simulating Exec('find dist -maxdepth 5 \( -name "CHANGELOG.*" -o -name  ... ) -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 5 \( -name "CHANGELOG.*" -o -name "COPYRIGHT.txt" -o -name "INSTALL.*" -o -name "install.php" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "USAGE.txt" -o -name "README.*" -o -name "node_modules" -o -name "update.php" -o -name ".sass-cache" -o -name "tests" -o -name "examples" -o -name ".eslint*" -o -name ".csslintrc" -o -name ".cspell.json" -o -name ".prettier*" -o -name ".stylelintrc.json" -o -name ".yarnrc.yml" -o -name "yarn.lock" -o -name "phpstan*" -o -name ".phpstan-*" -o -name "phpunit.xml*" -o -name "phpcs.xml*" -o -name ".deprecation-ignore.txt" -o -name "example.gitignore" -o -name ".env.example" \) -exec rm -rf {} +
+
+- command: 'toolkit:build-dist'
+  configuration:
+    toolkit:
+      project_id: toolkit
+      build:
+        dist:
+          remove_maxdepth: 10
+  resources: []
+  expectations:
+    - contains: |
+        [Simulator] Simulating Filesystem\FilesystemStack()
+          ->remove('dist')
+          ->mkdir('dist')
+        [Simulator] Simulating Exec('git archive HEAD | tar -x -C dist')
+        [Simulator] Running git archive HEAD | tar -x -C dist
+        [Simulator] Simulating Composer\Install('composer')
+          ->env('COMPOSER_MIRROR_PATH_REPOS', '1')
+          ->workingDir('dist')
+          ->optimizeAutoloader()
+          ->noDev()
+        [Simulator] Simulating ExecStack()
+          ->stopOnFail()
+          ->exec('./vendor/bin/run drupal:permissions-setup --root=dist/web')
+          ->exec('./vendor/bin/run drupal:settings-setup --root=dist/web')
+        [Simulator] Simulating Exec('find dist -maxdepth 1 ! -name "dist" ! -name "web" ! - ... " -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 1 ! -name "dist" ! -name "web" ! -name "config" ! -name "vendor" ! -name "composer.lock" ! -name "composer.json" ! -name ".leaksignore" ! -name ".snyk" -exec rm -rf {} +
+        [Simulator] Simulating File\Write('dist/manifest.json')
+          ->text('{"drupal_profile":"minimal","project_id":"toolkit","dr ... rsion":"","sha":""}')
+        [Simulator] Simulating File\Write('dist/web/VERSION.txt')
+          ->text('')
+        [Simulator] Simulating Exec('find dist -maxdepth 10 \( -name "CHANGELOG.*" -o -name ... ) -exec rm -rf {} +')
+        [Simulator] Running find dist -maxdepth 10 \( -name "CHANGELOG.*" -o -name "COPYRIGHT.txt" -o -name "INSTALL.*" -o -name "install.php" -o -name "LICENSE.txt" -o -name "MAINTAINERS.txt" -o -name "UPDATE.txt" -o -name "USAGE.txt" -o -name "README.*" -o -name "node_modules" -o -name "update.php" -o -name ".sass-cache" -o -name "tests" -o -name "examples" -o -name ".eslint*" -o -name ".csslintrc" -o -name ".cspell.json" -o -name ".prettier*" -o -name ".stylelintrc.json" -o -name ".yarnrc.yml" -o -name "yarn.lock" -o -name "phpstan*" -o -name ".phpstan-*" -o -name "phpunit.xml*" -o -name "phpcs.xml*" -o -name ".deprecation-ignore.txt" -o -name "example.gitignore" -o -name ".env.example" \) -exec rm -rf {} +
 
 - command: 'toolkit:build-dev'
   configuration: []
@@ -151,17 +184,22 @@
       to: code/theme/package.json
   expectations:
     - contains: |
-        [Simulator] Simulating ExecStack()
+        [Simulator] Simulating Exec('[ -f package.json ] || (pnpm init && pnpm pkg set name ... e/`basename $PWD`")')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->stopOnFail()
-          ->exec('npm -v || npm i npm')
-          ->exec('[ -f package.json ] || npm init -y --scope')
-          ->exec('npm list sass || npm install sass -y')
-          ->exec('cp /__w/toolkit/toolkit/resources/assets/gulpfile.js / ... e/theme/gulpfile.js')
-          ->exec('npm list gulp-cli || npm install gulp-cli --save-dev')
-          [Simulator] Simulating Exec('./node_modules/.bin/gulp')
-            ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          [Simulator] Running ./node_modules/.bin/gulp in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Running [ -f package.json ] ||
+        (pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`") in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add sass --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add sass --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('cp /__w/toolkit/toolkit/resources/assets/gulpfile.js / ... e/theme/gulpfile.js')
+        [Simulator] Running cp /__w/toolkit/toolkit/resources/assets/gulpfile.js /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme/gulpfile.js
+        [Simulator] Simulating Exec('pnpm add gulp-cli --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add gulp-cli --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('./node_modules/.bin/gulp')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running ./node_modules/.bin/gulp in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
 
 - command: 'toolkit:build-assets --default-theme=theme --custom-code-folder=code'
   configuration: []
@@ -170,17 +208,28 @@
       to: code/theme/package.json
   expectations:
     - contains: |
-        [Simulator] Simulating ExecStack()
+        [Simulator] Simulating Exec('[ -f package.json ] || (pnpm init && pnpm pkg set name ... e/`basename $PWD`")')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
-          ->stopOnFail()
-          ->exec('npm -v || npm i npm')
-          ->exec('[ -f package.json ] || npm init -y --scope')
-          ->exec('npm list sass || npm install sass -y')
-          ->exec('cp /__w/toolkit/toolkit/resources/assets/ecl-builder.c ... l-builder.config.js')
-          ->exec('npm list @ecl/builder || npm install @ecl/builder --save-dev')
-          ->exec('npm list @ecl/preset-ec || npm install @ecl/preset-ec --save-dev')
-          ->exec('npm list @ecl/preset-eu || npm install @ecl/preset-eu --save-dev')
-          ->exec('npm list @ecl/preset-reset || npm install @ecl/preset-reset --save-dev')
+        [Simulator] Running [ -f package.json ] ||
+        (pnpm init &&
+        pnpm pkg set name="@scope/`basename $PWD`") in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add sass --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add sass --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('cp /__w/toolkit/toolkit/resources/assets/ecl-builder.c ... l-builder.config.js')
+        [Simulator] Running cp /__w/toolkit/toolkit/resources/assets/ecl-builder.config.js /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme/ecl-builder.config.js
+        [Simulator] Simulating Exec('pnpm add @ecl/builder --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/builder --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-ec --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/preset-ec --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-eu --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/preset-eu --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
+        [Simulator] Simulating Exec('pnpm add @ecl/preset-reset --save-dev')
+          ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
+        [Simulator] Running pnpm add @ecl/preset-reset --save-dev in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme
         [Simulator] Simulating Exec('./node_modules/.bin/ecl-builder styles')
           ->dir('/__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme')
         [Simulator] Running ./node_modules/.bin/ecl-builder styles in /__w/toolkit/toolkit/tests/sandbox/BuildCommandsTest/code/theme

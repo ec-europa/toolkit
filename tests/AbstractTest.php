@@ -241,7 +241,7 @@ abstract class AbstractTest extends TestCase
      */
     protected function trimEachLine(string $text): string
     {
-        return trim(implode(PHP_EOL, array_map('trim', explode(PHP_EOL, $text))));
+        return trim(implode(PHP_EOL, array_filter(array_map('trim', explode(PHP_EOL, $text)))));
     }
 
     /**

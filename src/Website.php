@@ -54,7 +54,7 @@ class Website
     /**
      * Return the API Authorization instance.
      *
-     * @return AuthorizationInterface|null
+     * @return \EcEuropa\Toolkit\AuthorizationInterface|null
      *   The API authorization instance or empty string if fails.
      */
     public static function apiAuth(): AuthorizationInterface|null
@@ -84,7 +84,7 @@ class Website
      *
      * @param string $url
      *   The QA endpoint url.
-     * @param AuthorizationInterface|null $auth
+     * @param \EcEuropa\Toolkit\AuthorizationInterface|null $auth
      *   The authorization instance or null.
      *
      * @return string
@@ -138,7 +138,6 @@ class Website
         if ($result === false) {
             throw new \Exception(sprintf('Curl request to endpoint "%s" failed.', $url));
         }
-        curl_close($curl);
 
         return $content;
     }
@@ -168,7 +167,6 @@ class Website
         $ch = curl_init(self::url() . '/session/token');
         curl_setopt_array($ch, $options);
         $token = (string) curl_exec($ch);
-        curl_close($ch);
         $GLOBALS['session_token'] = $token;
         return $token;
     }
@@ -178,7 +176,7 @@ class Website
      *
      * @param array<mixed> $fields
      *   Data to send.
-     * @param AuthorizationInterface $auth
+     * @param \EcEuropa\Toolkit\AuthorizationInterface $auth
      *   The authorization instance.
      *
      * @return string
@@ -206,7 +204,6 @@ class Website
         ]);
         curl_exec($ch);
         $code = (string) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
         return $code;
     }
 
@@ -322,6 +319,25 @@ class Website
     }
 
     /**
+     * Returns the gitleaks ignores from the endpoint.
+     *
+     * @return false|array<mixed>
+     *   The gitleaks ignores from the endpoint.
+     */
+    public static function gitleaksIgnores()
+    {
+        if (empty($auth = self::apiAuth())) {
+            return false;
+        }
+        $url = self::url() . '/api/v1/gitleaks-ignores';
+        if (!empty($projectId = getenv('TOOLKIT_PROJECT_ID'))) {
+            $url .= '?project=' . $projectId;
+        }
+        $data = self::getWithMockFallback($url, $auth);
+        return empty($data) ? [] : $data['gitleaks_ignores'];
+    }
+
+    /**
      * Returns the notifications from the endpoint.
      *
      * @return false|array<mixed>
@@ -340,7 +356,7 @@ class Website
      *
      * @param string $url
      *   The QA endpoint url.
-     * @param AuthorizationInterface|null $auth
+     * @param \EcEuropa\Toolkit\AuthorizationInterface|null $auth
      *   The authorization instance or null.
      *
      * @return false|array<mixed>

@@ -62,7 +62,25 @@ abstract class AbstractCommands extends Tasks implements ConfigAwareInterface
      */
     protected function getBinPath(string $name): string
     {
+        // If looking for run binary, check in the root for it
+        // so toolkit don't have to copy it into vendor/bin.
+        if ($name === 'run' && file_exists($name)) {
+            return "./$name";
+        }
         return $this->getConfigValue('runner.bin_dir') . '/' . $name;
+    }
+
+    /**
+     * Return the path to pnpm.
+     *
+     * The path is not part of the $PATH variable and cannot be used globally.
+     *
+     * @return string
+     *   The path to given pnpm.
+     */
+    protected function getPnpmBin(): string
+    {
+        return 'pnpm';
     }
 
     /**

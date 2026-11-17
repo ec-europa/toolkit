@@ -141,43 +141,54 @@ class CodeReviewCommands extends AbstractCommands
      *
      * @command toolkit:run-tests
      *
-     * @option phpunit    Execute the command toolkit:test-phpunit.
-     * @option behat      Execute the command toolkit:run-behat.
-     * @option blackfire  Execute the command toolkit:run-blackfire.
-     * @option components Execute the command toolkit:component-check.
-     * @option junit      Whether to export results as junit.
+     * @option type   The execution type, one of "clone" or "clean".
+     * @option junit  Whether to export results as junit.
      *
-     * @return \Robo\ResultData
-     *   The toolkit run-tests command status.
+     * @return int
+     *   The toolkit run-tests command status of all executed commands.
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function toolkitRunTests(ConsoleIO $io, array $options = [
-        'phpunit' => InputOption::VALUE_NONE,
-        'behat' => InputOption::VALUE_NONE,
-        'blackfire' => InputOption::VALUE_NONE,
-        'components' => InputOption::VALUE_NONE,
+        'type' => InputOption::VALUE_REQUIRED,
+        'junit' => InputOption::VALUE_NONE,
     ])
     {
+        $config = $this->getConfigValue('toolkit.run-tests', []);
+        $type = $options['type'] ?? $config['type'] ?? 'clone';
         $tasks = [
-            'PHPUnit' => ['cmd' => 'tk-phpunit', 'exec' => $options['phpunit'] === true, 'result' => []],
-            'Behat' => ['cmd' => 'tk-behat', 'exec' => $options['behat'] === true, 'result' => []],
-            'Blackfire' => ['cmd' => 'tk-bfire', 'exec' => $options['blackfire'] === true, 'result' => []],
-            'Components' => ['cmd' => 'tk-components', 'exec' => $options['components'] === true, 'result' => []],
+            'PHPUnit' => [
+                'cmd' => 'tk-phpunit',
+                'exec' => !empty($config['phpunit'][$type]),
+                'result' => [],
+            ],
+            'Behat' => [
+                'cmd' => 'tk-behat' . ($type === 'clean' ? ' --profile=clean' : ''),
+                'exec' => !empty($config['behat'][$type]),
+                'result' => [],
+            ],
+            'Blackfire' => [
+                'cmd' => 'tk-bfire',
+                'exec' => !empty($config['blackfire'][$type]),
+                'result' => [],
+            ],
+            'Components' => ['cmd' => 'tk-components', 'exec' => true, 'result' => []],
         ];
-        $exit = 0;
-        $runAll = false;
-        // If no option is given, run all commands.
-        if (empty(array_filter(array_column($tasks, 'exec')))) {
-            $runAll = true;
+
+        // Make sure to execute at least one of Behat or PHPUnit.
+        if (empty($tasks['PHPUnit']['exec']) && empty($tasks['Behat']['exec'])) {
+            $io->error('Tests are compulsory. You must enable at least one: behat or phpunit in your project configuration.');
+            return ResultData::EXITCODE_ERROR;
         }
+
+        $exit = 0;
         $run = $this->getBin('run');
         foreach ($tasks as $name => &$task) {
             if ($this->isJunit()) {
                 JunitXmlGenerator::addTestCase('Run Tests', $name);
             }
-            if ($runAll || $task['exec']) {
+            if ($task['exec']) {
                 $code = $this->taskExec($run)->arg($task['cmd'])->run()->getExitCode();
                 $task['result'] = [$name => $code > 0 ? 'failed' : 'passed'];
                 $exit += $code;
@@ -202,7 +213,7 @@ class CodeReviewCommands extends AbstractCommands
             JunitXmlGenerator::generate('junit-run-tests.xml');
         }
 
-        return new ResultData($exit);
+        return $exit;
     }
 
 }
