@@ -132,6 +132,7 @@ class ReleaseCommands extends AbstractCommands
         $files = [
             'tests/fixtures/commands/component-check.yml',
             'tests/fixtures/commands/notifications.yml',
+            'tests/fixtures/commands/gitleaks.yml',
         ];
         foreach ($files as $file) {
             if (file_exists($file)) {

@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * This file contains code to testing purpose only.
+ */
+
+/**
+ * Implments hook_install()
+ */
+function HookUpdate0UnitTest_install() {
+  FunctionsDeclarationsError_update_8001();
+}
+
+
+/**
+ * Implements hook_enable().
+ */
+function HookUpdate0UnitTest_enable() {
+  drupal_set_message(t("The feature jrccties_core has been enabled."), 'status');
+}
+
+/**
+ * Implements hook_disable().
+ */
+function HookUpdate0UnitTest_disable() {
+  drupal_set_message(t("The feature jrccties_core has been disabled."), 'status');
+}
+
+/**
+ * Implements hook_update_n();
+ *
+ * Enable the privatemsg sub-modules and disable the Media browser plus module.
+ */
+function HookUpdate0UnitTest_update_8000() {
+  module_enable(array('pm_block_user',
+    'pm_email_notify',
+    'privatemsg_filter',
+    'privatemsg_limits',
+    'privatemsg_realname',
+    'privatemsg_roles',
+    'privatemsg_rules',
+  ),
+    TRUE);
+  if (module_exists('media_browser_plus')) {
+    module_disable(array('media_browser_plus'), FALSE);
+    drupal_uninstall_modules(array('media_browser_plus'));
+  }
+}
+
+/**
+ * Helper function for testing purpose.
+ */
+function _HookUpdate0UnitTest_helper() {
+  drupal_set_message("So amazing!!!");
+}

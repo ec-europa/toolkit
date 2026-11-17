@@ -48,8 +48,6 @@
         // Dropsolid requires a value to be set for max-age.
         $config['system.performance']['cache']['page']['max_age'] = 21600;
 
-
-
         // Load environment development override configuration, if available.
         // Keep this code block at the end of this file to take full effect.
         if (file_exists($app_root . '/' . $site_path . '/settings.override.php')) {
@@ -175,8 +173,6 @@
 
         // Dropsolid requires a value to be set for max-age.
         $config['system.performance']['cache']['page']['max_age'] = 21600;
-
-
 
         // Load environment development override configuration, if available.
         // Keep this code block at the end of this file to take full effect.

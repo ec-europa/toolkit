@@ -1,5 +1,38 @@
 # Toolkit change log
 
+## Version 10.30.0
+  - DQA-14496: Improve remove regex with wildcards.
+  - DQA-14495: Support PHP 8.5.
+  - DQA-14701: Change npm by pnpm & enforce project package lock.
+
+## Version 10.29.3
+  - DQA-14491: Allow cweagans/composer-patches when no patches are used.
+  - DQA-14463: Composer check not working with patches in external file.
+  - DQA-14493: Allow max-depth for dist removal to be configurable.
+
+## Version 10.29.2
+  - DQA-13957: Toolkit improvements.
+  - DQA-14297: Adapt composer check to cweagans/composer-patches v2.
+
+## Version 10.29.1
+  - DQA-0000: Add xdebug_break() to the list of forbidden functions.
+  - DQA-14193: Gitleaks improvements
+
+## Version 10.28.0
+  - DQA-13950: Remove dependency on ec-europa/qa-automation and add support to coder 9.
+  - DQA-13914: Validate SHA256 of gitleaks binary after download.
+  - DQA-13914: Verify SHA1 after dump is downloaded and retry in case of issues during download.
+  - DQA-14171: Improvements run-tests commands.
+
+## Version 10.27.0
+  - DQA-13733: Set new gitlab & nextcloud urls.
+  - DQA-13747: Support Coder 9.0.
+  - DQA-13741: PHP 8.5 compatibility.
+  - DQA-13613: Check composer-patches v2.
+  - DQA-13523: Adapt DQA for new gitlab instance.
+  - DQA-13626: Improve database default values.
+  - DQA-13253: Prevent usage of eslint >=9, to align with drupal/core.
+
 ## Version 10.26.2
   - DROPSEC-16324: Fix opts.yml loader default.
   - DQA-13173: Added dependency required by Drupal 11.3.x.

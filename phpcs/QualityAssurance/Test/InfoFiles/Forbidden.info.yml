@@ -1,0 +1,26 @@
+name: Hello World Module
+description: Creates a page showing "Hello World".
+package: Custom
+
+type: module
+core: 8.x
+
+dependencies:
+  - drupal:link
+  - drupal:views
+  - paragraphs:paragraphs
+  - webform:webform (>=8.x-5.x)
+
+test_dependencies:
+ - drupal:image
+
+configure: hello_world.settings
+
+hidden: true
+
+no_forbidden_yet: true
+
+# Note: do not add the 'version' or 'project' properties yourself.
+# They will be added automatically by the packager on drupal.org.
+# version: 1.0
+# project: 'hello_world'

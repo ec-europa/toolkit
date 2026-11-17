@@ -109,7 +109,7 @@ This will enforce the usage of the following standards:
 
    vendor/drupal/coder/coder_sniffer/Drupal
    vendor/drupal/coder/coder_sniffer/DrupalPractice
-   vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+   vendor/ec-europa/toolkit/phpcs/QualityAssurance
 
 These are the default configurations that can be overridden in the `runner.yml.dist and/or runner.yml <runner-yml_>`_ file.
 
@@ -126,7 +126,7 @@ These are the default configurations that can be overridden in the `runner.yml.d
          standards:
            - ./vendor/drupal/coder/coder_sniffer/Drupal
            - ./vendor/drupal/coder/coder_sniffer/DrupalPractice
-           - ./vendor/ec-europa/qa-automation/phpcs/QualityAssurance
+           - ./vendor/ec-europa/toolkit/phpcs/QualityAssurance
          ignore_patterns:
            - vendor/
            - web/

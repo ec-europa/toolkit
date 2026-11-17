@@ -11,7 +11,7 @@
         version: '2'
         services:
           web:
-            image: 'registry.fpfis.eu/digit/devsecops/httpd-php:8.3-dev'
+            image: 'registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:8.3-dev'
             working_dir: /var/www/html
             ports:
               - '8080:8080'
@@ -75,7 +75,7 @@
             expose:
               - 4444
           web:
-            image: 'registry.fpfis.eu/digit/devsecops/httpd-php:8.3-dev'
+            image: 'registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:8.3-dev'
             working_dir: /var/www/html
             ports:
               - '8080:8080'
@@ -109,7 +109,7 @@
         version: '2'
         services:
           web:
-            image: 'registry.fpfis.eu/digit/devsecops/httpd-php:8.3-dev'
+            image: 'registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:8.3-dev'
             working_dir: /var/www/html
             ports:
               - '8080:8080'
@@ -160,7 +160,7 @@
         version: '2'
         services:
           web:
-            image: 'registry.fpfis.eu/digit/devsecops/httpd-php:7.0-dev'
+            image: 'registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:7.0-dev'
             working_dir: /var/www/html
             ports:
               - '8080:8080'
@@ -211,7 +211,7 @@
         version: '2'
         services:
           web:
-            image: 'registry.fpfis.eu/digit/devsecops/httpd-php:8.2-dev'
+            image: 'registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:8.2-dev'
             working_dir: /var/www/html
             ports:
               - '8080:8080'
@@ -262,7 +262,7 @@
         version: '2'
         services:
           web:
-            image: 'registry.fpfis.eu/digit/devsecops/httpd-php:8.3-dev'
+            image: 'registry.dhs.tech.ec.europa.eu/digit/devsecops/httpd-php:8.3-dev'
             working_dir: /var/www/html
             ports:
               - '8080:8080'
