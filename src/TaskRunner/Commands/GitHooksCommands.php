@@ -183,7 +183,7 @@ class GitHooksCommands extends AbstractCommands
             ) {
                 $needsUpdate = true;
             }
-            $origin = str_contains($path, 'ec-europa/toolkit') ? 'toolkit' : $projectId;
+            $origin = str_contains($path, Toolkit::REPOSITORY) ? 'toolkit' : $projectId;
             $rows[] = [
                 "$hook ($origin)",
                 $isActive ? 'Yes' : 'No',

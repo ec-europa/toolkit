@@ -204,6 +204,18 @@
     - string_contains: Development module check      passed
     - string_contains: Composer validation check     passed
 
+- command: 'toolkit:component-check'
+  configuration:
+    commands:
+      toolkit:component-check:
+        tasks:
+          - { task: exec, command: "echo 'Running from config'" }
+  tokens: ''
+  resources: []
+  expectations:
+    - string_contains: 'Command "toolkit:component-check" is protected by ec-europa/toolkit and cannot be overridden via runner.yml.'
+    - not_string_contains: 'Running from config'
+
 - command: 'check:evaluation'
   configuration: [ ]
   tokens: ''

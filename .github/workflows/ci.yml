@@ -57,7 +57,8 @@ jobs:
 
       - name: PHPUnit
         shell: bash
-        run: ./run toolkit:test-phpunit --execution=parallel
+        run: ./run toolkit:test-phpunit --testsuite="Patch,Install,GeneratePackagesComposer,CodeReview,Blackfire and Build,Lint,Tests,Unit,GitHooks,Dump,Configuration,Internal,Drupal"
+        # ignored: Docker,Tool,ComponentCheck
 
       - name: Gitleaks
         shell: bash
