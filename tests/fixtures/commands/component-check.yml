@@ -1,6 +1,6 @@
 - command: 'toolkit:component-check'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -146,7 +146,7 @@
           check: false
         unsupported:
           check: false
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - from: sample-composer.lock
@@ -162,7 +162,8 @@
       components:
         outdated:
           check: false
-  tokens: '[skip_insecure][skip_d9c]'
+  variables:
+    - 'CI_COMMIT_MESSAGE=[skip_insecure][skip_d9c]'
   resources:
     - touch: composer.json
     - from: sample-composer.lock
@@ -176,7 +177,7 @@
     toolkit:
       clean:
         config_file: core.extensions-good.yml
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-core.extensions-good.yml
       to: core.extensions-good.yml
@@ -210,7 +211,7 @@
       toolkit:component-check:
         tasks:
           - { task: exec, command: "echo 'Running from config'" }
-  tokens: ''
+  variables: [ ]
   resources: []
   expectations:
     - string_contains: 'Command "toolkit:component-check" is protected by ec-europa/toolkit and cannot be overridden via runner.yml.'
@@ -218,7 +219,7 @@
 
 - command: 'check:evaluation'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - from: sample-internal-dependency.lock
@@ -228,7 +229,7 @@
 
 - command: 'check:composer'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -249,7 +250,7 @@
 
 - command: 'check:composer'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -270,7 +271,7 @@
 
 - command: 'check:composer'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -293,7 +294,7 @@
 # test composer-exit-on-patch-failure: true.
 - command: 'check:composer'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -317,7 +318,7 @@
 # test not using package.
 - command: 'check:composer'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -335,7 +336,7 @@
 # test that composer-exit-on-patch-failure is not allowed in version 2.
 - command: 'check:composer'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -362,7 +363,7 @@
       components:
         composer:
           drupal_patches: true
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.lock
       content: |
@@ -397,7 +398,7 @@
       components:
         composer:
           drupal_patches: false
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.lock
       content: |
@@ -430,10 +431,177 @@
     - string_contains: The patch 'http://drupal.org/files/issues/2023-01-01/12345-3.patch' is not valid
     - not_string_contains: Composer validation check passed
 
+- command: 'check:composer'
+  configuration:
+    toolkit:
+      components:
+        composer:
+          drupal_patches: true
+  variables:
+    - 'TOOLKIT_PATCHES_GIT_DRUPALCODE=true'
+    - 'TOOLKIT_PATCHES_EXTRA_HOSTS=example.com'
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches": {
+              "local/package": [ "./resources/local.patch" ],
+              "web/package": [ "http://example.com/test-package.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "https://fake-drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "https://git.drupalcode.org/project/drupal_underscore/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.patch",
+                "https://git.drupalcode.org/issue/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/123.diff?diff_id=456789",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/123.patch?diff_id=456789",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885.diff",
+                "https://git.drupalcode.org/issue/drupal/-/commit/2a28885.diff",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/44.diff"
+              ]
+            }
+          }
+        }
+  expectations:
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - not_string_contains: The patch 'http://example.com/test-package.patch' is not valid
+    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - string_contains: The patch 'https://fake-drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal_underscore/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.patch' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/issue/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/123.diff?diff_id=456789' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/123.patch?diff_id=456789' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/issue/drupal/-/commit/2a28885.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/44.diff' is not valid
+    - not_string_contains: Composer validation check passed
+
+- command: 'check:composer'
+  configuration:
+    toolkit:
+      components:
+        composer:
+          drupal_patches: true
+  variables:
+    - 'TOOLKIT_PATCHES_GIT_DRUPALCODE=true'
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches": {
+              "local/package": [ "./resources/local.patch" ],
+              "web/package": [ "http://example.com/test-package.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "https://fake-drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "https://git.drupalcode.org/project/drupal_underscore/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.patch",
+                "https://git.drupalcode.org/issue/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/123.diff?diff_id=456789",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/123.patch?diff_id=456789",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885.diff",
+                "https://git.drupalcode.org/issue/drupal/-/commit/2a28885.diff",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/44.diff"
+              ]
+            }
+          }
+        }
+  expectations:
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
+    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - string_contains: The patch 'https://fake-drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal_underscore/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.patch' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/issue/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/123.diff?diff_id=456789' is not valid
+    - not_string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/123.patch?diff_id=456789' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/issue/drupal/-/commit/2a28885.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/44.diff' is not valid
+    - not_string_contains: Composer validation check passed
+
+- command: 'check:composer'
+  configuration: [ ]
+  variables: [ ]
+  resources:
+    - file: composer.lock
+      content: |
+        { "packages": [
+          { "name": "cweagans/composer-patches", "type": "composer-plugin", "version": "1.7.3" }
+        ] }
+    - file: composer.json
+      content: |
+        {
+          "name": "toolkit",
+          "extra": {
+            "composer-exit-on-patch-failure": true,
+            "patches": {
+              "local/package": [ "./resources/local.patch" ],
+              "web/package": [ "http://example.com/test-package.patch" ],
+              "drupal/package": [
+                "https://www.drupal.org/files/issues/2023-01-01/12345-1.patch",
+                "https://drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "https://fake-drupal.org/files/issues/2023-01-01/12345-2.patch",
+                "https://git.drupalcode.org/project/drupal_underscore/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.patch",
+                "https://git.drupalcode.org/issue/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/123.diff?diff_id=456789",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/123.patch?diff_id=456789",
+                "https://git.drupalcode.org/project/drupal/-/commit/2a28885.diff",
+                "https://git.drupalcode.org/issue/drupal/-/commit/2a28885.diff",
+                "https://git.drupalcode.org/project/drupal/-/merge_requests/44.diff"
+              ]
+            }
+          }
+        }
+  expectations:
+    - not_string_contains: The patch './resources/local.patch' is not valid
+    - string_contains: The patch 'http://example.com/test-package.patch' is not valid
+    - not_string_contains: The patch 'https://www.drupal.org/files/issues/2023-01-01/12345-1.patch' is not valid
+    - not_string_contains: The patch 'https://drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - string_contains: The patch 'https://fake-drupal.org/files/issues/2023-01-01/12345-2.patch' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal_underscore/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.patch' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/issue/drupal/-/commit/2a28885eab0447eea6b4b738ec0ffa77dfe33295.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/123.diff?diff_id=456789' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/123.patch?diff_id=456789' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/commit/2a28885.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/issue/drupal/-/commit/2a28885.diff' is not valid
+    - string_contains: The patch 'https://git.drupalcode.org/project/drupal/-/merge_requests/44.diff' is not valid
+    - not_string_contains: Composer validation check passed
+
 # Using a different patch file.
 - command: 'check:composer'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.lock
       content: |
@@ -472,7 +640,7 @@
   configuration:
     toolkit:
       project_id: digit-dqa
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - file: composer.lock
@@ -483,7 +651,7 @@
 
 - command: 'check:evaluation'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - file: composer.lock
@@ -524,7 +692,7 @@
 
 - command: 'check:evaluation'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - file: composer.lock
@@ -565,7 +733,7 @@
 
 - command: 'check:mandatory'
   configuration: [ ]
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.lock
       content: |
@@ -598,7 +766,7 @@
             autoload:
               psr-4:
                 - 'MyForbiddenVendor\MyProject\'
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -635,7 +803,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.lock
       content: |
@@ -653,7 +821,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -664,7 +832,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -690,7 +858,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -714,7 +882,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -735,7 +903,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - file: composer.lock
@@ -754,7 +922,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - file: composer.lock
@@ -769,7 +937,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - touch: composer.json
     - file: composer.lock
@@ -786,7 +954,7 @@
 
 - command: 'check:composer'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.lock
       content: |
@@ -816,7 +984,7 @@
         npm:
           outdated:
             check: true
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -840,7 +1008,7 @@
         npm:
           outdated:
             check: false
-  tokens: ''
+  variables: [ ]
   resources:
     - file: composer.json
       content: |
@@ -859,7 +1027,8 @@
 
 - command: 'toolkit:component-check'
   configuration: []
-  tokens: '[skip_npm_insecure]'
+  variables:
+    - 'CI_COMMIT_MESSAGE=[skip_npm_insecure]'
   resources:
     - file: composer.json
       content: |
@@ -879,7 +1048,7 @@
 
 - command: 'check:mandatory'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-core.extensions-good.yml
       to: config/sync/core.extension.yml
@@ -893,7 +1062,7 @@
 
 - command: 'check:recommended'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -905,7 +1074,7 @@
 
 - command: 'check:insecure'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -917,7 +1086,7 @@
 
 - command: 'check:outdated'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -929,7 +1098,7 @@
 
 - command: 'check:abandoned'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -941,7 +1110,7 @@
 
 - command: 'check:unsupported'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -953,7 +1122,7 @@
 
 - command: 'check:evaluation'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -965,7 +1134,7 @@
 
 - command: 'check:development'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -977,7 +1146,7 @@
 
 - command: 'check:configuration'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -989,7 +1158,7 @@
 
 - command: 'check:composer'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -1008,7 +1177,7 @@
 
 - command: 'check:composer'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
@@ -1038,7 +1207,7 @@
 
 - command: 'check:composer'
   configuration: []
-  tokens: ''
+  variables: [ ]
   resources:
     - from: sample-composer.lock
       to: composer.lock
