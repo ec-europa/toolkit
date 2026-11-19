@@ -9,7 +9,7 @@
     <paths>
         <output>docs</output>
     </paths>
-    <version number="10.31.0">
+    <version number="10.32.0">
         <folder>latest</folder>
         <api>
             <source dsn=".">

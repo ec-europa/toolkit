@@ -1,5 +1,10 @@
 # Toolkit change log
 
+## Version 10.32.0
+  - DQA-15411: Detect overridden commands.
+  - DQA-15276: Gitleaks reports different results in the pipeline and audit.
+  - DQA-15434: Add possibility to add sources for patches.
+
 ## Version 10.31.0
   - DQA-13550: Improve readability of toolkit:component-check output.
   - DQA-13396: Evaluate possibility to lock private_files location.
