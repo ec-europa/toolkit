@@ -1467,16 +1467,12 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
         if (file_exists('patches.lock.json')) {
             $patchesFile = $this->getJson('patches.lock.json')['patches'] ?? [];
             return $this->parsePatches($patchesFile);
-//            return array_map(function ($patches) {
-//                return array_column($patches, 'url');
-//            }, $patchesFile);
         }
 
         $composerJson = $this->getJson('composer.json');
         // Both v1 and v2 of composer-patches allow to define patches under extra.patches.
         if (!empty($composerJson['extra']['patches'])) {
             return $this->parsePatches($composerJson['extra']['patches']);
-//            return $composerJson['extra']['patches'];
         }
 
         // Patches can be defined in a separated file, this should only be needed when using
@@ -1484,9 +1480,6 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
         if (!empty($composerJson['extra']['patches-file']) && file_exists($composerJson['extra']['patches-file'])) {
             $patchesFile = $this->getJson($composerJson['extra']['patches-file'])['patches'] ?? [];
             return $this->parsePatches($patchesFile);
-//            return array_map(function ($patches) {
-//                return isset($patches[0]['url']) ? array_column($patches, 'url') : array_values($patches);
-//            }, $patchesFile);
         }
 
         return [];
@@ -1495,10 +1488,14 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
     /**
      * Parse the patches array considering the v1 and v2 of composer-patches.
      *
-     * @param array $patches
+     * @param array<mixed> $patches
      *   The patches array.
+     *
+     * @return array<mixed>
+     *   The parsed patches array.
      */
-    private function parsePatches(array $patches): array {
+    private function parsePatches(array $patches): array
+    {
         if (empty($patches)) {
             return [];
         }
@@ -1516,7 +1513,7 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
     /**
      * Validate if current URL is a valid git.drupalcode.org patch.
      *
-     * @param array $parsedUrl
+     * @param array<mixed> $parsedUrl
      *   The patch URL.
      */
     private function isValidGitDrupalCodePatch(array $parsedUrl): bool
