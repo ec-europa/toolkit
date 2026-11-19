@@ -744,14 +744,31 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
                 }
             }
 
-            // Do not allow remote patches. Check if patches from drupal.org are allowed.
+            // Do not allow remote patches. Check if patches from drupal.org are allowed or by environment variable.
             if (!empty($patches = $this->getPatches())) {
-                $allowDOrgPatches = !empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'));
+                $allowGitDrupalCode = filter_var(getenv('TOOLKIT_PATCHES_GIT_DRUPALCODE'), FILTER_VALIDATE_BOOLEAN);
+                $allowedHosts = array_filter(array_map('trim', explode(',', getenv('TOOLKIT_PATCHES_EXTRA_HOSTS') ?: '')));
+
+                if (!empty($this->getConfig()->get('toolkit.components.composer.drupal_patches'))) {
+                    $allowedHosts[] = 'drupal.org';
+                    $allowedHosts[] = 'www.drupal.org';
+                }
+
                 foreach ($patches as $packagePatches) {
                     foreach ($packagePatches as $patch) {
-                        $hostname = parse_url($patch, PHP_URL_HOST);
-                        $isDOrg = str_ends_with($hostname ?? '', 'drupal.org');
-                        if ($hostname && (!$allowDOrgPatches || !$isDOrg)) {
+                        $parsedUrl = parse_url($patch);
+                        $hostname = $parsedUrl['host'] ?? null;
+
+                        // Local patches (no hostname) are always allowed.
+                        if (!$hostname) {
+                            continue;
+                        }
+
+                        $isValid = $hostname === 'git.drupalcode.org'
+                            ? ($allowGitDrupalCode && $this->isValidGitDrupalCodePatch($parsedUrl))
+                            : in_array($hostname, $allowedHosts, true);
+
+                        if (!$isValid) {
                             $message = "The patch '$patch' is not valid.";
                             $this->writeln($message);
                             $this->composerFailed = true;
@@ -1449,27 +1466,85 @@ class ComponentCheckCommands extends AbstractCommands implements ProtectedComman
         // For v2, after running composer install the file patches.lock.json exists.
         if (file_exists('patches.lock.json')) {
             $patchesFile = $this->getJson('patches.lock.json')['patches'] ?? [];
-            return array_map(function ($patches) {
-                return array_column($patches, 'url');
-            }, $patchesFile);
+            return $this->parsePatches($patchesFile);
         }
 
         $composerJson = $this->getJson('composer.json');
         // Both v1 and v2 of composer-patches allow to define patches under extra.patches.
         if (!empty($composerJson['extra']['patches'])) {
-            return $composerJson['extra']['patches'];
+            return $this->parsePatches($composerJson['extra']['patches']);
         }
 
         // Patches can be defined in a separated file, this should only be needed when using
         // v1 because on v2 the patches.lock.json is always generated after installation.
         if (!empty($composerJson['extra']['patches-file']) && file_exists($composerJson['extra']['patches-file'])) {
             $patchesFile = $this->getJson($composerJson['extra']['patches-file'])['patches'] ?? [];
-            return array_map(function ($patches) {
-                return isset($patches[0]['url']) ? array_column($patches, 'url') : array_values($patches);
-            }, $patchesFile);
+            return $this->parsePatches($patchesFile);
         }
 
         return [];
+    }
+
+    /**
+     * Parse the patches array considering the v1 and v2 of composer-patches.
+     *
+     * @param array<mixed> $patches
+     *   The patches array.
+     *
+     * @return array<mixed>
+     *   The parsed patches array.
+     */
+    private function parsePatches(array $patches): array
+    {
+        if (empty($patches)) {
+            return [];
+        }
+        // Check if using the expanded format.
+        $expanded = isset(array_values($patches)[0][0]['url']);
+        if ($expanded) {
+            return array_map(function ($patches) {
+                return array_column($patches, 'url');
+            }, $patches);
+        }
+
+        return $patches;
+    }
+
+    /**
+     * Validate if current URL is a valid git.drupalcode.org patch.
+     *
+     * @param array<mixed> $parsedUrl
+     *   The patch URL.
+     */
+    private function isValidGitDrupalCodePatch(array $parsedUrl): bool
+    {
+        $scheme = $parsedUrl['scheme'] ?? '';
+        $path = $parsedUrl['path'] ?? '';
+        $query = $parsedUrl['query'] ?? '';
+
+        if ($scheme !== 'https') {
+            return false;
+        }
+
+        // Immutable commit URLs (40-char full SHA, no query parameters).
+        if ($query === '' && preg_match('#^/(project|issue)/[a-zA-Z0-9_.-]+/-/commit/[0-9a-f]{40}\.(patch|diff)$#', $path)) {
+            return true;
+        }
+
+        // Immutable merge request diffs (must contain a numeric diff_id query parameter).
+        if (
+            preg_match('#^/project/[a-zA-Z0-9_.-]+/-/merge_requests/[0-9]+\.(patch|diff)$#', $path) &&
+            preg_match('#^diff_id=[0-9]+$#', $query)
+        ) {
+            return true;
+        }
+
+        // Immutable compare URLs (two 40-char full SHAs, no query parameters).
+        if ($query === '' && preg_match('#^/(project|issue)/[a-zA-Z0-9_.-]+/-/compare/[0-9a-f]{40}\.\.\.?[0-9a-f]{40}\.(patch|diff)$#', $path)) {
+            return true;
+        }
+
+        return false;
     }
 
 }

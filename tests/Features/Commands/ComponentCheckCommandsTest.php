@@ -34,8 +34,8 @@ class ComponentCheckCommandsTest extends AbstractTest
      *   A command.
      * @param array $configuration
      *   A configuration.
-     * @param string $tokens
-     *   Tokens to set in the commit message.
+     * @param array $variables
+     *   Environment variables to set.
      * @param array $resources
      *   Resources needed for the test.
      * @param array $expectations
@@ -43,15 +43,17 @@ class ComponentCheckCommandsTest extends AbstractTest
      *
      * @dataProvider dataProvider
      */
-    public function testComponentCheck(string $command, array $configuration = [], string $tokens = '', array $resources = [], array $expectations = [])
+    public function testComponentCheck(string $command, array $configuration = [], array $variables = [], array $resources = [], array $expectations = [])
     {
         // Setup configuration file.
         if (!empty($configuration)) {
             $this->fs->dumpFile($this->getSandboxFilepath('runner.yml'), Yaml::dump($configuration));
         }
 
-        if (!empty($tokens)) {
-            putenv('CI_COMMIT_MESSAGE=' . $tokens);
+        if (!empty($variables)) {
+            foreach ($variables as $variable) {
+                putenv($variable);
+            }
         }
 
         $this->prepareResources($resources);
