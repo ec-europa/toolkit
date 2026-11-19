@@ -461,6 +461,11 @@ Search.appendIndex(
             "summary": "Path\u0020to\u0020YAML\u0020configuration\u0020file\u0020containing\u0020command\u0020defaults.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getConfigurationFile"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AgetProtectedCommands\u0028\u0029",
+            "name": "getProtectedCommands",
+            "summary": "Returns\u0020a\u0020list\u0020of\u0020command\u0020names\u0020that\u0020must\u0020not\u0020be\u0020replaced\u0020by\u0020projects.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getProtectedCommands"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\BuildCommands\u003A\u003AbuildDist\u0028\u0029",
             "name": "buildDist",
             "summary": "Build\u0020the\u0020distribution\u0020package.",
@@ -535,6 +540,11 @@ Search.appendIndex(
             "name": "ComponentCheckCommands",
             "summary": "Command\u0020class\u0020for\u0020toolkit\u003Acomponent\u002Dcheck.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AgetProtectedCommands\u0028\u0029",
+            "name": "getProtectedCommands",
+            "summary": "Returns\u0020a\u0020list\u0020of\u0020command\u0020names\u0020that\u0020must\u0020not\u0020be\u0020replaced\u0020by\u0020projects.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getProtectedCommands"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AcomponentCheck\u0028\u0029",
             "name": "componentCheck",
@@ -685,6 +695,16 @@ Search.appendIndex(
             "name": "getPatches",
             "summary": "Returns\u0020the\u0020project\u0020patches.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_getPatches"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AparsePatches\u0028\u0029",
+            "name": "parsePatches",
+            "summary": "Parse\u0020the\u0020patches\u0020array\u0020considering\u0020the\u0020v1\u0020and\u0020v2\u0020of\u0020composer\u002Dpatches.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_parsePatches"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003AisValidGitDrupalCodePatch\u0028\u0029",
+            "name": "isValidGitDrupalCodePatch",
+            "summary": "Validate\u0020if\u0020current\u0020URL\u0020is\u0020a\u0020valid\u0020git.drupalcode.org\u0020patch.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-ComponentCheckCommands.html#method_isValidGitDrupalCodePatch"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Commands\\ComponentCheckCommands\u003A\u003A\u0024evaluationFailed",
             "name": "evaluationFailed",
@@ -1791,6 +1811,31 @@ Search.appendIndex(
             "summary": "Perform\u0020the\u0020setup\u0020of\u0020the\u0020user\u0020escalation\u0020script.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Commands-UserEscalationCommands.html#method_toolkitSetupUserEscalation"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Hooks\\ProtectedCommandGuard",
+            "name": "ProtectedCommandGuard",
+            "summary": "Validates\u0020if\u0020a\u0020command\u0020is\u0020overridden.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Hooks-ProtectedCommandGuard.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Hooks\\ProtectedCommandGuard\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "Constructs\u0020a\u0020new\u0020ProtectedCommandGuard.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Hooks-ProtectedCommandGuard.html#method___construct"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Hooks\\ProtectedCommandGuard\u003A\u003Avalidate\u0028\u0029",
+            "name": "validate",
+            "summary": "\u007B\u0040inheritdoc\u007D",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Hooks-ProtectedCommandGuard.html#method_validate"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Hooks\\ProtectedCommandGuard\u003A\u003A\u0024protectedCommands",
+            "name": "protectedCommands",
+            "summary": "The\u0020list\u0020of\u0020protected\u0020command\u0020names.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Hooks-ProtectedCommandGuard.html#property_protectedCommands"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Hooks\\ProtectedCommandGuard\u003A\u003A\u0024hookManager",
+            "name": "hookManager",
+            "summary": "The\u0020hook\u0020manager.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Hooks-ProtectedCommandGuard.html#property_hookManager"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject\\ConfigForCommand",
             "name": "ConfigForCommand",
             "summary": "This\u0020class\u0020is\u0020based\u0020on\u0020\\Consolidation\\Config\\Inject\\ConfigForCommand.",
@@ -1861,6 +1906,16 @@ Search.appendIndex(
             "summary": "The\u0020application.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Inject-ConfigForCommand.html#property_application"
         },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\ProtectedCommandsInterface",
+            "name": "ProtectedCommandsInterface",
+            "summary": "Interface\u0020for\u0020class\u0020commands\u0020to\u0020implement\u0020and\u0020provide\u0020protected\u0020commands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-ProtectedCommandsInterface.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\ProtectedCommandsInterface\u003A\u003AgetProtectedCommands\u0028\u0029",
+            "name": "getProtectedCommands",
+            "summary": "Returns\u0020a\u0020list\u0020of\u0020command\u0020names\u0020that\u0020must\u0020not\u0020be\u0020replaced\u0020by\u0020projects.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-ProtectedCommandsInterface.html#method_getProtectedCommands"
+        },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner",
             "name": "Runner",
             "summary": "Toolkit\u0020Runner.",
@@ -1920,6 +1975,11 @@ Search.appendIndex(
             "name": "getConfigDirFilesPaths",
             "summary": "Get\u0020runner\u0020config\u0020directory\u0020files.",
             "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_getConfigDirFilesPaths"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AregisterProtectedCommandGuard\u0028\u0029",
+            "name": "registerProtectedCommandGuard",
+            "summary": "Add\u0020validator\u0020for\u0020protected\u0020commands.",
+            "url": "classes/EcEuropa-Toolkit-TaskRunner-Runner.html#method_registerProtectedCommandGuard"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Runner\u003A\u003AAPPLICATION_NAME",
             "name": "APPLICATION_NAME",
@@ -2140,6 +2200,11 @@ Search.appendIndex(
             "name": "Commands",
             "summary": "",
             "url": "namespaces/eceuropa-toolkit-taskrunner-commands.html"
+        },                {
+            "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Hooks",
+            "name": "Hooks",
+            "summary": "",
+            "url": "namespaces/eceuropa-toolkit-taskrunner-hooks.html"
         },                {
             "fqsen": "\\EcEuropa\\Toolkit\\TaskRunner\\Inject",
             "name": "Inject",

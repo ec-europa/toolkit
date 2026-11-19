@@ -166,6 +166,9 @@
                             </ul>
         </div>
     
+            <span class="phpdocumentor-element__implements">
+            implements
+                            <a href="classes/EcEuropa-Toolkit-TaskRunner-ProtectedCommandsInterface.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\ProtectedCommandsInterface">ProtectedCommandsInterface</abbr></a>                    </span>
     
     </h2>
 
@@ -177,7 +180,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 
     </aside>
 
@@ -197,6 +200,13 @@
 
 
 
+    <h4 id="toc-interfaces">
+        Interfaces
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#toc-interfaces" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
+                    <dt class="phpdocumentor-table-of-contents__entry -interface"><a href="classes/EcEuropa-Toolkit-TaskRunner-ProtectedCommandsInterface.html"><abbr title="\EcEuropa\Toolkit\TaskRunner\ProtectedCommandsInterface">ProtectedCommandsInterface</abbr></a></dt><dd>Interface for class commands to implement and provide protected commands.</dd>    </dl>
 
 
 
@@ -272,6 +282,13 @@
                                 &nbsp;: array&lt;string|int, mixed&gt;    </span>
 </dt>
 <dd>Returns the JSON parsed content.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getProtectedCommands">getProtectedCommands()</a>
+    <span>
+                                &nbsp;: array&lt;string|int, string&gt;    </span>
+</dt>
+<dd>Returns a list of command names that must not be replaced by projects.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a>
@@ -422,7 +439,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">32</span>
 
     </aside>
 
@@ -460,7 +477,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">25</span>
 
     </aside>
 
@@ -503,7 +520,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">303</span>
+    <span class="phpdocumentor-element-found-in__line">312</span>
 
     </aside>
 
@@ -611,7 +628,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">187</span>
+    <span class="phpdocumentor-element-found-in__line">196</span>
 
     </aside>
 
@@ -697,7 +714,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">254</span>
+    <span class="phpdocumentor-element-found-in__line">263</span>
 
     </aside>
 
@@ -778,7 +795,7 @@
         class="phpdocumentor-element
             -method
             -public
-                                                        "
+                                                -final        "
 >
     <h4 class="phpdocumentor-element__name" id="method_buildDist">
         buildDist()
@@ -788,7 +805,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">76</span>
+    <span class="phpdocumentor-element-found-in__line">85</span>
 
     </aside>
 
@@ -796,7 +813,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">buildDist</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">['root' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'dist-root' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'keep' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'remove' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'tag' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'sha' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
+        <span class="phpdocumentor-signature__final">final</span>            <span class="phpdocumentor-signature__name">buildDist</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$options</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">['root' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'dist-root' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'keep' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'remove' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'tag' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>, 'sha' =><abbr title="\Symfony\Component\Console\Input\InputOption::VALUE_REQUIRED">InputOption::VALUE_REQUIRED</abbr>]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Robo\Collection\CollectionBuilder">CollectionBuilder</abbr></span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -925,7 +942,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">36</span>
+    <span class="phpdocumentor-element-found-in__line">37</span>
 
     </aside>
 
@@ -1011,6 +1028,49 @@ The folder structure will match the following:</p>
         <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
                     &mdash;
                 <section class="phpdocumentor-description"><p>Json parsed content.</p>
+</section>
+
+            </section>
+
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                    -static            -final        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getProtectedCommands">
+        getProtectedCommands()
+        <a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getProtectedCommands" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">45</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns a list of command names that must not be replaced by projects.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__final">final</span>    <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getProtectedCommands</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    
+
+        
+    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, string&gt;</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>A list of commands.</p>
 </section>
 
             </section>
@@ -1721,7 +1781,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">409</span>
+    <span class="phpdocumentor-element-found-in__line">418</span>
 
     </aside>
 
@@ -1794,7 +1854,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">374</span>
+    <span class="phpdocumentor-element-found-in__line">383</span>
 
     </aside>
 
@@ -1885,7 +1945,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">477</span>
+    <span class="phpdocumentor-element-found-in__line">486</span>
 
     </aside>
 
@@ -1928,7 +1988,7 @@ The folder structure will match the following:</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/TaskRunner/Commands/BuildCommands.php"><a href="files/src-taskrunner-commands-buildcommands.html"><abbr title="src/TaskRunner/Commands/BuildCommands.php">BuildCommands.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">450</span>
+    <span class="phpdocumentor-element-found-in__line">459</span>
 
     </aside>
 
@@ -2005,6 +2065,7 @@ The folder structure will match the following:</p>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_buildDist">buildDist()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getConfigurationFile">getConfigurationFile()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getJson">getJson()</a></li>
+                                            <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-Commands-BuildCommands.html#method_getProtectedCommands">getProtectedCommands()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getWorkingDir">getWorkingDir()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_isWebsiteInstalled">isWebsiteInstalled()</a></li>
                                             <li class=""><a href="classes/EcEuropa-Toolkit-TaskRunner-AbstractCommands.html#method_getBin">getBin()</a></li>
