@@ -99,7 +99,7 @@ class BuildCommands extends AbstractCommands implements ProtectedCommandsInterfa
             ->mkdir($options['dist-root']);
 
         // Copy all (tracked) files to the dist folder.
-        $tasks[] = $this->taskExec('git archive HEAD | tar -x -C ' . $options['dist-root']);
+        $tasks[] = $this->taskExec('git archive HEAD --worktree-attributes | tar -x -C ' . $options['dist-root']);
 
         // Run production-friendly "composer install" packages.
         $tasks[] = $this->taskComposerInstall('composer')
